@@ -1,53 +1,21 @@
 name: Patience Ascent iOS
 
+# GitHub Actions CI is optional sanity check only.
+# App Store / TestFlight builds use Codemagic with Xcode 26.6+ (iOS 26 SDK required since 2026-04-28).
+
 on:
-  push:
-    branches: [main, master]
-  pull_request:
-    branches: [main, master]
   workflow_dispatch:
 
 jobs:
-  build:
-    name: Build Patience Ascent
-    runs-on: macos-15
-
+  preflight:
+    name: Preflight checks
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Select Xcode
-        run: |
-          sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
-          xcodebuild -version
-          xcrun simctl list runtimes | head -20 || true
-
-      - name: Build for Simulator (verificación Swift)
-        run: |
-          xcodebuild \
-            -project SolitaireRoyale.xcodeproj \
-            -scheme SolitaireRoyale \
-            -destination 'generic/platform=iOS Simulator' \
-            -configuration Debug \
-            CODE_SIGNING_ALLOWED=NO \
-            build
-
-      - name: Build summary
-        run: echo "✅ Patience Ascent (com.patienceascent.app) compila correctamente"
-
-  # Para subir a TestFlight sin Mac, usa Codemagic (ver PUBLICAR_SIN_MAC.md).
-  # Este job requiere certificados en GitHub Secrets:
-  #
-  # testflight:
-  #   runs-on: macos-15
-  #   if: github.ref == 'refs/heads/main'
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: ruby/setup-ruby@v1
-  #       with: { ruby-version: '3.2' }
-  #     - run: gem install fastlane
-  #     - run: fastlane beta
-  #       working-directory: SolitaireRoyale
-  #       env:
-  #         MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-  #         APP_STORE_CONNECT_API_KEY_PATH: ./api_key.json
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r scripts/requirements-asc.txt
+      - run: python scripts/verify_apple_setup.py
+        continue-on-error: true
+      - run: echo "For TestFlight use Codemagic workflow patience-ascent-ios (Xcode 26.6)"

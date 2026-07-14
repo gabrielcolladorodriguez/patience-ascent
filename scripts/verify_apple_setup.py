@@ -30,6 +30,7 @@ def main() -> int:
         root / "SolitaireRoyale" / "Info.plist",
         root / "codemagic.yaml",
         root / "scripts" / "codemagic_signing.sh",
+        root / "scripts" / "verify_xcode_sdk.sh",
     ]
     for path in checks:
         if not path.exists():
@@ -56,6 +57,24 @@ def main() -> int:
         root / "SolitaireRoyale" / "Views" / "Components" / "SharedViews.swift"
     ).read_text(encoding="utf-8"):
         errors.append("SharedViews.swift still references PlayingCard in compiled target")
+
+    cm = (root / "codemagic.yaml").read_text(encoding="utf-8")
+    if "xcode: 16" in cm or "xcode: latest" in cm:
+        errors.append("codemagic.yaml: must use xcode 26.6+ (Apple requires iOS 26 SDK since 2026-04-28)")
+    if "xcode: 26" not in cm:
+        errors.append("codemagic.yaml: set xcode: 26.6 for App Store uploads")
+
+    plist_build = ""
+    for line in (root / "SolitaireRoyale" / "Info.plist").read_text(encoding="utf-8").splitlines():
+        if "<string>" in line and plist_build == "pending":
+            plist_build = line.strip().replace("<string>", "").replace("</string>", "")
+            break
+        if "CFBundleVersion" in line:
+            plist_build = "pending"
+    if "CURRENT_PROJECT_VERSION = 15" not in pbx:
+        errors.append("project.pbxproj: build number should be 15")
+    if plist_build != "15":
+        errors.append(f"Info.plist CFBundleVersion mismatch: {plist_build!r}")
 
     ent = (root / "SolitaireRoyale" / "SolitaireRoyale.entitlements").read_text(encoding="utf-8")
     if "com.apple.developer.game-center" not in ent:

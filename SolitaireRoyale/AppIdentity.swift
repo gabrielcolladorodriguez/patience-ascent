@@ -7,6 +7,6 @@ enum AppIdentity {
     static let appStoreSubtitle = "Match Symbols · Brain Puzzle"
     static let sku = "patience-ascent-ios-2026"
     static let version = "1.0"
-    static let build = "14"
+    static let build = "15"
     static let privacyURL = "https://gabrielcolladorodriguez.github.io/patience-ascent/privacy.html"
 }

@@ -16,9 +16,16 @@ workflows:
         APPLE_TEAM_ID: T8GC6LS6RS
         XCODE_PROJECT: SolitaireRoyale.xcodeproj
         XCODE_SCHEME: SolitaireRoyale
-      xcode: 16.4
+      # Apple requires iOS 26 SDK (Xcode 26+) since 2026-04-28 for App Store uploads.
+      xcode: 26.6
 
     scripts:
+      - name: Verify Xcode SDK (App Store requirement)
+        script: |
+          set -ex
+          chmod +x "$CM_BUILD_DIR/scripts/verify_xcode_sdk.sh"
+          "$CM_BUILD_DIR/scripts/verify_xcode_sdk.sh"
+
       - name: Set up code signing
         script: |
           set -ex
