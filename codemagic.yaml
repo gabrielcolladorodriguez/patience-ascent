@@ -32,24 +32,19 @@ workflows:
           printf '%s\n' "$CERTIFICATE_PRIVATE_KEY" > "$CERT_KEY_PATH"
           openssl rsa -in "$CERT_KEY_PATH" -check -noout
 
-          if ! app-store-connect fetch-signing-files "$BUNDLE_ID" \
+          # App ID must include Game Center or archive fails on entitlements.
+          BUNDLE_RESOURCE_ID="$(app-store-connect bundle-ids list --json --filter "identifier=$BUNDLE_ID" | python3 -c 'import sys,json; d=json.load(sys.stdin); print((d.get("data") or [{}])[0].get("id",""))')"
+          if [ -n "$BUNDLE_RESOURCE_ID" ]; then
+            app-store-connect bundle-ids enable-capabilities "$BUNDLE_RESOURCE_ID" --capability "Game Center" || true
+          else
+            echo "WARNING: Could not resolve bundle ID resource for $BUNDLE_ID"
+          fi
+
+          app-store-connect fetch-signing-files "$BUNDLE_ID" \
             --type IOS_APP_STORE \
             --platform IOS \
-            --certificate-key=@file:"$CERT_KEY_PATH"; then
-            echo ""
-            echo "=========================================="
-            echo "ACCIÓN REQUERIDA EN APPLE DEVELOPER:"
-            echo "1. developer.apple.com → Certificates"
-            echo "2. Revoca TODOS los Apple Distribution viejos"
-            echo "3. Vuelve a lanzar la build"
-            echo "=========================================="
-            echo ""
-            app-store-connect fetch-signing-files "$BUNDLE_ID" \
-              --type IOS_APP_STORE \
-              --platform IOS \
-              --create \
-              --certificate-key=@file:"$CERT_KEY_PATH"
-          fi
+            --create \
+            --certificate-key=@file:"$CERT_KEY_PATH"
 
           keychain add-certificates
           xcode-project use-profiles --project "$CM_BUILD_DIR/$XCODE_PROJECT"

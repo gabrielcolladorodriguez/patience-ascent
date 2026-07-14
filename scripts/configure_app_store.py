@@ -410,6 +410,47 @@ def set_privacy_policy_url(client: ASCClient, app_id: str, url: str) -> None:
     print("! Could not set privacy policy URL automatically — set it manually in Connect")
 
 
+def find_bundle_id_resource(client: ASCClient, identifier: str) -> dict[str, Any]:
+    items = client.get_all("/bundleIds", params={"filter[identifier]": identifier, "limit": 1})
+    if not items:
+        raise RuntimeError(
+            f"Bundle ID {identifier} not found in Developer Portal. Register it at developer.apple.com first."
+        )
+    return items[0]
+
+
+def bundle_has_capability(client: ASCClient, bundle_id_resource_id: str, capability: str) -> bool:
+    caps = client.get_all(f"/bundleIds/{bundle_id_resource_id}/bundleIdCapabilities")
+    return any(c.get("attributes", {}).get("capabilityType") == capability for c in caps)
+
+
+def enable_bundle_capability(client: ASCClient, bundle_id_resource_id: str, capability: str) -> None:
+    if bundle_has_capability(client, bundle_id_resource_id, capability):
+        print(f"✓ Capability {capability} already enabled on App ID")
+        return
+    client.request(
+        "POST",
+        "/bundleIdCapabilities",
+        body={
+            "data": {
+                "type": "bundleIdCapabilities",
+                "attributes": {"capabilityType": capability},
+                "relationships": {
+                    "bundleId": {
+                        "data": {"type": "bundleIds", "id": bundle_id_resource_id}
+                    }
+                },
+            }
+        },
+    )
+    print(f"✓ Enabled {capability} on App ID")
+
+
+def ensure_game_center_bundle_capability(client: ASCClient, bundle_id: str) -> None:
+    bundle = find_bundle_id_resource(client, bundle_id)
+    enable_bundle_capability(client, bundle["id"], "GAME_CENTER")
+
+
 def get_or_create_game_center_detail_id(client: ASCClient, app_id: str) -> str:
     try:
         response = client.request("GET", f"/apps/{app_id}/gameCenterDetail")
@@ -712,6 +753,8 @@ def configure_store(
         upload_screenshots(client, version_id, screenshots_dir)
 
     if game_center:
+        print("Enabling Game Center capability on App ID...")
+        ensure_game_center_bundle_capability(client, bundle_id)
         print("Configuring Game Center leaderboards...")
         try:
             detail_id = get_or_create_game_center_detail_id(client, app_id)
