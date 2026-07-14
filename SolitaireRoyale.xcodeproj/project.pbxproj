@@ -193,6 +193,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "APP=\"${TARGET_BUILD_DIR}/${WRAPPER_NAME}\"\nif [ -d \"$APP\" ]; then\n  find \"$APP\" -type f \\( -name '*.png' -o -name '*.ogg' -o -name '*.wav' \\) -exec chmod 644 {} \\;\n  find \"$APP\" -type f -name '*.mobileprovision' ! -path \"$APP/embedded.mobileprovision\" -delete\nfi\n";
+			alwaysOutOfDate = 1;
 		};
 /* End PBXShellScriptBuildPhase section */
 
