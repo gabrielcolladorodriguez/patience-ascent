@@ -12,6 +12,7 @@ workflows:
         - code-signing
       vars:
         BUNDLE_ID: com.patienceascent.app
+        BUNDLE_RESOURCE_ID: DVG85PSU28
         APPLE_TEAM_ID: T8GC6LS6RS
         XCODE_PROJECT: SolitaireRoyale.xcodeproj
         XCODE_SCHEME: SolitaireRoyale
@@ -21,37 +22,8 @@ workflows:
       - name: Set up code signing
         script: |
           set -ex
-          keychain initialize
-
-          if [ -z "${CERTIFICATE_PRIVATE_KEY:-}" ]; then
-            echo "ERROR: Falta CERTIFICATE_PRIVATE_KEY (grupo: code-signing)"
-            exit 1
-          fi
-
-          CERT_KEY_PATH="$CM_BUILD_DIR/cert_key.pem"
-          printf '%s\n' "$CERTIFICATE_PRIVATE_KEY" > "$CERT_KEY_PATH"
-          openssl rsa -in "$CERT_KEY_PATH" -check -noout
-
-          # App ID must include Game Center or archive fails on entitlements.
-          BUNDLE_RESOURCE_ID=""
-          if BUNDLE_JSON="$(app-store-connect bundle-ids list --json --bundle-id-identifier "$BUNDLE_ID" --strict-match-identifier)"; then
-            BUNDLE_RESOURCE_ID="$(printf '%s' "$BUNDLE_JSON" | python3 -c 'import sys,json; d=json.load(sys.stdin); print((d.get("data") or [{}])[0].get("id",""))')"
-          fi
-          if [ -n "$BUNDLE_RESOURCE_ID" ]; then
-            app-store-connect bundle-ids enable-capabilities "$BUNDLE_RESOURCE_ID" --capability "Game Center" || true
-          else
-            echo "WARNING: Could not resolve bundle ID resource for $BUNDLE_ID (Game Center may already be enabled)"
-          fi
-
-          app-store-connect fetch-signing-files "$BUNDLE_ID" \
-            --type IOS_APP_STORE \
-            --platform IOS \
-            --create \
-            --certificate-key=@file:"$CERT_KEY_PATH"
-
-          keychain add-certificates
-          xcode-project use-profiles --project "$CM_BUILD_DIR/$XCODE_PROJECT"
-          security find-identity -v -p codesigning
+          chmod +x "$CM_BUILD_DIR/scripts/codemagic_signing.sh"
+          "$CM_BUILD_DIR/scripts/codemagic_signing.sh"
 
       - name: Prepare resources for code signing
         script: |
@@ -65,9 +37,9 @@ workflows:
             --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
             --scheme "$XCODE_SCHEME" \
             --config Release; then
-            echo "========== xcodebuild errors (last 120 lines) =========="
+            echo "========== xcodebuild errors (last 200 lines) =========="
             for log in /tmp/xcodebuild_logs/*.log; do
-              [ -f "$log" ] && tail -120 "$log"
+              [ -f "$log" ] && tail -200 "$log"
             done
             exit 1
           fi
