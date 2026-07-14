@@ -128,7 +128,11 @@ final class GameCenterManager: NSObject, ObservableObject {
             authenticate()
             return
         }
-        let vc = GKGameCenterViewController(leaderboardID: LeaderboardID.top100, playerScope: .global)
+        let vc = GKGameCenterViewController(
+            leaderboardID: LeaderboardID.top100,
+            playerScope: .global,
+            timeScope: .allTime
+        )
         vc.gameCenterDelegate = self
         Self.present(vc)
     }
@@ -161,6 +165,8 @@ final class GameCenterManager: NSObject, ObservableObject {
 
 extension GameCenterManager: GKGameCenterControllerDelegate {
     nonisolated func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
-        gameCenterViewController.dismiss(animated: true)
+        Task { @MainActor in
+            gameCenterViewController.dismiss(animated: true)
+        }
     }
 }

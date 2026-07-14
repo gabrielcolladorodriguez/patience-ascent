@@ -75,9 +75,9 @@ def main() -> int:
             plist_build = "pending"
     if "patience_ascent_top100" not in (root / "SolitaireRoyale" / "Services" / "GameCenterManager.swift").read_text(encoding="utf-8"):
         errors.append("GameCenterManager: missing leaderboard ID patience_ascent_top100")
-    if "CURRENT_PROJECT_VERSION = 22" not in pbx:
-        errors.append("project.pbxproj: build number should be 22")
-    if plist_build != "22":
+    if "CURRENT_PROJECT_VERSION = 23" not in pbx:
+        errors.append("project.pbxproj: build number should be 23")
+    if plist_build != "23":
         errors.append(f"Info.plist CFBundleVersion mismatch: {plist_build!r}")
 
     ent = (root / "SolitaireRoyale" / "SolitaireRoyale.entitlements").read_text(encoding="utf-8")
