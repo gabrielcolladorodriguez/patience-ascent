@@ -30,11 +30,12 @@ final class ProgressStore: ObservableObject {
     var xpProgress: Double { Double(xp % xpForNextLevel) / Double(xpForNextLevel) }
 
     private init() {
-        coins = defaults.integer(forKey: "coins")
-        if coins == 0 && !defaults.bool(forKey: "initialized") {
-            coins = 250
+        var initialCoins = defaults.integer(forKey: "coins")
+        if initialCoins == 0 && !defaults.bool(forKey: "initialized") {
+            initialCoins = 250
             defaults.set(true, forKey: "initialized")
         }
+        coins = initialCoins
         hints = defaults.object(forKey: "hints") == nil ? 8 : max(3, defaults.integer(forKey: "hints"))
         undos = defaults.object(forKey: "undos") == nil ? 15 : max(5, defaults.integer(forKey: "undos"))
         let unlocked = defaults.stringArray(forKey: "unlockedModes") ?? [SolitaireMode.klondike.rawValue]
@@ -47,8 +48,8 @@ final class ProgressStore: ObservableObject {
         lastDailyClaim = defaults.object(forKey: "lastDailyClaim") as? Date
         dailyBoostActive = defaults.bool(forKey: "dailyBoostActive")
         xp = defaults.integer(forKey: "xp")
-        level = max(1, defaults.integer(forKey: "level"))
-        if level == 0 { level = 1 }
+        let storedLevel = defaults.integer(forKey: "level")
+        level = storedLevel == 0 ? 1 : max(1, storedLevel)
         dailyStreakDays = defaults.integer(forKey: "dailyStreakDays")
         totalMoves = defaults.integer(forKey: "totalMoves")
         maxCombo = defaults.integer(forKey: "maxCombo")
