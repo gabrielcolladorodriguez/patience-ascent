@@ -56,7 +56,7 @@ struct CardPile: Identifiable, Equatable, Codable {
     var isEmpty: Bool { cards.isEmpty }
 
     mutating func push(_ card: PlayingCard) { cards.append(card) }
-    mutating func push(_ cards newCards: [PlayingCard]) { cards.append(contentsOf: newCards) }
+    mutating func push(_ newCards: [PlayingCard]) { cards.append(contentsOf: newCards) }
     @discardableResult mutating func pop() -> PlayingCard? { cards.popLast() }
     @discardableResult mutating func pop(count: Int) -> [PlayingCard]? {
         guard count > 0, cards.count >= count else { return nil }
