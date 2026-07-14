@@ -27,7 +27,7 @@ jobs:
           xcodebuild \
             -project SolitaireRoyale.xcodeproj \
             -scheme SolitaireRoyale \
-            -destination 'generic/platform=iOS' \
+            -sdk iphoneos \
             -configuration Release \
             CODE_SIGNING_ALLOWED=NO \
             COMPILER_INDEX_STORE_ENABLE=NO \
