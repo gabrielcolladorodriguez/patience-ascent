@@ -1,0 +1,41 @@
+# Codemagic — compila y sube a TestFlight SIN Mac
+# https://codemagic.io (500 min/mes gratis)
+# Conecta tu repo GitHub y sigue PUBLICAR_SIN_MAC.md
+
+workflows:
+  patience-ascent-ios:
+    name: Patience Ascent iOS
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    integrations:
+      app_store_connect: codemagic
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.patienceascent.app
+      vars:
+        XCODE_PROJECT: SolitaireRoyale.xcodeproj
+        XCODE_SCHEME: SolitaireRoyale
+        APP_STORE_APP_ID: 0  # Pon tu ID de App Store Connect cuando crees la app
+      xcode: latest
+    scripts:
+      - name: Build IPA
+        script: |
+          xcodebuild -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath build/PatienceAscent.xcarchive \
+            archive
+          xcodebuild -exportArchive \
+            -archivePath build/PatienceAscent.xcarchive \
+            -exportPath build/ipa \
+            -exportOptionsPlist exportOptions.plist
+    artifacts:
+      - build/ipa/*.ipa
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        beta_groups:
+          - Internal Testers

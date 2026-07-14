@@ -1,0 +1,40 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Compilar para simulador (CI sin firma)"
+  lane :build_sim do
+    build_app(
+      project: "SolitaireRoyale.xcodeproj",
+      scheme: "SolitaireRoyale",
+      skip_codesigning: true,
+      skip_archive: true,
+      destination: "generic/platform=iOS Simulator",
+      configuration: "Release"
+    )
+  end
+
+  desc "Compilar IPA firmado y subir a TestFlight"
+  lane :beta do
+    setup_ci if ENV['CI']
+
+    sync_code_signing(
+      type: "appstore",
+      readonly: true
+    ) if ENV["MATCH_PASSWORD"]
+
+    increment_build_number(xcodeproj: "SolitaireRoyale.xcodeproj") if ENV['CI']
+
+    build_app(
+      project: "SolitaireRoyale.xcodeproj",
+      scheme: "SolitaireRoyale",
+      export_method: "app-store",
+      output_directory: "./build",
+      output_name: "PatienceAscent.ipa"
+    )
+
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true,
+      api_key_path: ENV["APP_STORE_CONNECT_API_KEY_PATH"]
+    ) if ENV["APP_STORE_CONNECT_API_KEY_PATH"]
+  end
+end
