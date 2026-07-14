@@ -103,7 +103,9 @@ struct SettingsView: View {
                         toggleRow("Música", isOn: $audio.musicEnabled)
                         toggleRow("Efectos de sonido", isOn: $audio.sfxEnabled)
                         toggleRow("Vibración", isOn: $hapticsEnabled)
-                            .onChange(of: hapticsEnabled) { HapticsManager.enabled = $0 }
+                            .onChange(of: hapticsEnabled) { enabled in
+                                HapticsManager.enabled = enabled
+                            }
                         toggleRow("Auto-completar al ganar", isOn: $autoComplete)
 
                         AppButton(title: "Tienda", systemImage: "bag.fill", style: .secondary) {
@@ -128,7 +130,7 @@ struct SettingsView: View {
                                 Link("Política de privacidad", destination: URL(string: AppIdentity.privacyURL)!)
                                     .font(.caption)
                                     .foregroundStyle(AppTheme.gold)
-                                Text("Anuncios ocasionales en el menú (máx. cada 5 min)")
+                                Text("Sin anuncios · 100% offline")
                                     .font(.caption2)
                                     .foregroundStyle(AppTheme.textMutedOnGreen)
                                 Text("Assets CC0: Kenney, Byron Knoll")

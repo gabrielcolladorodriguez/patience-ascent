@@ -37,9 +37,7 @@
 		A1000000000000000000001D /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000001D /* Theme.swift */; };
 		A1000000000000000000001E /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000001E /* PrivacyInfo.xcprivacy */; };
 		A1000000000000000000001F /* QuickHelpViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000001F /* QuickHelpViews.swift */; };
-		A10000000000000000000020 /* AdConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000020 /* AdConfig.swift */; };
-		A10000000000000000000021 /* AdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000021 /* AdManager.swift */; };
-		B10000000000000000000001 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = BA0000000000000000000001 /* GoogleMobileAds */; };
+		A10000000000000000000022 /* DeviceLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000022 /* DeviceLayout.swift */; };
 
 /* Begin PBXFileReference section */
 		A20000000000000000000001 /* SolitaireRoyaleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolitaireRoyaleApp.swift; sourceTree = "<group>"; };
@@ -72,8 +70,7 @@
 		A2000000000000000000001D /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		A2000000000000000000001E /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A2000000000000000000001F /* QuickHelpViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickHelpViews.swift; sourceTree = "<group>"; };
-		A20000000000000000000020 /* AdConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdConfig.swift; sourceTree = "<group>"; };
-		A20000000000000000000021 /* AdManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdManager.swift; sourceTree = "<group>"; };
+		A20000000000000000000022 /* DeviceLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceLayout.swift; sourceTree = "<group>"; };
 		A20000000000000000000017 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A30000000000000000000001 /* SolitaireRoyale.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SolitaireRoyale.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -83,7 +80,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B10000000000000000000001 /* GoogleMobileAds in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,6 +100,7 @@
 				A20000000000000000000001 /* SolitaireRoyaleApp.swift */,
 				A20000000000000000000018 /* AppIdentity.swift */,
 				A2000000000000000000001D /* Theme.swift */,
+				A20000000000000000000022 /* DeviceLayout.swift */,
 				A50000000000000000000004 /* Models */,
 				A50000000000000000000005 /* Engine */,
 				A50000000000000000000006 /* Services */,
@@ -158,8 +155,6 @@
 				A2000000000000000000000E /* AudioManager.swift */,
 				A2000000000000000000000F /* ProgressStore.swift */,
 				A2000000000000000000001A /* HapticsManager.swift */,
-				A20000000000000000000020 /* AdConfig.swift */,
-				A20000000000000000000021 /* AdManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -229,9 +224,6 @@
 			dependencies = (
 			);
 			name = SolitaireRoyale;
-			packageProductDependencies = (
-				BA0000000000000000000001 /* GoogleMobileAds */,
-			);
 			productName = SolitaireRoyale;
 			productReference = A30000000000000000000001 /* SolitaireRoyale.app */;
 			productType = "com.apple.product-type.application";
@@ -260,9 +252,6 @@
 				Base,
 			);
 			mainGroup = A50000000000000000000001;
-			packageReferences = (
-				B90000000000000000000001 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
-			);
 			productRefGroup = A50000000000000000000003 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -317,8 +306,7 @@
 				A1000000000000000000001C /* ConfettiView.swift in Sources */,
 				A1000000000000000000001D /* Theme.swift in Sources */,
 				A1000000000000000000001F /* QuickHelpViews.swift in Sources */,
-				A10000000000000000000020 /* AdConfig.swift in Sources */,
-				A10000000000000000000021 /* AdManager.swift in Sources */,
+				A10000000000000000000022 /* DeviceLayout.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,7 +318,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
 				SDKROOT = iphoneos;
@@ -343,7 +331,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
@@ -357,7 +345,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
         DEVELOPMENT_TEAM = T8GC6LS6RS;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SolitaireRoyale/Info.plist;
@@ -367,10 +355,6 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
-				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.patienceascent.app;
@@ -387,7 +371,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = T8GC6LS6RS;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SolitaireRoyale/Info.plist;
@@ -397,10 +381,6 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
-				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.patienceascent.app;
@@ -434,25 +414,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		B90000000000000000000001 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 11.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		BA0000000000000000000001 /* GoogleMobileAds */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B90000000000000000000001 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
-			productName = GoogleMobileAds;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A90000000000000000000001 /* Project object */;
 }

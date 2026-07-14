@@ -8,64 +8,70 @@ struct MainMenuView: View {
     var body: some View {
         ZStack {
             GameBackground()
-            VStack(spacing: 18) {
-                Spacer(minLength: 8)
+            AdaptiveMenuContainer {
+                VStack(spacing: 18) {
+                    Spacer(minLength: 8)
 
-                VStack(spacing: 6) {
-                    Image(systemName: "suit.spade.fill")
-                        .font(.system(size: 44))
-                        .foregroundStyle(AppTheme.gold)
-                    Text(AppIdentity.name)
-                        .font(.system(size: 32, weight: .black, design: .rounded))
-                        .foregroundStyle(AppTheme.textOnGreen)
-                    Text("Solitarios sencillos en vertical")
-                        .font(.subheadline)
-                        .foregroundStyle(AppTheme.textMutedOnGreen)
-                }
-
-                HStack(spacing: 12) {
-                    miniStat("Victorias", "\(progress.wins.values.reduce(0, +))")
-                    miniStat("Racha", "\(progress.streak)")
-                    miniStat("Nivel", "\(progress.level)")
-                }
-
-                if !progress.dailyChallenge.completed {
-                    dailyChallengeCard
-                }
-
-                VStack(spacing: 10) {
-                    AppButton(title: "Jugar Klondike", systemImage: "play.fill", style: .primary) {
-                        route = .game(.klondike, daily: false)
+                    VStack(spacing: 8) {
+                        Image(systemName: "suit.spade.fill")
+                            .font(.system(size: 44))
+                            .foregroundStyle(AppTheme.gold)
+                            .shadow(color: AppTheme.gold.opacity(0.35), radius: 8)
+                        Text(AppIdentity.name)
+                            .font(AppTheme.titleFont(30))
+                            .foregroundStyle(AppTheme.textOnGreen)
+                        Text(AppIdentity.tagline)
+                            .font(.subheadline.weight(.medium))
+                            .foregroundStyle(AppTheme.textMutedOnGreen)
+                        Capsule()
+                            .fill(AppTheme.gold.opacity(0.55))
+                            .frame(width: 48, height: 3)
                     }
 
-                    AppButton(title: "Elegir modo", systemImage: "square.grid.2x2.fill", style: .secondary) {
-                        route = .modes
+                    HStack(spacing: 12) {
+                        miniStat("Victorias", "\(progress.wins.values.reduce(0, +))", icon: "trophy.fill")
+                        miniStat("Racha", "\(progress.streak)", icon: "flame.fill")
+                        miniStat("Nivel", "\(progress.level)", icon: "star.fill")
                     }
 
-                    HStack(spacing: 10) {
-                        AppButton(title: "Cómo jugar", systemImage: "questionmark.circle.fill", style: .secondary) {
-                            route = .howToPlay
+                    if !progress.dailyChallenge.completed {
+                        dailyChallengeCard
+                    }
+
+                    VStack(spacing: 10) {
+                        AppButton(title: "Jugar Klondike", systemImage: "play.fill", style: .primary) {
+                            route = .game(.klondike, daily: false)
                         }
-                        AppButton(title: "Ajustes", systemImage: "gearshape.fill", style: .secondary) {
-                            route = .settings
+
+                        AppButton(title: "Elegir modo", systemImage: "square.grid.2x2.fill", style: .secondary) {
+                            route = .modes
+                        }
+
+                        HStack(spacing: 10) {
+                            AppButton(title: "Cómo jugar", systemImage: "questionmark.circle.fill", style: .secondary) {
+                                route = .howToPlay
+                            }
+                            AppButton(title: "Ajustes", systemImage: "gearshape.fill", style: .secondary) {
+                                route = .settings
+                            }
+                        }
+
+                        AppButton(title: "Estadísticas", systemImage: "chart.bar.fill", style: .secondary) {
+                            route = .stats
+                        }
+
+                        if progress.canClaimDaily {
+                            AppButton(title: "Recompensa diaria", systemImage: "gift.fill", style: .primary) {
+                                dailyReward = progress.claimDailyReward()
+                                AudioManager.shared.win()
+                            }
                         }
                     }
 
-                    AppButton(title: "Estadísticas", systemImage: "chart.bar.fill", style: .secondary) {
-                        route = .stats
-                    }
-
-                    if progress.canClaimDaily {
-                        AppButton(title: "Recompensa diaria", systemImage: "gift.fill", style: .primary) {
-                            dailyReward = progress.claimDailyReward()
-                            AudioManager.shared.win()
-                        }
-                    }
+                    CoinBar()
+                    Spacer(minLength: 12)
                 }
-                .padding(.horizontal, 24)
-
-                CoinBar()
-                Spacer(minLength: 12)
+                .padding(.horizontal, 20)
             }
         }
         .alert("¡Recompensa diaria!", isPresented: .init(
@@ -79,8 +85,11 @@ struct MainMenuView: View {
         .onAppear { AudioManager.shared.playMusic("menu_music.wav") }
     }
 
-    private func miniStat(_ title: String, _ value: String) -> some View {
-        VStack(spacing: 2) {
+    private func miniStat(_ title: String, _ value: String, icon: String) -> some View {
+        VStack(spacing: 4) {
+            Image(systemName: icon)
+                .font(.caption.weight(.bold))
+                .foregroundStyle(AppTheme.gold)
             Text(value)
                 .font(.headline.weight(.bold))
                 .foregroundStyle(AppTheme.textOnGreen)
@@ -127,7 +136,7 @@ struct MainMenuView: View {
             )
         }
         .buttonStyle(.plain)
-        .padding(.horizontal, 24)
+        .padding(.horizontal, 20)
     }
 }
 
@@ -142,12 +151,14 @@ struct ModeSelectView: View {
             VStack(spacing: 0) {
                 ScreenHeader(title: "Modos", onBack: { route = .menu })
                 ScrollView {
-                    LazyVStack(spacing: 10) {
-                        ForEach(SolitaireMode.allCases) { mode in
-                            modeRow(mode)
+                    AdaptiveMenuContainer {
+                        LazyVStack(spacing: 10) {
+                            ForEach(SolitaireMode.allCases) { mode in
+                                modeRow(mode)
+                            }
                         }
+                        .padding(16)
                     }
-                    .padding(16)
                 }
             }
         }

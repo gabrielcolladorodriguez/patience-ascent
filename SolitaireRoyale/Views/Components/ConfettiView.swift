@@ -14,33 +14,35 @@ struct ConfettiPiece: Identifiable {
 
 struct ConfettiView: View {
     @State private var pieces: [ConfettiPiece] = []
-    let colors: [Color] = [.yellow, .orange, .red, .green, .cyan, .white]
+    let colors: [Color] = [AppTheme.gold, .orange, AppTheme.success, .white, AppTheme.accent]
 
     var body: some View {
-        TimelineView(.animation(minimumInterval: 1.0 / 30.0)) { timeline in
-            Canvas { context, size in
-                for piece in pieces {
-                    var transform = CGAffineTransform.identity
-                    transform = transform.translatedBy(x: piece.x, y: piece.y)
-                    transform = transform.rotated(by: piece.rotation * .pi / 180)
-                    context.concatenate(transform)
-                    let rect = CGRect(x: -piece.size / 2, y: -piece.size, width: piece.size, height: piece.size * 1.6)
-                    context.fill(Path(roundedRect: rect, cornerRadius: 2), with: .color(piece.color))
-                    context.concatenate(transform.inverted())
+        GeometryReader { geo in
+            TimelineView(.animation(minimumInterval: 1.0 / 30.0)) { timeline in
+                Canvas { context, size in
+                    for piece in pieces {
+                        var transform = CGAffineTransform.identity
+                        transform = transform.translatedBy(x: piece.x, y: piece.y)
+                        transform = transform.rotated(by: piece.rotation * .pi / 180)
+                        context.concatenate(transform)
+                        let rect = CGRect(x: -piece.size / 2, y: -piece.size, width: piece.size, height: piece.size * 1.6)
+                        context.fill(Path(roundedRect: rect, cornerRadius: 2), with: .color(piece.color))
+                        context.concatenate(transform.inverted())
+                    }
                 }
-            }
-            .onChange(of: timeline.date) { _ in
-                tick()
+                .onChange(of: timeline.date) { _ in
+                    tick(in: geo.size)
+                }
+                .onAppear { spawn(in: geo.size) }
             }
         }
         .allowsHitTesting(false)
-        .onAppear { spawn() }
     }
 
-    private func spawn() {
-        pieces = (0..<80).map { _ in
+    private func spawn(in size: CGSize) {
+        pieces = (0..<70).map { _ in
             ConfettiPiece(
-                x: CGFloat.random(in: 0...400),
+                x: CGFloat.random(in: 0...max(size.width, 320)),
                 y: CGFloat.random(in: -120...0),
                 rotation: Double.random(in: 0...360),
                 color: colors.randomElement()!,
@@ -52,15 +54,16 @@ struct ConfettiView: View {
         }
     }
 
-    private func tick() {
+    private func tick(in size: CGSize) {
         for i in pieces.indices {
             pieces[i].y += pieces[i].velocityY
             pieces[i].x += pieces[i].velocityX
             pieces[i].rotation += pieces[i].spin
             pieces[i].velocityY += 0.08
         }
-        pieces.removeAll { $0.y > 900 }
-        if pieces.count < 40 { spawn() }
+        let limit = size.height + 80
+        pieces.removeAll { $0.y > limit }
+        if pieces.count < 35 { spawn(in: size) }
     }
 }
 
@@ -84,9 +87,9 @@ struct WinCelebrationOverlay: View {
                     .scaleEffect(scale)
 
                 Text("¡VICTORIA!")
-                    .font(.system(size: 42, weight: .black, design: .rounded))
+                    .font(AppTheme.titleFont(40))
                     .foregroundStyle(
-                        LinearGradient(colors: [.yellow, .orange], startPoint: .leading, endPoint: .trailing)
+                        LinearGradient(colors: [AppTheme.gold, .orange], startPoint: .leading, endPoint: .trailing)
                     )
 
                 HStack(spacing: 24) {
@@ -105,6 +108,7 @@ struct WinCelebrationOverlay: View {
             .opacity(opacity)
         }
         .onAppear {
+            AudioManager.shared.playMusic("win_music.wav", loop: false)
             HapticsManager.win()
             withAnimation(.spring(response: 0.55, dampingFraction: 0.65)) {
                 scale = 1

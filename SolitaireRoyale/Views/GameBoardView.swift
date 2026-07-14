@@ -19,9 +19,15 @@ struct GameBoardView: View {
                 }
                 GameTableSurface {
                     GeometryReader { geo in
+                        let cardW = DeviceLayout.cardWidth(for: session.mode, in: geo.size)
                         ScrollView([.horizontal, .vertical], showsIndicators: false) {
-                            boardContent(in: geo.size)
-                                .padding(6)
+                            boardContent(cardW: cardW)
+                                .frame(
+                                    minWidth: geo.size.width,
+                                    minHeight: geo.size.height,
+                                    alignment: .topLeading
+                                )
+                                .padding(8)
                         }
                     }
                 }
@@ -143,8 +149,7 @@ struct GameBoardView: View {
     }
 
     @ViewBuilder
-    private func boardContent(in size: CGSize) -> some View {
-        let cardW = cardWidth(for: session.mode, in: size)
+    private func boardContent(cardW: CGFloat) -> some View {
         switch session.mode {
         case .klondike, .yukon:
             klondikeLayout(cardW: cardW)
@@ -163,37 +168,10 @@ struct GameBoardView: View {
 
     private func cardBackName() -> String {
         let name = progress.selectedCardBack
+        // card_back.png es un atlas (no una carta); usar reverso válido por defecto
+        if name == "card_back" || name.isEmpty { return "card_back_green" }
         if name == "card_back_blue" || name == "card_back_green" { return name }
-        return "card_back"
-    }
-
-    /// Tamaño de carta adaptado al dispositivo y al modo (más grande en iPhone).
-    private func cardWidth(for mode: GameMode, in size: CGSize) -> CGFloat {
-        let w = max(size.width, 280)
-        let isPhone = w < 520
-
-        switch mode {
-        case .klondike, .yukon:
-            return min(w * (isPhone ? 0.20 : 0.15), isPhone ? 76 : 84)
-        case .freeCell, .golf:
-            return min(w * (isPhone ? 0.22 : 0.17), isPhone ? 78 : 86)
-        case .pyramid:
-            let fit = (w - 20) / 7.0
-            return min(max(fit, w * 0.16), isPhone ? 72 : 80)
-        case .triPeaks:
-            let fit = (w - 24) / 7.4
-            return min(max(fit, w * 0.14), isPhone ? 60 : 68)
-        case .spider, .fortyThieves:
-            return min(w * (isPhone ? 0.12 : 0.10), isPhone ? 52 : 58)
-        }
-    }
-
-    private func stackOffset(for cardW: CGFloat) -> CGFloat {
-        cardW * 0.18
-    }
-
-    private func cardHeight(for cardW: CGFloat) -> CGFloat {
-        cardW * 1.45
+        return "card_back_green"
     }
 
     private func pileView(_ ref: PileRef, cardW: CGFloat, stacked: Bool = false) -> some View {
@@ -216,13 +194,13 @@ struct GameBoardView: View {
                             highlighted: highlighted && idx == cards.count - 1,
                             lifted: lifted && idx == cards.count - 1
                         )
-                        .offset(y: CGFloat(idx) * stackOffset(for: cardW))
+                        .offset(y: CGFloat(idx) * DeviceLayout.stackOffset(for: cardW))
                     }
                 } else {
                     CardFaceView(card: cards.last, cardBackName: cardBackName(), width: cardW, highlighted: highlighted, lifted: lifted)
                 }
             }
-            .frame(width: cardW, height: stacked ? cardHeight(for: cardW) + CGFloat(max(0, cards.count - 1)) * stackOffset(for: cardW) : cardHeight(for: cardW))
+            .frame(width: cardW, height: stacked ? DeviceLayout.cardHeight(for: cardW) + CGFloat(max(0, cards.count - 1)) * DeviceLayout.stackOffset(for: cardW) : DeviceLayout.cardHeight(for: cardW))
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
                     .stroke(isDropTarget ? AppTheme.accent : .clear, lineWidth: 2)
@@ -322,7 +300,7 @@ struct GameBoardView: View {
                         if let eng = engine, let card = eng.pyramid[idx] {
                             cardButton(card: card, ref: PileRef(kind: .tableau, index: idx), cardW: cardW)
                         } else {
-                            Color.clear.frame(width: cardW, height: cardHeight(for: cardW))
+                            Color.clear.frame(width: cardW, height: DeviceLayout.cardHeight(for: cardW))
                         }
                     }
                 }
@@ -338,7 +316,7 @@ struct GameBoardView: View {
                     if let eng = engine, let card = eng.peaks[idx] {
                         cardButton(card: card, ref: PileRef(kind: .tableau, index: idx), cardW: cardW)
                     } else {
-                        Color.clear.frame(width: cardW, height: cardHeight(for: cardW))
+                        Color.clear.frame(width: cardW, height: DeviceLayout.cardHeight(for: cardW))
                     }
                 }
             }

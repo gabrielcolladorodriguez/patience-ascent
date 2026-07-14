@@ -40,8 +40,8 @@ final class ProgressStore: ObservableObject {
         undos = defaults.object(forKey: "undos") == nil ? 15 : max(5, defaults.integer(forKey: "undos"))
         let unlocked = defaults.stringArray(forKey: "unlockedModes") ?? [SolitaireMode.klondike.rawValue]
         unlockedModes = Set(unlocked.compactMap(SolitaireMode.init(rawValue:)))
-        ownedCardBacks = Set(defaults.stringArray(forKey: "ownedCardBacks") ?? ["card_back"])
-        selectedCardBack = defaults.string(forKey: "selectedCardBack") ?? "card_back"
+        ownedCardBacks = Set(defaults.stringArray(forKey: "ownedCardBacks") ?? ["card_back_green"])
+        selectedCardBack = defaults.string(forKey: "selectedCardBack") ?? "card_back_green"
         wins = defaults.dictionary(forKey: "wins") as? [String: Int] ?? [:]
         streak = defaults.integer(forKey: "streak")
         bestStreak = defaults.integer(forKey: "bestStreak")

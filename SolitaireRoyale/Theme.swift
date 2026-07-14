@@ -33,6 +33,7 @@ enum AppTheme {
     static let cornerRadius: CGFloat = 16
     static let buttonHeight: CGFloat = 54
     static let minTap: CGFloat = 44
+    static let cardCornerRatio: CGFloat = 0.09
 
     static func titleFont(_ size: CGFloat = 32) -> Font {
         .system(size: size, weight: .black, design: .rounded)

@@ -45,6 +45,12 @@ struct GameBackground: View {
                 startRadius: 20,
                 endRadius: 520
             )
+            RadialGradient(
+                colors: [.clear, Color.black.opacity(0.18)],
+                center: .bottom,
+                startRadius: 80,
+                endRadius: 480
+            )
             // Marco fino decorativo (como el icono)
             RoundedRectangle(cornerRadius: 0)
                 .stroke(AppTheme.tableGoldFrame.opacity(0.22), lineWidth: 2)
@@ -75,6 +81,25 @@ struct GameTableSurface<Content: View>: View {
             )
             .padding(.horizontal, 8)
             .padding(.vertical, 4)
+    }
+}
+
+// MARK: - Layout
+
+/// Centra y limita ancho en iPad para menús y formularios.
+struct AdaptiveMenuContainer<Content: View>: View {
+    @ViewBuilder let content: Content
+
+    var body: some View {
+        GeometryReader { geo in
+            HStack(spacing: 0) {
+                Spacer(minLength: 0)
+                content
+                    .frame(maxWidth: DeviceLayout.menuMaxWidth(for: geo.size.width))
+                Spacer(minLength: 0)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
     }
 }
 
@@ -216,6 +241,7 @@ struct CardFaceView: View {
     var lifted: Bool = false
 
     var body: some View {
+        let radius = width * AppTheme.cardCornerRatio
         ZStack {
             if let card, card.faceUp {
                 BundleImage(name: "\(card.imageName).png", folder: "GameAssets/Cards")
@@ -226,11 +252,16 @@ struct CardFaceView: View {
             }
         }
         .frame(width: width)
+        .clipShape(RoundedRectangle(cornerRadius: radius))
+        .overlay(
+            RoundedRectangle(cornerRadius: radius)
+                .stroke(Color.black.opacity(0.08), lineWidth: 0.5)
+        )
         .scaleEffect(lifted ? 1.05 : 1)
         .offset(y: lifted ? -5 : 0)
         .animation(.spring(response: 0.28, dampingFraction: 0.72), value: lifted)
         .overlay(
-            RoundedRectangle(cornerRadius: 6)
+            RoundedRectangle(cornerRadius: radius)
                 .stroke(highlighted ? AppTheme.gold : Color.clear, lineWidth: 3)
                 .shadow(color: highlighted ? AppTheme.gold.opacity(0.5) : .clear, radius: 5)
         )
