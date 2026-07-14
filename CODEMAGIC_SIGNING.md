@@ -1,0 +1,98 @@
+# Arreglar: "No matching profiles found"
+
+Ese error significa que Codemagic **no puede crear ni encontrar** el perfil de App Store para `com.patienceascent.app`. Haz estos pasos **en orden**:
+
+---
+
+## Paso 1 — Verifica en Apple Developer (navegador)
+
+1. [developer.apple.com/account](https://developer.apple.com/account) → **Identifiers**
+2. Confirma que existe: **`com.patienceascent.app`**
+3. Si NO existe → créalo (App IDs → + → Explicit → `com.patienceascent.app`)
+
+---
+
+## Paso 2 — Verifica en App Store Connect
+
+1. [appstoreconnect.apple.com](https://appstoreconnect.apple.com) → **Apps**
+2. Debe existir **Patience Ascent** con Bundle ID **`com.patienceascent.app`**
+3. Si no la creaste → créala ahora (mismo Bundle ID)
+
+---
+
+## Paso 3 — Crea API Key (OBLIGATORIO para Codemagic)
+
+1. App Store Connect → **Users and Access** → pestaña **Integrations**
+2. **App Store Connect API** → **+** (Generate API Key)
+3. Nombre: `Codemagic`
+4. Rol: **Admin** (recomendado) o **App Manager**
+5. **Generate**
+6. **Descarga el archivo `.p8`** (solo se puede una vez)
+7. Anota:
+   - **Issuer ID** (arriba en la misma página)
+   - **Key ID** (en la tabla de claves)
+
+---
+
+## Paso 4 — Conecta la API Key en Codemagic
+
+1. Codemagic → icono **Teams** (arriba) → tu equipo
+2. **Team integrations** → **Developer Portal** → **Connect**
+3. Rellena:
+   - **Issuer ID:** (el de Apple)
+   - **Key ID:** (el de Apple)
+   - **API key:** pega el contenido del archivo `.p8`
+4. **Nombre de la integración:** escribe exactamente → **`app_store_connect`**
+5. Guarda
+
+---
+
+## Paso 5 — Genera certificado en Codemagic
+
+1. Codemagic → **Teams** → **codemagic.yaml settings** (activado)
+2. **Code signing identities** → pestaña **iOS certificates**
+3. Pulsa **Generate certificate** o **Add certificate**
+4. Bundle ID: `com.patienceascent.app`
+5. Tipo: **Apple Distribution** (App Store)
+
+Luego en **iOS provisioning profiles**:
+- Debería aparecer un perfil **App Store** para `com.patienceascent.app`
+- Si no aparece, pulsa **Fetch from Developer Portal**
+
+---
+
+## Paso 6 — Vuelve a compilar
+
+1. Repo → **patience-ascent** → **Start new build**
+2. Workflow: **Patience Ascent iOS**
+3. **Start build**
+
+---
+
+## Si sigue fallando
+
+### Opción manual en Apple Developer (sin Mac, solo web)
+
+1. developer.apple.com → **Certificates** → **+**
+2. Tipo: **Apple Distribution**
+3. Sigue los pasos (Codemagic puede generarlo por ti si el Paso 4 está bien)
+
+Luego **Profiles** → **+**:
+1. Tipo: **App Store**
+2. App ID: `com.patienceascent.app`
+3. Certificado: el de Distribution que creaste
+4. Nombre: `Patience Ascent App Store`
+5. **Generate** → descarga el `.mobileprovision`
+6. En Codemagic → **Code signing** → **Upload provisioning profile** → sube el archivo
+
+---
+
+## Datos de tu proyecto
+
+| Campo | Valor |
+|-------|--------|
+| Team ID | `T8GC6LS6RS` |
+| Bundle ID | `com.patienceascent.app` |
+| Integración Codemagic | `app_store_connect` |
+
+El paso que casi siempre falta es el **Paso 4** (API Key `.p8` en Codemagic). Sin eso, Codemagic no puede crear perfiles.
