@@ -73,8 +73,8 @@ struct GameTableSurface<Content: View>: View {
                 }
                 .shadow(color: .black.opacity(0.14), radius: 10, y: 5)
             )
-            .padding(.horizontal, 10)
-            .padding(.vertical, 6)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
     }
 }
 

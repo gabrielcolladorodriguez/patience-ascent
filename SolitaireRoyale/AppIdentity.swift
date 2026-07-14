@@ -7,6 +7,6 @@ enum AppIdentity {
     static let appStoreSubtitle = "8 solitarios verticales"
     static let sku = "patience-ascent-ios-2026"
     static let version = "1.0"
-    static let build = "4"
+    static let build = "5"
     static let privacyURL = "https://gabrielcolladorodriguez.github.io/patience-ascent/privacy.html"
 }
