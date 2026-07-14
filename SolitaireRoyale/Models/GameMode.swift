@@ -38,35 +38,9 @@ enum SolitaireMode: String, CaseIterable, Identifiable, Codable {
         }
     }
 
-    var unlockCost: Int {
-        switch self {
-        case .klondike: return 0
-        case .freeCell: return 500
-        case .spider: return 800
-        case .pyramid: return 600
-        case .triPeaks: return 700
-        case .golf: return 500
-        case .yukon: return 900
-        case .fortyThieves: return 1000
-        }
-    }
+    var isFree: Bool { true }
 
-    var winReward: Int {
-        switch self {
-        case .klondike: return 50
-        case .freeCell: return 80
-        case .spider: return 120
-        case .pyramid: return 70
-        case .triPeaks: return 90
-        case .golf: return 60
-        case .yukon: return 100
-        case .fortyThieves: return 150
-        }
-    }
-
-    var isFree: Bool { unlockCost == 0 }
-
-    /// Reglas rápidas (3 líneas máx.) para el jugador casual
+    /// Reglas rápidas (2 líneas) para el jugador casual
     var quickRules: [String] {
         switch self {
         case .klondike:
@@ -121,6 +95,19 @@ enum SolitaireMode: String, CaseIterable, Identifiable, Codable {
     }
 
     var controlsHint: String {
-        "Toca una carta · Arrastra para mover · Pista si te atascas"
+        "Toca · Arrastra · Pista ilimitada"
+    }
+
+    var iconName: String {
+        switch self {
+        case .klondike: return "suit.spade.fill"
+        case .freeCell: return "square.grid.3x3.fill"
+        case .spider: return "square.stack.3d.up.fill"
+        case .pyramid: return "triangle.fill"
+        case .triPeaks: return "mountain.2.fill"
+        case .golf: return "flag.fill"
+        case .yukon: return "snowflake"
+        case .fortyThieves: return "lock.shield.fill"
+        }
     }
 }

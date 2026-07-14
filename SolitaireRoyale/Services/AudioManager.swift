@@ -35,7 +35,7 @@ final class AudioManager: ObservableObject {
             musicPlayer?.stop()
             musicPlayer = try AVAudioPlayer(contentsOf: url)
             musicPlayer?.numberOfLoops = loop ? -1 : 0
-            musicPlayer?.volume = 0.28
+            musicPlayer?.volume = 0.22
             musicPlayer?.prepareToPlay()
             musicPlayer?.play()
         } catch {
@@ -56,7 +56,7 @@ final class AudioManager: ObservableObject {
         }
         do {
             let player = try AVAudioPlayer(contentsOf: url)
-            player.volume = 0.65
+            player.volume = 0.5
             player.prepareToPlay()
             player.play()
             sfxPlayers.append(player)

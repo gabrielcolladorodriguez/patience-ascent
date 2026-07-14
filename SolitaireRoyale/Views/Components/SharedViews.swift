@@ -194,7 +194,6 @@ struct NavBackButton: View {
 struct ScreenHeader: View {
     let title: String
     let onBack: () -> Void
-    var showCoins: Bool = true
 
     var body: some View {
         HStack(spacing: 12) {
@@ -203,7 +202,6 @@ struct ScreenHeader: View {
                 .font(.title2.weight(.bold))
                 .foregroundStyle(AppTheme.textOnGreen)
             Spacer()
-            if showCoins { CoinBar() }
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 10)
@@ -266,27 +264,6 @@ struct CardFaceView: View {
                 .shadow(color: highlighted ? AppTheme.gold.opacity(0.5) : .clear, radius: 5)
         )
         .shadow(color: .black.opacity(lifted ? 0.25 : 0.12), radius: lifted ? 6 : 2, y: lifted ? 4 : 1)
-    }
-}
-
-struct CoinBar: View {
-    @ObservedObject var progress = ProgressStore.shared
-
-    var body: some View {
-        HStack(spacing: 6) {
-            BundleImage(name: "coin.png", folder: "GameAssets/Icons")
-                .frame(width: 22, height: 22)
-            Text("\(progress.coins)")
-                .font(.subheadline.weight(.heavy))
-                .foregroundStyle(AppTheme.gold)
-        }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 6)
-        .background(
-            Capsule()
-                .fill(AppTheme.panelFill)
-                .overlay(Capsule().stroke(AppTheme.panelStroke, lineWidth: 1))
-        )
     }
 }
 

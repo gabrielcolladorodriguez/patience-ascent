@@ -1,45 +1,66 @@
 import SwiftUI
 
-/// Métricas adaptativas iPhone / iPad (portrait).
+/// Layout que cabe en pantalla sin scroll (iPhone + iPad portrait).
 enum DeviceLayout {
     static func isPad(_ width: CGFloat) -> Bool { width >= 600 }
-    static func isLargePhone(_ width: CGFloat) -> Bool { width >= 390 && width < 600 }
 
-    /// Ancho máximo del contenido en menús (centrado en iPad).
     static func menuMaxWidth(for width: CGFloat) -> CGFloat {
-        if isPad(width) { return min(480, width * 0.62) }
-        return width
+        isPad(width) ? min(440, width * 0.58) : width
     }
 
-    /// Padding horizontal según dispositivo.
-    static func horizontalPadding(for width: CGFloat) -> CGFloat {
-        isPad(width) ? 28 : 16
-    }
+    /// Calcula ancho de carta para que el tablero quepa en `boardSize`.
+    static func fittedCardWidth(
+        for mode: SolitaireMode,
+        boardSize: CGSize,
+        maxStackDepth: Int
+    ) -> CGFloat {
+        let w = max(boardSize.width, 260)
+        let h = max(boardSize.height, 200)
+        let depth = CGFloat(max(1, maxStackDepth))
+        let stackRatio: CGFloat = 0.14
 
-    /// Escala de cartas según modo y ancho disponible.
-    static func cardWidth(for mode: SolitaireMode, in size: CGSize) -> CGFloat {
-        let w = max(size.width, 280)
-        let pad = isPad(w)
+        let widthBased: CGFloat
+        let heightBased: CGFloat
 
         switch mode {
         case .klondike, .yukon:
-            if pad { return min(w * 0.13, 88) }
-            return min(w * 0.195, isLargePhone(w) ? 78 : 72)
-        case .freeCell, .golf:
-            if pad { return min(w * 0.14, 90) }
-            return min(w * 0.21, 80)
+            widthBased = w / 7.6
+            heightBased = (h - widthBased * 1.5) / (1.38 + (depth - 1) * stackRatio)
+        case .freeCell:
+            widthBased = w / 4.8
+            heightBased = (h - widthBased * 1.6) / (1.38 + (depth - 1) * stackRatio)
+        case .golf:
+            widthBased = w / 7.8
+            heightBased = (h - widthBased * 3.2) / 1.38
         case .pyramid:
-            let fit = (w - 24) / 7.1
-            return min(max(fit, w * 0.15), pad ? 82 : 74)
+            widthBased = (w - 24) / 7.2
+            heightBased = (h - widthBased * 8.5) / 1.38
         case .triPeaks:
-            let fit = (w - 28) / 7.4
-            return min(max(fit, w * 0.13), pad ? 68 : 58)
+            widthBased = (w - 20) / 7.2
+            heightBased = (h - widthBased * 5.5) / 1.38
         case .spider, .fortyThieves:
-            if pad { return min(w * 0.09, 56) }
-            return min(w * 0.115, 50)
+            let cols: CGFloat = 10
+            widthBased = w / (cols + 0.8)
+            heightBased = (h - widthBased * 1.8) / (1.38 + (depth - 1) * stackRatio)
         }
+
+        let raw = min(widthBased, heightBased)
+        let cap: CGFloat = isPad(w) ? 72 : 68
+        let floor: CGFloat = isPad(w) ? 28 : 24
+        return min(max(raw, floor), cap)
     }
 
-    static func stackOffset(for cardW: CGFloat) -> CGFloat { cardW * 0.17 }
-    static func cardHeight(for cardW: CGFloat) -> CGFloat { cardW * 1.42 }
+    static func stackOffset(for cardW: CGFloat, depth: Int) -> CGFloat {
+        let ratio: CGFloat = depth > 12 ? 0.11 : (depth > 8 ? 0.13 : 0.15)
+        return cardW * ratio
+    }
+
+    static func cardHeight(for cardW: CGFloat) -> CGFloat { cardW * 1.38 }
+
+    static func columnSpacing(for cardW: CGFloat, mode: SolitaireMode) -> CGFloat {
+        switch mode {
+        case .spider, .fortyThieves: return max(1, cardW * 0.04)
+        default: return max(2, cardW * 0.06)
+        }
+    }
 }

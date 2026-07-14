@@ -10,17 +10,17 @@ final class GameSessionViewModel: ObservableObject {
     @Published var showWin = false
     @Published var moves = 0
     @Published var elapsed: TimeInterval = 0
-    @Published var score = 0
     @Published var combo = 0
     @Published var comboPeak = 0
     @Published private(set) var boardVersion = 0
-    @Published var lastWinRewards: (coins: Int, xp: Int) = (0, 0)
+    @Published var isNewBestTime = false
     @Published var draggingFrom: PileRef?
 
     let mode: SolitaireMode
     let dailySeed: UInt64?
     private var timer: Timer?
     private var timerStarted = false
+    private var sessionTimeReported = false
     private let progress = ProgressStore.shared
     private let audio = AudioManager.shared
 
@@ -29,20 +29,25 @@ final class GameSessionViewModel: ObservableObject {
         self.dailySeed = dailySeed
         self.engine = EngineFactory.make(for: mode)
         self.engine.reset()
-        if let seed = dailySeed {
-            reseedDeck(seed)
-        }
         audio.cardShuffle()
         HapticsManager.prepare()
     }
 
-    deinit { timer?.invalidate() }
+    deinit {
+        timer?.invalidate()
+    }
 
-    private func reseedDeck(_ seed: UInt64) {
-        // Deterministic shuffle for daily challenge via seeded deal on Klondike-like modes
-        guard var klondike = engine as? KlondikeEngine else { return }
-        klondike.reset()
-        _ = klondike
+    func flushSessionTime() {
+        guard !sessionTimeReported, elapsed > 0 else { return }
+        sessionTimeReported = true
+        progress.addSessionTime(elapsed)
+    }
+
+    var maxTableauDepth: Int {
+        engine.allPileRefs()
+            .filter { $0.kind == .tableau }
+            .map { pileCards(for: $0).count }
+            .max() ?? 1
     }
 
     private func bumpBoard() {
@@ -64,11 +69,12 @@ final class GameSessionViewModel: ObservableObject {
         hintPiles = nil
         message = nil
         showWin = false
+        isNewBestTime = false
         moves = 0
         elapsed = 0
-        score = 0
         combo = 0
         comboPeak = 0
+        sessionTimeReported = false
         timerStarted = false
         timer?.invalidate()
         timer = nil
@@ -139,7 +145,6 @@ final class GameSessionViewModel: ObservableObject {
             message = "Movimiento no válido"
             combo = 0
             HapticsManager.invalid()
-            progress.recordLoss()
         }
     }
 
@@ -153,8 +158,6 @@ final class GameSessionViewModel: ObservableObject {
         if success {
             combo += 1
             comboPeak = max(comboPeak, combo)
-            let base = stockDraw ? 2 : 5
-            score += base + combo * 2
             audio.cardPlace()
             HapticsManager.cardDrop()
         }
@@ -162,31 +165,20 @@ final class GameSessionViewModel: ObservableObject {
     }
 
     func undo() {
-        guard progress.useUndo() else {
-            message = "Sin deshacer. ¡Compra en la tienda!"
-            return
-        }
         if engine.undo() {
             combo = 0
             moves = max(0, moves - 1)
-            score = max(0, score - 8)
             audio.cardSlide()
             bumpBoard()
-        } else {
-            progress.refundUndo()
         }
     }
 
     func showHint() {
-        guard progress.useHint() else {
-            message = "Sin pistas. ¡Visita la tienda!"
-            return
-        }
         if let hint = engine.hint() {
             hintPiles = hint
             audio.tap()
             HapticsManager.tap()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) { [weak self] in
                 self?.hintPiles = nil
             }
         } else {
@@ -208,7 +200,7 @@ final class GameSessionViewModel: ObservableObject {
         while moved {
             moved = false
             for col in 0..<7 {
-                guard let top = klondike.tableau[col].top else { continue }
+                guard klondike.tableau[col].top != nil else { continue }
                 for f in 0..<4 {
                     let from = PileRef(kind: .tableau, index: col)
                     let to = PileRef(kind: .foundation, index: f)
@@ -226,7 +218,8 @@ final class GameSessionViewModel: ObservableObject {
 
     private func checkWin() {
         if engine.isWon {
-            lastWinRewards = progress.recordWin(mode: mode, elapsed: elapsed, moves: moves, comboPeak: comboPeak)
+            isNewBestTime = progress.recordWin(mode: mode, elapsed: elapsed, moves: moves)
+            flushSessionTime()
             showWin = true
             audio.win()
         }

@@ -10,6 +10,9 @@ struct SolitaireRoyaleApp: App {
         WindowGroup {
             RootView()
                 .preferredColorScheme(.light)
+                .onAppear {
+                    GameCenterManager.shared.authenticate()
+                }
         }
     }
 }

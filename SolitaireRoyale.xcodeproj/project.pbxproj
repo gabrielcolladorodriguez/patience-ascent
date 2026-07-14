@@ -10,7 +10,6 @@
 		A10000000000000000000001 /* SolitaireRoyaleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000001 /* SolitaireRoyaleApp.swift */; };
 		A10000000000000000000002 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000002 /* Card.swift */; };
 		A10000000000000000000003 /* GameMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000003 /* GameMode.swift */; };
-		A10000000000000000000004 /* ShopItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000004 /* ShopItem.swift */; };
 		A10000000000000000000005 /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000005 /* Deck.swift */; };
 		A10000000000000000000006 /* KlondikeEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000006 /* KlondikeEngine.swift */; };
 		A10000000000000000000007 /* FreeCellEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000007 /* FreeCellEngine.swift */; };
@@ -30,20 +29,20 @@
 		A10000000000000000000015 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000015 /* Assets.xcassets */; };
 		A10000000000000000000016 /* GameAssets in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000016 /* GameAssets */; };
 		A10000000000000000000017 /* AppIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000018 /* AppIdentity.swift */; };
-		A10000000000000000000018 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000019 /* Achievement.swift */; };
 		A10000000000000000000019 /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000001A /* HapticsManager.swift */; };
-		A1000000000000000000001A /* StatsSettingsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000001B /* StatsSettingsViews.swift */; };
 		A1000000000000000000001C /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000001C /* ConfettiView.swift */; };
 		A1000000000000000000001D /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000001D /* Theme.swift */; };
 		A1000000000000000000001E /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000001E /* PrivacyInfo.xcprivacy */; };
 		A1000000000000000000001F /* QuickHelpViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000001F /* QuickHelpViews.swift */; };
 		A10000000000000000000022 /* DeviceLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000022 /* DeviceLayout.swift */; };
+		A10000000000000000000023 /* GameCenterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000023 /* GameCenterManager.swift */; };
+		A10000000000000000000024 /* DailyChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000025 /* DailyChallenge.swift */; };
+		B10000000000000000000002 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B20000000000000000000001 /* GameKit.framework */; };
 
 /* Begin PBXFileReference section */
 		A20000000000000000000001 /* SolitaireRoyaleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolitaireRoyaleApp.swift; sourceTree = "<group>"; };
 		A20000000000000000000002 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		A20000000000000000000003 /* GameMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMode.swift; sourceTree = "<group>"; };
-		A20000000000000000000004 /* ShopItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopItem.swift; sourceTree = "<group>"; };
 		A20000000000000000000005 /* Deck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deck.swift; sourceTree = "<group>"; };
 		A20000000000000000000006 /* KlondikeEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KlondikeEngine.swift; sourceTree = "<group>"; };
 		A20000000000000000000007 /* FreeCellEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeCellEngine.swift; sourceTree = "<group>"; };
@@ -63,14 +62,16 @@
 		A20000000000000000000015 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A20000000000000000000016 /* GameAssets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = GameAssets; sourceTree = "<group>"; };
 		A20000000000000000000018 /* AppIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIdentity.swift; sourceTree = "<group>"; };
-		A20000000000000000000019 /* Achievement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Achievement.swift; sourceTree = "<group>"; };
 		A2000000000000000000001A /* HapticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsManager.swift; sourceTree = "<group>"; };
-		A2000000000000000000001B /* StatsSettingsViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsSettingsViews.swift; sourceTree = "<group>"; };
 		A2000000000000000000001C /* ConfettiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
 		A2000000000000000000001D /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		A2000000000000000000001E /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A2000000000000000000001F /* QuickHelpViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickHelpViews.swift; sourceTree = "<group>"; };
 		A20000000000000000000022 /* DeviceLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceLayout.swift; sourceTree = "<group>"; };
+		A20000000000000000000023 /* GameCenterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterManager.swift; sourceTree = "<group>"; };
+		A20000000000000000000024 /* SolitaireRoyale.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SolitaireRoyale.entitlements; sourceTree = "<group>"; };
+		A20000000000000000000025 /* DailyChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyChallenge.swift; sourceTree = "<group>"; };
+		B20000000000000000000001 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		A20000000000000000000017 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A30000000000000000000001 /* SolitaireRoyale.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SolitaireRoyale.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -80,6 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B10000000000000000000002 /* GameKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,6 +111,7 @@
 				A20000000000000000000015 /* Assets.xcassets */,
 				A20000000000000000000016 /* GameAssets */,
 				A20000000000000000000017 /* Info.plist */,
+				A20000000000000000000024 /* SolitaireRoyale.entitlements */,
 				A2000000000000000000001E /* PrivacyInfo.xcprivacy */,
 			);
 			path = SolitaireRoyale;
@@ -127,8 +130,7 @@
 			children = (
 				A20000000000000000000002 /* Card.swift */,
 				A20000000000000000000003 /* GameMode.swift */,
-				A20000000000000000000004 /* ShopItem.swift */,
-				A20000000000000000000019 /* Achievement.swift */,
+				A20000000000000000000025 /* DailyChallenge.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -155,6 +157,7 @@
 				A2000000000000000000000E /* AudioManager.swift */,
 				A2000000000000000000000F /* ProgressStore.swift */,
 				A2000000000000000000001A /* HapticsManager.swift */,
+				A20000000000000000000023 /* GameCenterManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -173,7 +176,6 @@
 				A20000000000000000000011 /* RootView.swift */,
 				A20000000000000000000012 /* MenuViews.swift */,
 				A20000000000000000000013 /* GameBoardView.swift */,
-				A2000000000000000000001B /* StatsSettingsViews.swift */,
 				A50000000000000000000009 /* Components */,
 			);
 			path = Views;
@@ -282,7 +284,6 @@
 				A10000000000000000000001 /* SolitaireRoyaleApp.swift in Sources */,
 				A10000000000000000000002 /* Card.swift in Sources */,
 				A10000000000000000000003 /* GameMode.swift in Sources */,
-				A10000000000000000000004 /* ShopItem.swift in Sources */,
 				A10000000000000000000005 /* Deck.swift in Sources */,
 				A10000000000000000000006 /* KlondikeEngine.swift in Sources */,
 				A10000000000000000000007 /* FreeCellEngine.swift in Sources */,
@@ -300,13 +301,13 @@
 				A10000000000000000000013 /* GameBoardView.swift in Sources */,
 				A10000000000000000000014 /* SharedViews.swift in Sources */,
 				A10000000000000000000017 /* AppIdentity.swift in Sources */,
-				A10000000000000000000018 /* Achievement.swift in Sources */,
 				A10000000000000000000019 /* HapticsManager.swift in Sources */,
-				A1000000000000000000001A /* StatsSettingsViews.swift in Sources */,
 				A1000000000000000000001C /* ConfettiView.swift in Sources */,
 				A1000000000000000000001D /* Theme.swift in Sources */,
 				A1000000000000000000001F /* QuickHelpViews.swift in Sources */,
 				A10000000000000000000022 /* DeviceLayout.swift in Sources */,
+				A10000000000000000000023 /* GameCenterManager.swift in Sources */,
+				A10000000000000000000024 /* DailyChallenge.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -318,7 +319,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
 				SDKROOT = iphoneos;
@@ -331,7 +332,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
@@ -345,7 +346,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CODE_SIGN_ENTITLEMENTS = SolitaireRoyale/SolitaireRoyale.entitlements;
+				CURRENT_PROJECT_VERSION = 9;
         DEVELOPMENT_TEAM = T8GC6LS6RS;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SolitaireRoyale/Info.plist;
@@ -371,7 +373,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CODE_SIGN_ENTITLEMENTS = SolitaireRoyale/SolitaireRoyale.entitlements;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = T8GC6LS6RS;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SolitaireRoyale/Info.plist;

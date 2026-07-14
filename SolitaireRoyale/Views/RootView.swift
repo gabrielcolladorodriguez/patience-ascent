@@ -3,11 +3,7 @@ import SwiftUI
 enum AppRoute: Equatable {
     case menu
     case modes
-    case shop
-    case stats
-    case settings
-    case achievements
-    case howToPlay
+    case rankings
     case game(SolitaireMode, daily: Bool)
 }
 
@@ -23,16 +19,8 @@ struct RootView: View {
                     MainMenuView(route: $route)
                 case .modes:
                     ModeSelectView(route: $route)
-                case .shop:
-                    ShopView(route: $route)
-                case .stats:
-                    StatsView(route: $route)
-                case .settings:
-                    SettingsView(route: $route)
-                case .achievements:
-                    AchievementsView(route: $route)
-                case .howToPlay:
-                    HowToPlayView(route: $route)
+                case .rankings:
+                    RankingsView(route: $route)
                 case .game(let mode, let daily):
                     GameBoardView(
                         session: GameSessionViewModel(
@@ -43,7 +31,7 @@ struct RootView: View {
                     )
                 }
             }
-            .animation(.easeInOut(duration: 0.25), value: routeKey)
+            .animation(.easeInOut(duration: 0.22), value: routeKey)
 
             if !hasSeenOnboarding {
                 OnboardingView {
@@ -59,11 +47,7 @@ struct RootView: View {
         switch route {
         case .menu: return "menu"
         case .modes: return "modes"
-        case .shop: return "shop"
-        case .stats: return "stats"
-        case .settings: return "settings"
-        case .achievements: return "achievements"
-        case .howToPlay: return "howToPlay"
+        case .rankings: return "rankings"
         case .game(let m, let d): return "game-\(m.rawValue)-\(d)"
         }
     }

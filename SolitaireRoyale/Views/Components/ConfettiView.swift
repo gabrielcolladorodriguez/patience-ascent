@@ -19,7 +19,7 @@ struct ConfettiView: View {
     var body: some View {
         GeometryReader { geo in
             TimelineView(.animation(minimumInterval: 1.0 / 30.0)) { timeline in
-                Canvas { context, size in
+                Canvas { context, _ in
                     for piece in pieces {
                         var transform = CGAffineTransform.identity
                         transform = transform.translatedBy(x: piece.x, y: piece.y)
@@ -30,9 +30,7 @@ struct ConfettiView: View {
                         context.concatenate(transform.inverted())
                     }
                 }
-                .onChange(of: timeline.date) { _ in
-                    tick(in: geo.size)
-                }
+                .onChange(of: timeline.date) { _ in tick(in: geo.size) }
                 .onAppear { spawn(in: geo.size) }
             }
         }
@@ -40,14 +38,14 @@ struct ConfettiView: View {
     }
 
     private func spawn(in size: CGSize) {
-        pieces = (0..<70).map { _ in
+        pieces = (0..<60).map { _ in
             ConfettiPiece(
-                x: CGFloat.random(in: 0...max(size.width, 320)),
-                y: CGFloat.random(in: -120...0),
+                x: CGFloat.random(in: 0...max(size.width, 300)),
+                y: CGFloat.random(in: -100...0),
                 rotation: Double.random(in: 0...360),
                 color: colors.randomElement()!,
-                size: CGFloat.random(in: 6...12),
-                velocityY: CGFloat.random(in: 2...6),
+                size: CGFloat.random(in: 5...11),
+                velocityY: CGFloat.random(in: 2...5),
                 velocityX: CGFloat.random(in: -2...2),
                 spin: Double.random(in: -8...8)
             )
@@ -59,21 +57,22 @@ struct ConfettiView: View {
             pieces[i].y += pieces[i].velocityY
             pieces[i].x += pieces[i].velocityX
             pieces[i].rotation += pieces[i].spin
-            pieces[i].velocityY += 0.08
+            pieces[i].velocityY += 0.07
         }
-        let limit = size.height + 80
-        pieces.removeAll { $0.y > limit }
-        if pieces.count < 35 { spawn(in: size) }
+        pieces.removeAll { $0.y > size.height + 60 }
+        if pieces.count < 30 { spawn(in: size) }
     }
 }
 
 struct WinCelebrationOverlay: View {
-    let coinsEarned: Int
-    let xpEarned: Int
+    let time: String
+    let moves: Int
+    let isNewBest: Bool
+    let mode: SolitaireMode
     let onPlayAgain: () -> Void
     let onMenu: () -> Void
 
-    @State private var scale: CGFloat = 0.5
+    @State private var scale: CGFloat = 0.6
     @State private var opacity: Double = 0
 
     var body: some View {
@@ -81,50 +80,53 @@ struct WinCelebrationOverlay: View {
             Color.black.opacity(0.55).ignoresSafeArea()
             ConfettiView().ignoresSafeArea()
 
-            VStack(spacing: 20) {
-                BundleImage(name: "trophy.png", folder: "GameAssets/Icons")
-                    .frame(width: 80, height: 80)
+            VStack(spacing: 18) {
+                Image(systemName: "trophy.fill")
+                    .font(.system(size: 64))
+                    .foregroundStyle(AppTheme.gold)
                     .scaleEffect(scale)
 
-                Text("¡VICTORIA!")
-                    .font(AppTheme.titleFont(40))
-                    .foregroundStyle(
-                        LinearGradient(colors: [AppTheme.gold, .orange], startPoint: .leading, endPoint: .trailing)
-                    )
+                Text("¡Victoria!")
+                    .font(AppTheme.titleFont(38))
+                    .foregroundStyle(AppTheme.gold)
 
-                HStack(spacing: 24) {
-                    rewardBadge(icon: "coin", value: "+\(coinsEarned)")
-                    rewardBadge(icon: "star", value: "+\(xpEarned) XP")
+                if isNewBest {
+                    Text("¡Nuevo récord en \(mode.title)!")
+                        .font(.subheadline.weight(.bold))
+                        .foregroundStyle(.white)
                 }
 
-                VStack(spacing: 12) {
+                HStack(spacing: 20) {
+                    statBadge(icon: "clock.fill", value: time)
+                    statBadge(icon: "arrow.triangle.swap", value: "\(moves)")
+                }
+
+                VStack(spacing: 10) {
                     AppButton(title: "Otra partida", systemImage: "arrow.clockwise", style: .primary, action: onPlayAgain)
                     AppButton(title: "Menú", systemImage: "house.fill", style: .secondary, action: onMenu)
                 }
-                .padding(.horizontal, 32)
+                .padding(.horizontal, 28)
             }
-            .padding()
             .scaleEffect(scale)
             .opacity(opacity)
         }
         .onAppear {
             AudioManager.shared.playMusic("win_music.wav", loop: false)
             HapticsManager.win()
-            withAnimation(.spring(response: 0.55, dampingFraction: 0.65)) {
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.68)) {
                 scale = 1
                 opacity = 1
             }
         }
     }
 
-    private func rewardBadge(icon: String, value: String) -> some View {
+    private func statBadge(icon: String, value: String) -> some View {
         HStack(spacing: 6) {
-            BundleImage(name: "\(icon).png", folder: "GameAssets/Icons")
-                .frame(width: 24, height: 24)
+            Image(systemName: icon)
             Text(value)
                 .font(.headline.weight(.bold))
-                .foregroundStyle(.white)
         }
+        .foregroundStyle(.white)
         .padding(.horizontal, 14)
         .padding(.vertical, 8)
         .background(.ultraThinMaterial, in: Capsule())
