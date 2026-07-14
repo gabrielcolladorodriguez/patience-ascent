@@ -47,7 +47,33 @@ Ese error significa que Codemagic **no puede crear ni encontrar** el perfil de A
 
 ---
 
-## Paso 5 — Vuelve a compilar (tras el fix del yaml)
+## Paso 5 — Clave privada del certificado (OBLIGATORIO)
+
+Error: `Cannot save Signing Certificates without certificate private key`
+
+Apple necesita una **clave RSA** para crear el certificado de distribución.
+
+### Opción A — Más fácil (recomendada)
+
+1. Codemagic → **Teams** → **Code signing identities**
+2. **iOS certificates** → **Generate certificate**
+3. Tipo: **Apple Distribution**
+4. API key: tu integración `app_store_connect`
+5. **Create certificate**
+6. Luego **iOS provisioning profiles** → **Fetch profiles** → perfil App Store para `com.patienceascent.app`
+
+### Opción B — Variable de entorno (automático en el yaml)
+
+1. Lanza **una build** en rama `main` (generará la clave en el log)
+2. En el log de **Set up code signing**, copia el bloque entre las líneas `-----BEGIN RSA PRIVATE KEY-----` y `-----END RSA PRIVATE KEY-----`
+3. Codemagic → tu app **patience-ascent** → **Environment variables**
+4. Crea grupo **`code-signing`** (si no existe)
+5. Variable: **`CERTIFICATE_PRIVATE_KEY`** | Valor: la clave copiada | **Secret** ✓
+6. Vuelve a compilar
+
+---
+
+## Paso 6 — Vuelve a compilar (tras el fix del yaml)
 
 El error aparece si `ios_signing` está en el yaml pero **no hay perfiles subidos** en Codemagic.
 El proyecto ya usa **firma automática por API** (sin `ios_signing`).

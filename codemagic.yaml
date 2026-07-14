@@ -8,6 +8,8 @@ workflows:
       app_store_connect: app_store_connect
 
     environment:
+      groups:
+        - code-signing
       vars:
         BUNDLE_ID: com.patienceascent.app
         APPLE_TEAM_ID: T8GC6LS6RS
@@ -20,10 +22,28 @@ workflows:
         script: |
           set -ex
           keychain initialize
+
+          CERT_KEY_PATH="$CM_BUILD_DIR/cert_key.pem"
+          if [ -n "${CERTIFICATE_PRIVATE_KEY:-}" ]; then
+            printf '%s\n' "$CERTIFICATE_PRIVATE_KEY" > "$CERT_KEY_PATH"
+          else
+            openssl genrsa -out "$CERT_KEY_PATH" 2048
+            echo ""
+            echo "=========================================="
+            echo "IMPORTANT: Save this as CERTIFICATE_PRIVATE_KEY"
+            echo "Codemagic → App → Environment variables → Secret"
+            echo "Group name: code-signing"
+            echo "=========================================="
+            cat "$CERT_KEY_PATH"
+            echo "=========================================="
+          fi
+
           app-store-connect fetch-signing-files "$BUNDLE_ID" \
             --type IOS_APP_STORE \
             --platform IOS \
-            --create
+            --create \
+            --certificate-key=@file:"$CERT_KEY_PATH"
+
           keychain add-certificates
           xcode-project use-profiles --project "$CM_BUILD_DIR/$XCODE_PROJECT"
 
