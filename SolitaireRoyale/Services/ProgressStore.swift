@@ -12,6 +12,8 @@ final class ProgressStore: ObservableObject {
     @Published private(set) var totalTimePlayed: TimeInterval
     @Published private(set) var gamesPlayed: Int
     @Published private(set) var dailyChallenge: DailyChallenge
+    @Published private(set) var modeLevels: [String: Int]
+    @Published private(set) var modeXP: [String: Int]
 
     private let defaults = UserDefaults.standard
 
@@ -23,6 +25,8 @@ final class ProgressStore: ObservableObject {
         bestScores = defaults.dictionary(forKey: "bestScores") as? [String: Int] ?? [:]
         totalTimePlayed = defaults.double(forKey: "totalTimePlayed")
         gamesPlayed = defaults.integer(forKey: "gamesPlayed")
+        modeLevels = defaults.dictionary(forKey: "modeLevels") as? [String: Int] ?? [:]
+        modeXP = defaults.dictionary(forKey: "modeXP") as? [String: Int] ?? [:]
 
         if let data = defaults.data(forKey: "dailyChallenge"),
            let decoded = try? JSONDecoder().decode(DailyChallenge.self, from: data),
@@ -30,6 +34,11 @@ final class ProgressStore: ObservableObject {
             dailyChallenge = DailyChallenge.normalize(decoded)
         } else {
             dailyChallenge = DailyChallenge.today()
+        }
+
+        for mode in SolitaireMode.puzzleModes where modeLevels[mode.rawValue] == nil {
+            modeLevels[mode.rawValue] = 1
+            modeXP[mode.rawValue] = 0
         }
     }
 
@@ -41,9 +50,35 @@ final class ProgressStore: ObservableObject {
         defaults.set(bestScores, forKey: "bestScores")
         defaults.set(totalTimePlayed, forKey: "totalTimePlayed")
         defaults.set(gamesPlayed, forKey: "gamesPlayed")
+        defaults.set(modeLevels, forKey: "modeLevels")
+        defaults.set(modeXP, forKey: "modeXP")
         if let data = try? JSONEncoder().encode(dailyChallenge) {
             defaults.set(data, forKey: "dailyChallenge")
         }
+    }
+
+    func level(for mode: SolitaireMode) -> Int {
+        max(1, modeLevels[mode.rawValue] ?? 1)
+    }
+
+    func xp(for mode: SolitaireMode) -> Int {
+        max(0, modeXP[mode.rawValue] ?? 0)
+    }
+
+    func xpProgress(for mode: SolitaireMode) -> Double {
+        AscentProgression.xpProgress(level: level(for: mode), xp: xp(for: mode))
+    }
+
+    var globalAscentRank: Int {
+        AscentProgression.globalRank(levels: modeLevels)
+    }
+
+    var globalRankTitle: String {
+        AscentProgression.globalRankTitle(globalAscentRank)
+    }
+
+    func levelConfig(for mode: SolitaireMode) -> LevelConfig {
+        LevelConfig.forMode(mode, level: level(for: mode))
     }
 
     func addSessionTime(_ seconds: TimeInterval) {
@@ -109,8 +144,52 @@ final class ProgressStore: ObservableObject {
         return isNewBest
     }
 
+    @discardableResult
+    func grantXP(mode: SolitaireMode, stars: Int, comboPeak: Int, score: Int) -> LevelUpResult? {
+        let key = mode.rawValue
+        let oldLevel = level(for: mode)
+        let gained = AscentProgression.xpReward(mode: mode, level: oldLevel, stars: stars, comboPeak: comboPeak, score: score)
+        var xp = xp(for: mode) + gained
+        var level = oldLevel
+
+        while level < AscentProgression.maxLevel {
+            let need = AscentProgression.xpRequired(forLevel: level)
+            if xp < need { break }
+            xp -= need
+            level += 1
+        }
+
+        modeXP[key] = xp
+        modeLevels[key] = level
+        save()
+
+        guard level > oldLevel else { return nil }
+        return LevelUpResult(mode: mode, oldLevel: oldLevel, newLevel: level, xpGained: gained, stars: stars)
+    }
+
     func recordAbandon() {
         streak = 0
+        save()
+    }
+
+    func resetAllProgress() {
+        wins = [:]
+        streak = 0
+        bestStreak = 0
+        bestTimes = [:]
+        bestScores = [:]
+        totalTimePlayed = 0
+        gamesPlayed = 0
+        modeLevels = [:]
+        modeXP = [:]
+        dailyChallenge = DailyChallenge.today()
+
+        for mode in SolitaireMode.puzzleModes {
+            modeLevels[mode.rawValue] = 1
+            modeXP[mode.rawValue] = 0
+            defaults.removeObject(forKey: mode.tutorialStorageKey)
+        }
+
         save()
     }
 

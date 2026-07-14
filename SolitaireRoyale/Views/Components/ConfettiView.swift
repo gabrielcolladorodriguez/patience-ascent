@@ -70,6 +70,10 @@ struct WinCelebrationOverlay: View {
     let score: Int?
     let isNewBest: Bool
     let mode: SolitaireMode
+    let stars: Int
+    let xpGained: Int
+    let levelUp: LevelUpResult?
+    let theme: ModeTheme
     let onPlayAgain: () -> Void
     let onMenu: () -> Void
 
@@ -81,15 +85,18 @@ struct WinCelebrationOverlay: View {
             Color.black.opacity(0.55).ignoresSafeArea()
             ConfettiView().ignoresSafeArea()
 
-            VStack(spacing: 18) {
-                Image(systemName: "trophy.fill")
+            VStack(spacing: 16) {
+                Image(systemName: levelUp != nil ? "arrow.up.circle.fill" : "trophy.fill")
                     .font(.system(size: 64))
-                    .foregroundStyle(AppTheme.gold)
+                    .foregroundStyle(theme.gold)
                     .scaleEffect(scale)
 
-                Text(score != nil ? L10n.s("time_up") : L10n.s("you_win"))
-                    .font(AppTheme.titleFont(38))
-                    .foregroundStyle(AppTheme.gold)
+                Text(winTitle)
+                    .font(AppTheme.titleFont(34))
+                    .foregroundStyle(theme.gold)
+
+                StarRatingView(stars: stars, tint: theme.gold)
+                    .scaleEffect(1.2)
 
                 if isNewBest {
                     Text(L10n.s(score != nil ? "new_best_score_fmt" : "new_best_fmt", mode.title))
@@ -97,13 +104,24 @@ struct WinCelebrationOverlay: View {
                         .foregroundStyle(.white)
                 }
 
-                HStack(spacing: 20) {
+                HStack(spacing: 16) {
                     if let score {
                         statBadge(icon: "star.fill", value: L10n.s("score_fmt", score))
                     }
                     statBadge(icon: score != nil ? "timer" : "clock.fill", value: time)
-                    statBadge(icon: "arrow.triangle.swap", value: "\(moves)")
+                    statBadge(icon: "sparkles", value: L10n.s("xp_gained_fmt", xpGained))
                 }
+
+                if let levelUp {
+                    LevelUpBanner(result: levelUp, theme: theme)
+                        .padding(.horizontal, 20)
+                }
+
+                Text(L10n.s("next_level_hint"))
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(AppTheme.textMutedOnGreen)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 24)
 
                 VStack(spacing: 10) {
                     AppButton(title: L10n.s("play_again"), systemImage: "arrow.clockwise", style: .gold, action: onPlayAgain)
@@ -115,13 +133,17 @@ struct WinCelebrationOverlay: View {
             .opacity(opacity)
         }
         .onAppear {
-            AudioManager.shared.playMusic("win_music.wav", loop: false)
             HapticsManager.win()
             withAnimation(.spring(response: 0.5, dampingFraction: 0.68)) {
                 scale = 1
                 opacity = 1
             }
         }
+    }
+
+    private var winTitle: String {
+        if levelUp != nil { return L10n.s("level_up") }
+        return score != nil ? L10n.s("time_up") : L10n.s("you_win")
     }
 
     private func statBadge(icon: String, value: String) -> some View {

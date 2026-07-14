@@ -93,17 +93,156 @@ struct OnboardingView: View {
     }
 }
 
+struct ModeTutorialOverlay: View {
+    @ObservedObject var session: GlyphLinkSessionViewModel
+    let theme: ModeTheme
+
+    private var steps: [String] { session.mode.tutorialSteps }
+    private var step: Int { session.tutorialStep }
+
+    var body: some View {
+        ZStack {
+            Color.black.opacity(step == 1 ? 0.35 : 0.62)
+                .ignoresSafeArea()
+                .allowsHitTesting(step != 1)
+
+            VStack {
+                Spacer()
+                tutorialCard
+                    .padding(.horizontal, 18)
+                    .padding(.bottom, 24)
+            }
+        }
+        .animation(.easeInOut(duration: 0.25), value: step)
+    }
+
+    private var tutorialCard: some View {
+        VStack(spacing: 14) {
+            HStack(spacing: 10) {
+                Image(systemName: session.mode.iconName)
+                    .font(.title2)
+                    .foregroundStyle(theme.gold)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(L10n.s("tutorial_title"))
+                        .font(.caption.weight(.bold))
+                        .foregroundStyle(theme.accentLight)
+                    Text(session.mode.title)
+                        .font(.headline.weight(.black))
+                        .foregroundStyle(AppTheme.textOnGreen)
+                }
+                Spacer()
+                Text("\(min(step + 1, steps.count))/\(steps.count)")
+                    .font(.caption.weight(.bold))
+                    .foregroundStyle(theme.gold)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .background(Capsule().fill(AppTheme.panelFill))
+            }
+
+            HStack(spacing: 6) {
+                ForEach(0..<steps.count, id: \.self) { i in
+                    Capsule()
+                        .fill(i <= step ? theme.accentLight : AppTheme.panelStroke)
+                        .frame(height: 4)
+                }
+            }
+
+            Text(currentText)
+                .font(.body.weight(.medium))
+                .foregroundStyle(AppTheme.textMutedOnGreen)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .fixedSize(horizontal: false, vertical: true)
+
+            if step == 1 {
+                Label(L10n.s("tutorial_practice"), systemImage: "hand.tap.fill")
+                    .font(.caption.weight(.bold))
+                    .foregroundStyle(theme.gold)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+
+            HStack(spacing: 10) {
+                if step < 2 {
+                    Button(L10n.s("tutorial_skip")) { session.skipTutorial() }
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(AppTheme.textMutedOnGreen)
+                }
+                Spacer()
+                Button {
+                    AudioManager.shared.click()
+                    if step == 0 {
+                        session.advanceTutorial()
+                    } else if step == 1 && session.tutorialPracticeDone {
+                        session.advanceTutorial()
+                    } else if step >= 2 || session.tutorialPracticeDone {
+                        session.advanceTutorial()
+                    }
+                } label: {
+                    HStack(spacing: 8) {
+                        Image(systemName: primaryIcon)
+                        Text(primaryLabel)
+                    }
+                    .font(.headline.weight(.bold))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 22)
+                    .padding(.vertical, 12)
+                    .background(
+                        Capsule()
+                            .fill(AppTheme.primaryButtonGradient(theme: theme))
+                    )
+                }
+                .buttonStyle(.plain)
+                .disabled(step == 1 && !session.tutorialPracticeDone)
+                .opacity(step == 1 && !session.tutorialPracticeDone ? 0.45 : 1)
+            }
+        }
+        .padding(18)
+        .background(
+            RoundedRectangle(cornerRadius: 22)
+                .fill(AppTheme.panelFillStrong)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 22)
+                        .stroke(
+                            LinearGradient(colors: [theme.gold, theme.accent], startPoint: .topLeading, endPoint: .bottomTrailing),
+                            lineWidth: 2
+                        )
+                )
+                .shadow(color: theme.accent.opacity(0.35), radius: 16, y: 8)
+        )
+    }
+
+    private var currentText: String {
+        guard step < steps.count else { return steps.last ?? "" }
+        return steps[step]
+    }
+
+    private var primaryLabel: String {
+        if step == 0 { return L10n.s("tutorial_continue") }
+        if step == 1 { return L10n.s("tutorial_continue") }
+        return L10n.s("tutorial_start")
+    }
+
+    private var primaryIcon: String {
+        step >= 2 ? "play.fill" : "arrow.right"
+    }
+}
+
 struct QuickHelpSheet: View {
     let mode: SolitaireMode
+    var theme: ModeTheme = ModeTheme.forMode(.glyphLink)
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         ZStack {
-            GameBackground()
+            GameBackground(theme: theme)
             VStack(spacing: 16) {
-                Text(mode.title)
-                    .font(.title2.weight(.bold))
-                    .foregroundStyle(AppTheme.textOnGreen)
+                HStack(spacing: 10) {
+                    Image(systemName: mode.iconName)
+                        .font(.title2)
+                        .foregroundStyle(theme.gold)
+                    Text(mode.title)
+                        .font(.title2.weight(.bold))
+                        .foregroundStyle(AppTheme.textOnGreen)
+                }
 
                 VStack(alignment: .leading, spacing: 8) {
                     ForEach(mode.quickRules, id: \.self) { rule in
@@ -113,7 +252,7 @@ struct QuickHelpSheet: View {
                     }
                     Text("• \(mode.controlsHint)")
                         .font(.caption.weight(.semibold))
-                        .foregroundStyle(AppTheme.gold)
+                        .foregroundStyle(theme.gold)
                 }
                 .padding(16)
                 .frame(maxWidth: .infinity, alignment: .leading)

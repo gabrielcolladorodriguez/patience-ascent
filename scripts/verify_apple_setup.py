@@ -71,9 +71,9 @@ def main() -> int:
             break
         if "CFBundleVersion" in line:
             plist_build = "pending"
-    if "CURRENT_PROJECT_VERSION = 15" not in pbx:
-        errors.append("project.pbxproj: build number should be 15")
-    if plist_build != "15":
+    if "CURRENT_PROJECT_VERSION = 18" not in pbx:
+        errors.append("project.pbxproj: build number should be 18")
+    if plist_build != "18":
         errors.append(f"Info.plist CFBundleVersion mismatch: {plist_build!r}")
 
     ent = (root / "SolitaireRoyale" / "SolitaireRoyale.entitlements").read_text(encoding="utf-8")

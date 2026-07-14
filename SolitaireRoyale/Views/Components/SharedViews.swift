@@ -38,21 +38,28 @@ struct BundleImage: View {
 // MARK: - Backgrounds
 
 struct GameBackground: View {
+    var theme: ModeTheme?
+
     var body: some View {
+        let t = theme
         ZStack {
             LinearGradient(
-                colors: [AppTheme.feltTop, AppTheme.feltMid, AppTheme.feltBottom],
+                colors: [
+                    t?.feltTop ?? AppTheme.feltTop,
+                    t?.feltMid ?? AppTheme.feltMid,
+                    t?.feltBottom ?? AppTheme.feltBottom
+                ],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
             RadialGradient(
-                colors: [AppTheme.feltGlow.opacity(0.45), .clear],
+                colors: [(t?.feltGlow ?? AppTheme.feltGlow).opacity(0.45), .clear],
                 center: .init(x: 0.5, y: 0.12),
                 startRadius: 10,
                 endRadius: 560
             )
-            SuitPatternOverlay()
-                .opacity(0.06)
+            ModePatternOverlay(symbol: t?.particleSymbol ?? "sparkles")
+                .opacity(0.08)
             RadialGradient(
                 colors: [.clear, Color.black.opacity(0.28)],
                 center: .bottom,
@@ -62,7 +69,10 @@ struct GameBackground: View {
             RoundedRectangle(cornerRadius: 0)
                 .stroke(
                     LinearGradient(
-                        colors: [AppTheme.gold.opacity(0.35), AppTheme.goldDark.opacity(0.15)],
+                        colors: [
+                            (t?.gold ?? AppTheme.gold).opacity(0.35),
+                            (t?.accent ?? AppTheme.accent).opacity(0.2)
+                        ],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     ),
@@ -75,8 +85,8 @@ struct GameBackground: View {
     }
 }
 
-private struct SuitPatternOverlay: View {
-    private let suits = ["suit.spade.fill", "suit.heart.fill", "suit.diamond.fill", "suit.club.fill"]
+private struct ModePatternOverlay: View {
+    let symbol: String
 
     var body: some View {
         GeometryReader { geo in
@@ -85,7 +95,7 @@ private struct SuitPatternOverlay: View {
             ForEach(0..<(cols * rows), id: \.self) { i in
                 let col = i % cols
                 let row = i / cols
-                Image(systemName: suits[i % suits.count])
+                Image(systemName: symbol)
                     .font(.system(size: 28 + CGFloat(i % 3) * 4))
                     .foregroundStyle(.white)
                     .position(
@@ -100,6 +110,7 @@ private struct SuitPatternOverlay: View {
 }
 
 struct GameTableSurface<Content: View>: View {
+    var theme: ModeTheme?
     @ViewBuilder let content: Content
 
     var body: some View {
@@ -110,15 +121,18 @@ struct GameTableSurface<Content: View>: View {
                     RoundedRectangle(cornerRadius: 24)
                         .fill(
                             LinearGradient(
-                                colors: [AppTheme.tableSurface, AppTheme.tableSurface2],
+                                colors: [
+                                    theme?.tableSurface ?? AppTheme.tableSurface,
+                                    theme?.tableSurface2 ?? AppTheme.tableSurface2
+                                ],
                                 startPoint: .top,
                                 endPoint: .bottom
                             )
                         )
                     RoundedRectangle(cornerRadius: 24)
-                        .stroke(AppTheme.tableBorder, lineWidth: 1.2)
+                        .stroke(theme?.tableBorder ?? AppTheme.tableBorder, lineWidth: 1.2)
                     RoundedRectangle(cornerRadius: 24)
-                        .stroke(AppTheme.tableGoldFrame.opacity(0.55), lineWidth: 2.5)
+                        .stroke((theme?.tableFrame ?? AppTheme.tableGoldFrame).opacity(0.55), lineWidth: 2.5)
                         .padding(3)
                     RoundedRectangle(cornerRadius: 22)
                         .stroke(Color.white.opacity(0.65), lineWidth: 1)

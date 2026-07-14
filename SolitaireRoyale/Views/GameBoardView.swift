@@ -35,7 +35,7 @@ struct GameBoardView: View {
                     onPlayAgain: { session.newGame() },
                     onMenu: {
                         AudioManager.shared.stopMusic()
-                        AudioManager.shared.playMusic("menu_music.wav")
+                        AudioManager.shared.startMenuMusic()
                         route = .menu
                     }
                 )
@@ -43,12 +43,12 @@ struct GameBoardView: View {
             }
         }
         .id(session.boardVersion)
-        .onAppear { AudioManager.shared.playMusic("game_music.wav") }
+        .onAppear { AudioManager.shared.startGameMusic() }
         .onDisappear {
             session.flushSessionTime()
             if !session.showWin {
                 AudioManager.shared.stopMusic()
-                AudioManager.shared.playMusic("menu_music.wav")
+                AudioManager.shared.startMenuMusic()
             }
         }
         .sheet(isPresented: $showHelp) {

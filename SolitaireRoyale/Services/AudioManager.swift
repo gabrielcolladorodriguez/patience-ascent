@@ -2,18 +2,39 @@ import Foundation
 import AVFoundation
 import SwiftUI
 
+private final class MusicPlaybackDelegate: NSObject, AVAudioPlayerDelegate {
+    var onFinished: (() -> Void)?
+
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        onFinished?()
+    }
+}
+
 @MainActor
 final class AudioManager: ObservableObject {
     static let shared = AudioManager()
+
+    enum PlaylistContext {
+        case menu
+        case game
+        case win
+    }
 
     @AppStorage("musicEnabled") var musicEnabled = true
     @AppStorage("sfxEnabled") var sfxEnabled = true
 
     private var musicPlayer: AVAudioPlayer?
+    private var musicDelegate = MusicPlaybackDelegate()
     private var sfxPlayers: [AVAudioPlayer] = []
+    private var playlist: [URL] = []
+    private var playlistContext: PlaylistContext = .menu
+    private var lastTrackIndex: Int?
 
     private init() {
         configureSession()
+        musicDelegate.onFinished = { [weak self] in
+            Task { @MainActor in self?.playNextInPlaylist() }
+        }
     }
 
     private func configureSession() {
@@ -25,17 +46,49 @@ final class AudioManager: ObservableObject {
         }
     }
 
-    func playMusic(_ name: String, loop: Bool = true) {
+    func startMenuMusic() {
+        startPlaylist(context: .menu, names: Self.menuTracks)
+    }
+
+    func startGameMusic() {
+        startPlaylist(context: .game, names: Self.gameTracks)
+    }
+
+    func playWinMusic() {
         guard musicEnabled else { return }
-        guard let url = audioURL(name: name, folder: "GameAssets/Audio/Music") else {
-            print("Music not found: \(name)")
+        guard let url = trackURL("win_sting") ?? trackURL("win_music") else { return }
+        playURL(url, loop: false)
+    }
+
+    private func startPlaylist(context: PlaylistContext, names: [String]) {
+        playlistContext = context
+        playlist = names.compactMap { trackURL($0) }
+        if playlist.isEmpty {
+            print("No music tracks found for \(context)")
             return
         }
+        playNextInPlaylist(forceDifferent: false)
+    }
+
+    private func playNextInPlaylist(forceDifferent: Bool = true) {
+        guard musicEnabled, !playlist.isEmpty else { return }
+        var index = Int.random(in: 0..<playlist.count)
+        if forceDifferent, playlist.count > 1, let last = lastTrackIndex {
+            while index == last {
+                index = Int.random(in: 0..<playlist.count)
+            }
+        }
+        lastTrackIndex = index
+        playURL(playlist[index], loop: false)
+    }
+
+    private func playURL(_ url: URL, loop: Bool) {
         do {
             musicPlayer?.stop()
             musicPlayer = try AVAudioPlayer(contentsOf: url)
+            musicPlayer?.delegate = musicDelegate
             musicPlayer?.numberOfLoops = loop ? -1 : 0
-            musicPlayer?.volume = 0.22
+            musicPlayer?.volume = 0.24
             musicPlayer?.prepareToPlay()
             musicPlayer?.play()
         } catch {
@@ -46,12 +99,12 @@ final class AudioManager: ObservableObject {
     func stopMusic() {
         musicPlayer?.stop()
         musicPlayer = nil
+        playlist.removeAll()
     }
 
     func playSFX(_ filename: String) {
         guard sfxEnabled else { return }
         guard let url = audioURL(name: filename, folder: "GameAssets/Audio/SFX") else {
-            print("SFX not found: \(filename)")
             return
         }
         do {
@@ -64,6 +117,10 @@ final class AudioManager: ObservableObject {
         } catch {
             print("SFX play error: \(error)")
         }
+    }
+
+    private func trackURL(_ base: String) -> URL? {
+        audioURL(name: base, folder: "GameAssets/Audio/Music")
     }
 
     private func audioURL(name: String, folder: String) -> URL? {
@@ -86,6 +143,18 @@ final class AudioManager: ObservableObject {
     func cardShuffle() { playSFX("card_shuffle.wav") }
     func win() {
         playSFX("switch.wav")
-        playMusic("win_music.wav", loop: false)
+        playWinMusic()
     }
+
+    private static let menuTracks: [String] = {
+        var tracks = (1...16).map { String(format: "lofi_menu_%02d", $0) }
+        tracks.append("menu_music")
+        return tracks
+    }()
+
+    private static let gameTracks: [String] = {
+        var tracks = (1...16).map { String(format: "lofi_game_%02d", $0) }
+        tracks.append("game_music")
+        return tracks
+    }()
 }

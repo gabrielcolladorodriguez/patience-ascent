@@ -1,54 +1,68 @@
 import Foundation
 
 struct GlyphLinkSnapshot: Codable {
-    let cells: [GlyphKind?]
+    let cells: [PuzzleCell?]
     let moves: Int
 }
 
-/// Connect matching glyphs with paths of at most two turns (portrait puzzle).
+/// Connect matching tiles with paths of at most two turns (portrait puzzle).
 final class GlyphLinkEngine {
     static let rows = 8
     static let cols = 6
-    static let pairsPerKind = 4
 
-    private(set) var cells: [GlyphKind?]
+    private(set) var cells: [PuzzleCell?]
     private(set) var moveHistory: [GlyphLinkSnapshot] = []
     private var rng: SeededRNG
 
     private let autoReshuffle: Bool
+    private let matchStyle: PuzzleMatchStyle
+    private let sumTarget: Int
+    private let levelConfig: LevelConfig
 
     var isWon: Bool { cells.allSatisfy { $0 == nil } }
     var canUndo: Bool { !moveHistory.isEmpty }
 
-    init(seed: UInt64? = nil, autoReshuffle: Bool = true) {
-        self.autoReshuffle = autoReshuffle
+    init(mode: SolitaireMode, levelConfig: LevelConfig? = nil, seed: UInt64? = nil) {
+        let config = levelConfig ?? mode.levelConfig()
+        self.levelConfig = config
+        autoReshuffle = mode.rules(level: config.level).autoReshuffle
+        matchStyle = mode.matchStyle
+        sumTarget = mode.rules(level: config.level).sumTarget
         rng = SeededRNG(seed: seed ?? UInt64.random(in: 1...UInt64.max))
         cells = Array(repeating: nil, count: Self.rows * Self.cols)
-        reset()
+        reset(config: config)
     }
 
-    func reset() {
+    func reset(config: LevelConfig) {
         moveHistory.removeAll()
-        cells = Self.generateBoard(rng: &rng)
+        var bag = PuzzleCellFactory.board(for: config.mode, config: config, rng: &rng)
+        while bag.count < Self.rows * Self.cols {
+            bag.append(contentsOf: PuzzleCellFactory.board(for: config.mode, config: config, rng: &rng))
+        }
+        cells = bag.prefix(Self.rows * Self.cols).map { Optional.some($0) }
         if !hasAnyMatch() {
             reshuffleRemaining()
         }
     }
 
-    func glyph(at pos: GridPos) -> GlyphKind? {
+    func reset(mode: SolitaireMode) {
+        reset(config: levelConfig)
+    }
+
+    func cell(at pos: GridPos) -> PuzzleCell? {
         guard isInside(pos) else { return nil }
         return cells[index(pos)]
     }
 
     func tap(_ pos: GridPos) -> GlyphLinkMatchResult {
-        guard let kind = glyph(at: pos) else { return .ignored }
+        guard let tile = cell(at: pos) else { return .ignored }
 
         if let first = pendingFirst {
             if first == pos {
                 pendingFirst = nil
                 return .deselected
             }
-            if kind == glyph(at: first), canConnect(from: first, to: pos) {
+            if let other = cell(at: first), tilesMatch(tile, other), canConnect(from: first, to: pos) {
                 pendingFirst = nil
                 return removePair(first, pos)
             }
@@ -69,17 +83,15 @@ final class GlyphLinkEngine {
         return true
     }
 
-    func hint() -> (GridPos, GridPos)? {
-        findAnyMatch()
-    }
+    func hint() -> (GridPos, GridPos)? { findAnyMatch() }
 
     func reshuffleRemaining() {
-        var glyphs: [GlyphKind] = cells.compactMap { $0 }
-        guard glyphs.count >= 2 else { return }
-        glyphs.shuffle(using: &rng)
+        var tiles: [PuzzleCell] = cells.compactMap { $0 }
+        guard tiles.count >= 2 else { return }
+        tiles.shuffle(using: &rng)
         var i = 0
         for idx in cells.indices where cells[idx] != nil {
-            cells[idx] = glyphs[i]
+            cells[idx] = tiles[i]
             i += 1
         }
         pendingFirst = nil
@@ -87,15 +99,8 @@ final class GlyphLinkEngine {
 
     func hasAnyMatch() -> Bool { findAnyMatch() != nil }
 
-    // MARK: - Board
-
-    private static func generateBoard(rng: inout SeededRNG) -> [GlyphKind?] {
-        var bag: [GlyphKind] = []
-        for kind in GlyphKind.allCases {
-            bag.append(contentsOf: Array(repeating: kind, count: pairsPerKind * 2))
-        }
-        bag.shuffle(using: &rng)
-        return bag.map { Optional.some($0) }
+    private func tilesMatch(_ a: PuzzleCell, _ b: PuzzleCell) -> Bool {
+        a.matches(b, style: matchStyle, sumTarget: sumTarget)
     }
 
     private func removePair(_ a: GridPos, _ b: GridPos) -> GlyphLinkMatchResult {
@@ -113,7 +118,7 @@ final class GlyphLinkEngine {
 
     private func applyGravity() {
         for col in 0..<Self.cols {
-            var stack: [GlyphKind] = []
+            var stack: [PuzzleCell] = []
             for row in 0..<Self.rows {
                 if let g = cells[index(GridPos(row: row, col: col))] {
                     stack.append(g)
@@ -127,10 +132,8 @@ final class GlyphLinkEngine {
         }
     }
 
-    // MARK: - Path (≤2 turns, border counts as empty)
-
     func canConnect(from a: GridPos, to b: GridPos) -> Bool {
-        guard a != b, glyph(at: a) == glyph(at: b) else { return false }
+        guard a != b, let tileA = cell(at: a), let tileB = cell(at: b), tilesMatch(tileA, tileB) else { return false }
         if lineClear(from: a, to: b) { return true }
 
         let corner1 = GridPos(row: a.row, col: b.col)
@@ -180,13 +183,14 @@ final class GlyphLinkEngine {
         for row in 0..<Self.rows {
             for col in 0..<Self.cols {
                 let pos = GridPos(row: row, col: col)
-                if glyph(at: pos) != nil { occupied.append(pos) }
+                if cell(at: pos) != nil { occupied.append(pos) }
             }
         }
         for i in 0..<occupied.count {
             for j in (i + 1)..<occupied.count {
                 let a = occupied[i], b = occupied[j]
-                if glyph(at: a) == glyph(at: b), canConnect(from: a, to: b) {
+                if let tileA = cell(at: a), let tileB = cell(at: b),
+                   tilesMatch(tileA, tileB), canConnect(from: a, to: b) {
                     return (a, b)
                 }
             }

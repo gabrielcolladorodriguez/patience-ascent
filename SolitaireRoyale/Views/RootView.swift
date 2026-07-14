@@ -2,6 +2,7 @@ import SwiftUI
 
 enum AppRoute: Equatable {
     case menu
+    case playPicker
     case modes
     case rankings
     case game(SolitaireMode, daily: Bool)
@@ -17,6 +18,8 @@ struct RootView: View {
                 switch route {
                 case .menu:
                     MainMenuView(route: $route)
+                case .playPicker:
+                    PlayModePickerView(route: $route)
                 case .modes:
                     ModeSelectView(route: $route)
                 case .rankings:
@@ -46,6 +49,7 @@ struct RootView: View {
     private var routeKey: String {
         switch route {
         case .menu: return "menu"
+        case .playPicker: return "playPicker"
         case .modes: return "modes"
         case .rankings: return "rankings"
         case .game(let m, let d): return "game-\(m.rawValue)-\(d)"

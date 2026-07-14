@@ -14,19 +14,71 @@ enum SolitaireMode: String, CaseIterable, Identifiable, Codable {
     var title: String { L10n.modeTitle(self) }
     var subtitle: String { L10n.modeSubtitle(self) }
     var controlsHint: String { L10n.controlsHint(self) }
+    var theme: ModeTheme { ModeTheme.forMode(self) }
 
-    var rules: GlyphLinkRules {
+    var matchStyle: PuzzleMatchStyle {
         switch self {
-        case .glyphLink:
-            return GlyphLinkRules(autoReshuffle: true, requiresChain: false, rushDuration: nil, winOnClear: true)
-        case .glyphChain:
-            return GlyphLinkRules(autoReshuffle: true, requiresChain: true, rushDuration: nil, winOnClear: true)
-        case .glyphRush:
-            return GlyphLinkRules(autoReshuffle: true, requiresChain: false, rushDuration: 90, winOnClear: false)
-        case .glyphZen:
-            return GlyphLinkRules(autoReshuffle: false, requiresChain: false, rushDuration: nil, winOnClear: true)
+        case .glyphLink: return .celestialSymbols
+        case .glyphChain: return .runeSymbols
+        case .glyphRush: return .sameNumber
+        case .glyphZen: return .sumPairs
         }
     }
+
+    var sumTarget: Int {
+        ProgressStore.shared.levelConfig(for: self).sumTarget
+    }
+
+    func levelConfig(level: Int? = nil) -> LevelConfig {
+        if let level {
+            return LevelConfig.forMode(self, level: level)
+        }
+        return ProgressStore.shared.levelConfig(for: self)
+    }
+
+    func rules(level: Int? = nil) -> GlyphLinkRules {
+        let config = levelConfig(level: level)
+        switch self {
+        case .glyphLink:
+            return GlyphLinkRules(
+                autoReshuffle: true,
+                requiresChain: false,
+                rushDuration: nil,
+                winOnClear: true,
+                pressureLimit: config.pressureLimit,
+                sumTarget: 0
+            )
+        case .glyphChain:
+            return GlyphLinkRules(
+                autoReshuffle: true,
+                requiresChain: true,
+                rushDuration: nil,
+                winOnClear: true,
+                pressureLimit: config.pressureLimit,
+                sumTarget: 0
+            )
+        case .glyphRush:
+            return GlyphLinkRules(
+                autoReshuffle: true,
+                requiresChain: false,
+                rushDuration: config.rushDuration,
+                winOnClear: false,
+                pressureLimit: nil,
+                sumTarget: 0
+            )
+        case .glyphZen:
+            return GlyphLinkRules(
+                autoReshuffle: false,
+                requiresChain: false,
+                rushDuration: nil,
+                winOnClear: true,
+                pressureLimit: nil,
+                sumTarget: config.sumTarget
+            )
+        }
+    }
+
+    var rules: GlyphLinkRules { rules() }
 
     var quickRules: [String] {
         switch self {
@@ -41,16 +93,31 @@ enum SolitaireMode: String, CaseIterable, Identifiable, Codable {
         }
     }
 
+    var tutorialSteps: [String] {
+        switch self {
+        case .glyphLink:
+            return [L10n.s("tut_link_1"), L10n.s("tut_link_2"), L10n.s("tut_link_3")]
+        case .glyphChain:
+            return [L10n.s("tut_chain_1"), L10n.s("tut_chain_2"), L10n.s("tut_chain_3")]
+        case .glyphRush:
+            return [L10n.s("tut_rush_1"), L10n.s("tut_rush_2"), L10n.s("tut_rush_3")]
+        case .glyphZen:
+            return [L10n.s("tut_zen_1"), L10n.s("tut_zen_2"), L10n.s("tut_zen_3")]
+        }
+    }
+
     var iconName: String {
         switch self {
-        case .glyphLink: return "link.circle.fill"
-        case .glyphChain: return "bolt.circle.fill"
-        case .glyphRush: return "timer.circle.fill"
-        case .glyphZen: return "leaf.circle.fill"
+        case .glyphLink: return "moon.stars.fill"
+        case .glyphChain: return "bolt.horizontal.circle.fill"
+        case .glyphRush: return "number.circle.fill"
+        case .glyphZen: return "plus.circle.fill"
         }
     }
 
     var usesScoreLeaderboard: Bool { self == .glyphRush }
+
+    var tutorialStorageKey: String { "tutorialSeen_\(rawValue)" }
 }
 
 struct GlyphLinkRules {
@@ -58,4 +125,6 @@ struct GlyphLinkRules {
     let requiresChain: Bool
     let rushDuration: TimeInterval?
     let winOnClear: Bool
+    let pressureLimit: TimeInterval?
+    let sumTarget: Int
 }

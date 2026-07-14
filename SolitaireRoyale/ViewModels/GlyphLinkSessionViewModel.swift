@@ -18,8 +18,16 @@ final class GlyphLinkSessionViewModel: ObservableObject {
     @Published private(set) var boardVersion = 0
     @Published var flashPair: (GridPos, GridPos)?
     @Published var rushRemaining: TimeInterval = 0
+    @Published var pressureRemaining: TimeInterval = 0
+    @Published var showTutorial = false
+    @Published var tutorialStep = 0
+    @Published var tutorialPracticeDone = false
+    @Published var starsEarned = 0
+    @Published var xpGained = 0
+    @Published var levelUpResult: LevelUpResult?
 
     let mode: SolitaireMode
+    let levelConfig: LevelConfig
     let dailySeed: UInt64?
     private var timer: Timer?
     private var timerStarted = false
@@ -28,18 +36,30 @@ final class GlyphLinkSessionViewModel: ObservableObject {
     private var boardsCleared = 0
     private let progress = ProgressStore.shared
     private let audio = AudioManager.shared
+    private let defaults = UserDefaults.standard
 
-    private var rules: GlyphLinkRules { mode.rules }
+    private var rules: GlyphLinkRules { mode.rules(level: levelConfig.level) }
+    var theme: ModeTheme { mode.theme }
 
     init(mode: SolitaireMode = .glyphLink, dailySeed: UInt64? = nil) {
         self.mode = mode
         self.dailySeed = dailySeed
-        self.engine = GlyphLinkEngine(seed: dailySeed, autoReshuffle: mode.rules.autoReshuffle)
-        if let rush = mode.rules.rushDuration {
+        self.levelConfig = progress.levelConfig(for: mode)
+        self.engine = GlyphLinkEngine(mode: mode, levelConfig: levelConfig, seed: dailySeed)
+        if let rush = rules.rushDuration {
             rushRemaining = rush
         }
+        if let pressure = rules.pressureLimit {
+            pressureRemaining = pressure
+        }
+        showTutorial = !defaults.bool(forKey: mode.tutorialStorageKey)
         audio.cardShuffle()
         HapticsManager.prepare()
+        if showTutorial {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
+                self?.prepareTutorialHint()
+            }
+        }
     }
 
     deinit { timer?.invalidate() }
@@ -56,7 +76,7 @@ final class GlyphLinkSessionViewModel: ObservableObject {
     }
 
     private func startTimerIfNeeded() {
-        guard !timerStarted else { return }
+        guard !timerStarted, !showTutorial else { return }
         timerStarted = true
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             Task { @MainActor in self?.tick() }
@@ -71,13 +91,21 @@ final class GlyphLinkSessionViewModel: ObservableObject {
             }
         } else {
             elapsed += 1
+            if rules.pressureLimit != nil {
+                pressureRemaining = max(0, pressureRemaining - 1)
+                if pressureRemaining <= 0 {
+                    finishPressureFail()
+                }
+            }
         }
     }
 
     func newGame() {
+        let config = progress.levelConfig(for: mode)
         engine = GlyphLinkEngine(
-            seed: dailySeed == nil ? nil : dailySeed! &+ UInt64(moves),
-            autoReshuffle: rules.autoReshuffle
+            mode: mode,
+            levelConfig: config,
+            seed: dailySeed == nil ? nil : dailySeed! &+ UInt64(moves)
         )
         selected = nil
         hintPair = nil
@@ -86,6 +114,9 @@ final class GlyphLinkSessionViewModel: ObservableObject {
         showWin = false
         isNewBestTime = false
         isNewBestScore = false
+        starsEarned = 0
+        xpGained = 0
+        levelUpResult = nil
         moves = 0
         elapsed = 0
         combo = 0
@@ -98,11 +129,18 @@ final class GlyphLinkSessionViewModel: ObservableObject {
         timer?.invalidate()
         timer = nil
         rushRemaining = rules.rushDuration ?? 0
+        pressureRemaining = rules.pressureLimit ?? 0
         bumpBoard()
         audio.cardShuffle()
     }
 
     func tap(_ pos: GridPos) {
+        if showTutorial, tutorialStep == 1, !tutorialPracticeDone {
+            tapTutorialPractice(pos)
+            return
+        }
+        if showTutorial, tutorialStep < 1 { return }
+
         HapticsManager.tap()
         audio.click()
         hintPair = nil
@@ -132,21 +170,107 @@ final class GlyphLinkSessionViewModel: ObservableObject {
                 score += 100 * max(1, combo)
                 if won {
                     boardsCleared += 1
+                    let config = progress.levelConfig(for: mode)
                     engine = GlyphLinkEngine(
-                        seed: (dailySeed ?? UInt64.random(in: 1...UInt64.max)) &+ UInt64(boardsCleared),
-                        autoReshuffle: true
+                        mode: mode,
+                        levelConfig: config,
+                        seed: (dailySeed ?? UInt64.random(in: 1...UInt64.max)) &+ UInt64(boardsCleared)
                     )
                     bumpBoard()
                     audio.cardShuffle()
                 }
             } else if won {
-                isNewBestTime = progress.recordWin(mode: mode, elapsed: elapsed, moves: moves)
-                flushSessionTime()
-                showWin = true
-                audio.win()
+                resolveWin()
             }
         }
         bumpBoard()
+    }
+
+    private func resolveWin() {
+        starsEarned = AscentProgression.computeStars(
+            mode: mode,
+            moves: moves,
+            comboPeak: comboPeak,
+            elapsed: elapsed,
+            score: score
+        )
+        xpGained = AscentProgression.xpReward(
+            mode: mode,
+            level: levelConfig.level,
+            stars: starsEarned,
+            comboPeak: comboPeak,
+            score: score
+        )
+        if mode.usesScoreLeaderboard {
+            isNewBestScore = progress.recordRushScore(mode: mode, score: score, moves: moves)
+        } else {
+            isNewBestTime = progress.recordWin(mode: mode, elapsed: elapsed, moves: moves)
+        }
+        levelUpResult = progress.grantXP(mode: mode, stars: starsEarned, comboPeak: comboPeak, score: score)
+        flushSessionTime()
+        showWin = true
+        audio.win()
+    }
+
+    private func tapTutorialPractice(_ pos: GridPos) {
+        guard let target = hintPair else { return }
+        let expected = Set([target.0, target.1])
+        guard expected.contains(pos) else {
+            HapticsManager.invalid()
+            message = L10n.s("tutorial_tap_highlighted")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in self?.message = nil }
+            return
+        }
+
+        HapticsManager.tap()
+        switch engine.tap(pos) {
+        case .ignored:
+            break
+        case .deselected:
+            selected = nil
+        case .selected(let p):
+            selected = p
+            HapticsManager.cardLift()
+        case .matched(let a, let b, _):
+            tutorialPracticeDone = true
+            tutorialStep = 2
+            selected = nil
+            flashPair = (a, b)
+            audio.cardPlace()
+            HapticsManager.cardDrop()
+            bumpBoard()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+                self?.flashPair = nil
+            }
+        }
+        bumpBoard()
+    }
+
+    func advanceTutorial() {
+        if tutorialStep == 0 {
+            tutorialStep = 1
+            prepareTutorialHint()
+        } else if tutorialStep >= mode.tutorialSteps.count - 1 || tutorialPracticeDone {
+            completeTutorial()
+        } else {
+            tutorialStep += 1
+        }
+    }
+
+    func skipTutorial() { completeTutorial() }
+
+    private func completeTutorial() {
+        defaults.set(true, forKey: mode.tutorialStorageKey)
+        showTutorial = false
+        tutorialStep = 0
+        tutorialPracticeDone = false
+        newGame()
+    }
+
+    private func prepareTutorialHint() {
+        if let hint = engine.hint() {
+            hintPair = hint
+        }
     }
 
     private func applyCombo(for a: GridPos, b: GridPos) {
@@ -172,10 +296,25 @@ final class GlyphLinkSessionViewModel: ObservableObject {
     private func finishRush() {
         timer?.invalidate()
         timer = nil
+        starsEarned = AscentProgression.computeStars(mode: mode, moves: moves, comboPeak: comboPeak, elapsed: elapsed, score: score)
+        xpGained = AscentProgression.xpReward(mode: mode, level: levelConfig.level, stars: starsEarned, comboPeak: comboPeak, score: score)
         isNewBestScore = progress.recordRushScore(mode: mode, score: score, moves: moves)
+        levelUpResult = progress.grantXP(mode: mode, stars: starsEarned, comboPeak: comboPeak, score: score)
         flushSessionTime()
         showWin = true
         audio.win()
+    }
+
+    private func finishPressureFail() {
+        timer?.invalidate()
+        timer = nil
+        message = L10n.s("pressure_failed")
+        progress.recordAbandon()
+        flushSessionTime()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) { [weak self] in
+            self?.newGame()
+            self?.message = nil
+        }
     }
 
     func undo() {
@@ -229,11 +368,20 @@ final class GlyphLinkSessionViewModel: ObservableObject {
     }
 
     var hudSecondary: String {
-        if mode.rules.rushDuration != nil {
+        if mode.matchStyle == .sumPairs {
+            return L10n.s("sum_target_fmt", rules.sumTarget)
+        }
+        if rules.rushDuration != nil {
             return L10n.s("score_fmt", score)
         }
         var parts = ["· \(moves)"]
         if combo > 1 { parts.append("· x\(combo)") }
         return parts.joined()
+    }
+
+    var pressureHUD: String? {
+        guard rules.pressureLimit != nil else { return nil }
+        let s = Int(pressureRemaining)
+        return L10n.s("pressure_fmt", s / 60, s % 60)
     }
 }
