@@ -2,7 +2,7 @@ import SwiftUI
 
 struct BundleImage: View {
     let name: String
-    var folder: String = "Resources"
+    var folder: String = "GameAssets"
 
     var body: some View {
         if let uiImage = loadImage() {
@@ -36,10 +36,10 @@ struct CardFaceView: View {
     var body: some View {
         ZStack {
             if let card, card.faceUp {
-                BundleImage(name: "\(card.imageName).png", folder: "Resources/Cards")
+                BundleImage(name: "\(card.imageName).png", folder: "GameAssets/Cards")
                     .aspectRatio(0.72, contentMode: .fit)
             } else {
-                BundleImage(name: "\(cardBackName).png", folder: "Resources/Cards")
+                BundleImage(name: "\(cardBackName).png", folder: "GameAssets/Cards")
                     .aspectRatio(0.72, contentMode: .fit)
             }
         }
@@ -69,12 +69,12 @@ struct KenneyButton: View {
             ZStack {
                 BundleImage(
                     name: style == .primary ? "button_primary.png" : "button_secondary.png",
-                    folder: "Resources/UI"
+                    folder: "GameAssets/UI"
                 )
                 .aspectRatio(3.2, contentMode: .fit)
                 HStack(spacing: 8) {
                     if let icon {
-                        BundleImage(name: "\(icon).png", folder: "Resources/Icons")
+                        BundleImage(name: "\(icon).png", folder: "GameAssets/Icons")
                             .frame(width: 22, height: 22)
                     }
                     Text(title)
@@ -94,7 +94,7 @@ struct CoinBar: View {
 
     var body: some View {
         HStack(spacing: 6) {
-            BundleImage(name: "coin.png", folder: "Resources/Icons")
+            BundleImage(name: "coin.png", folder: "GameAssets/Icons")
                 .frame(width: 28, height: 28)
             Text("\(progress.coins)")
                 .font(.title3.weight(.heavy))
@@ -104,7 +104,7 @@ struct CoinBar: View {
         .padding(.horizontal, 12)
         .padding(.vertical, 6)
         .background(
-            BundleImage(name: "panel.png", folder: "Resources/UI")
+            BundleImage(name: "panel.png", folder: "GameAssets/UI")
                 .opacity(0.9)
         )
     }

@@ -17,7 +17,7 @@ final class AudioManager: ObservableObject {
     }
 
     func playMusic(_ name: String, loop: Bool = true) {
-        guard musicEnabled, let url = Bundle.main.url(forResource: name, withExtension: nil, subdirectory: "Resources/Audio/Music")
+        guard musicEnabled, let url = Bundle.main.url(forResource: name, withExtension: nil, subdirectory: "GameAssets/Audio/Music")
             ?? Bundle.main.url(forResource: name.replacingOccurrences(of: ".ogg", with: ""), withExtension: "ogg") else { return }
         do {
             musicPlayer?.stop()
@@ -38,7 +38,7 @@ final class AudioManager: ObservableObject {
         guard sfxEnabled else { return }
         let base = (filename as NSString).deletingPathExtension
         let ext = (filename as NSString).pathExtension.isEmpty ? "ogg" : (filename as NSString).pathExtension
-        guard let url = Bundle.main.url(forResource: base, withExtension: ext, subdirectory: "Resources/Audio/SFX")
+        guard let url = Bundle.main.url(forResource: base, withExtension: ext, subdirectory: "GameAssets/Audio/SFX")
             ?? Bundle.main.url(forResource: base, withExtension: ext) else { return }
         do {
             let player = try AVAudioPlayer(contentsOf: url)

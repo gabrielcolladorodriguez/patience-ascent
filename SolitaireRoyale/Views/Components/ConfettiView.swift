@@ -79,7 +79,7 @@ struct WinCelebrationOverlay: View {
             ConfettiView().ignoresSafeArea()
 
             VStack(spacing: 20) {
-                BundleImage(name: "trophy.png", folder: "Resources/Icons")
+                BundleImage(name: "trophy.png", folder: "GameAssets/Icons")
                     .frame(width: 80, height: 80)
                     .scaleEffect(scale)
 
@@ -115,7 +115,7 @@ struct WinCelebrationOverlay: View {
 
     private func rewardBadge(icon: String, value: String) -> some View {
         HStack(spacing: 6) {
-            BundleImage(name: "\(icon).png", folder: "Resources/Icons")
+            BundleImage(name: "\(icon).png", folder: "GameAssets/Icons")
                 .frame(width: 24, height: 24)
             Text(value)
                 .font(.headline.weight(.bold))

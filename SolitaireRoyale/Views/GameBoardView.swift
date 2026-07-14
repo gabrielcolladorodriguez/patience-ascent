@@ -44,7 +44,7 @@ struct GameBoardView: View {
                 AudioManager.shared.click()
                 route = .modes
             } label: {
-                BundleImage(name: "home.png", folder: "Resources/Icons")
+                BundleImage(name: "home.png", folder: "GameAssets/Icons")
                     .frame(width: 30, height: 30)
             }
             VStack(alignment: .leading, spacing: 2) {
@@ -88,7 +88,7 @@ struct GameBoardView: View {
             action()
         }) {
             VStack(spacing: 4) {
-                BundleImage(name: "\(icon).png", folder: "Resources/Icons")
+                BundleImage(name: "\(icon).png", folder: "GameAssets/Icons")
                     .frame(width: 22, height: 22)
                 Text(title)
                     .font(.caption2.weight(.semibold))
@@ -98,7 +98,7 @@ struct GameBoardView: View {
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 8)
-            .background(BundleImage(name: "panel.png", folder: "Resources/UI").opacity(0.85))
+            .background(BundleImage(name: "panel.png", folder: "GameAssets/UI").opacity(0.85))
             .clipShape(RoundedRectangle(cornerRadius: 10))
         }
         .buttonStyle(.plain)

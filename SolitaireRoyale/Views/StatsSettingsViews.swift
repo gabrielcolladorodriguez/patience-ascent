@@ -63,7 +63,7 @@ struct StatsView: View {
 
     private func gridStat(title: String, value: String, icon: String) -> some View {
         HStack {
-            BundleImage(name: "\(icon).png", folder: "Resources/Icons")
+            BundleImage(name: "\(icon).png", folder: "GameAssets/Icons")
                 .frame(width: 32, height: 32)
             VStack(alignment: .leading) {
                 Text(title).font(.caption).foregroundStyle(.white.opacity(0.7))
@@ -80,7 +80,7 @@ struct StatsView: View {
     }
 
     private var glassPanel: some View {
-        BundleImage(name: "panel.png", folder: "Resources/UI")
+        BundleImage(name: "panel.png", folder: "GameAssets/UI")
             .opacity(0.85)
             .clipShape(RoundedRectangle(cornerRadius: 14))
     }
@@ -88,7 +88,7 @@ struct StatsView: View {
     private func navBar(title: String) -> some View {
         HStack {
             Button { route = .menu; AudioManager.shared.click() } label: {
-                BundleImage(name: "home.png", folder: "Resources/Icons").frame(width: 32, height: 32)
+                BundleImage(name: "home.png", folder: "GameAssets/Icons").frame(width: 32, height: 32)
             }
             Spacer()
             Text(title).font(.title2.weight(.bold)).foregroundStyle(.white)
@@ -150,7 +150,7 @@ struct SettingsView: View {
     }
 
     private var glassPanel: some View {
-        BundleImage(name: "panel.png", folder: "Resources/UI")
+        BundleImage(name: "panel.png", folder: "GameAssets/UI")
             .opacity(0.85)
             .clipShape(RoundedRectangle(cornerRadius: 14))
     }
@@ -158,7 +158,7 @@ struct SettingsView: View {
     private func navBar(title: String) -> some View {
         HStack {
             Button { route = .menu; AudioManager.shared.click() } label: {
-                BundleImage(name: "home.png", folder: "Resources/Icons").frame(width: 32, height: 32)
+                BundleImage(name: "home.png", folder: "GameAssets/Icons").frame(width: 32, height: 32)
             }
             Spacer()
             Text(title).font(.title2.weight(.bold)).foregroundStyle(.white)
@@ -198,7 +198,7 @@ struct AchievementsView: View {
 
     private func achievementRow(_ ach: Achievement) -> some View {
         HStack(spacing: 12) {
-            BundleImage(name: ach.isComplete ? "trophy.png" : "locked.png", folder: "Resources/Icons")
+            BundleImage(name: ach.isComplete ? "trophy.png" : "locked.png", folder: "GameAssets/Icons")
                 .frame(width: 36, height: 36)
             VStack(alignment: .leading, spacing: 4) {
                 Text(ach.title).font(.headline).foregroundStyle(.white)
@@ -224,7 +224,7 @@ struct AchievementsView: View {
         }
         .padding()
         .background(
-            BundleImage(name: "panel.png", folder: "Resources/UI").opacity(0.85)
+            BundleImage(name: "panel.png", folder: "GameAssets/UI").opacity(0.85)
         )
         .clipShape(RoundedRectangle(cornerRadius: 14))
     }
@@ -232,7 +232,7 @@ struct AchievementsView: View {
     private func navBar(title: String) -> some View {
         HStack {
             Button { route = .menu; AudioManager.shared.click() } label: {
-                BundleImage(name: "home.png", folder: "Resources/Icons").frame(width: 32, height: 32)
+                BundleImage(name: "home.png", folder: "GameAssets/Icons").frame(width: 32, height: 32)
             }
             Spacer()
             Text(title).font(.title2.weight(.bold)).foregroundStyle(.white)

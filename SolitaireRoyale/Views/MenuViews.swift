@@ -10,7 +10,7 @@ struct MainMenuView: View {
             GameBackground()
             VStack(spacing: 20) {
                 Spacer()
-                BundleImage(name: "trophy.png", folder: "Resources/Icons")
+                BundleImage(name: "trophy.png", folder: "GameAssets/Icons")
                     .frame(width: 72, height: 72)
                 Text(AppIdentity.name)
                     .font(.system(size: 34, weight: .black, design: .rounded))
@@ -100,7 +100,7 @@ struct MainMenuView: View {
             route = .game(dc.mode, daily: true)
         } label: {
             HStack {
-                BundleImage(name: "star.png", folder: "Resources/Icons")
+                BundleImage(name: "star.png", folder: "GameAssets/Icons")
                     .frame(width: 32, height: 32)
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Desafío del día")
@@ -111,7 +111,7 @@ struct MainMenuView: View {
                         .foregroundStyle(.yellow)
                 }
                 Spacer()
-                BundleImage(name: "play.png", folder: "Resources/Icons")
+                BundleImage(name: "play.png", folder: "GameAssets/Icons")
                     .frame(width: 28, height: 28)
             }
             .padding()
@@ -173,7 +173,7 @@ struct ModeSelectView: View {
                 AudioManager.shared.click()
                 route = .menu
             } label: {
-                BundleImage(name: "home.png", folder: "Resources/Icons")
+                BundleImage(name: "home.png", folder: "GameAssets/Icons")
                     .frame(width: 32, height: 32)
             }
             Spacer()
@@ -199,7 +199,7 @@ struct ModeSelectView: View {
             }
         } label: {
             HStack(spacing: 12) {
-                BundleImage(name: unlocked ? "unlocked.png" : "locked.png", folder: "Resources/Icons")
+                BundleImage(name: unlocked ? "unlocked.png" : "locked.png", folder: "GameAssets/Icons")
                     .frame(width: 36, height: 36)
                 VStack(alignment: .leading, spacing: 4) {
                     Text(mode.title)
@@ -215,20 +215,20 @@ struct ModeSelectView: View {
                 Spacer()
                 if !unlocked {
                     HStack(spacing: 4) {
-                        BundleImage(name: "coin.png", folder: "Resources/Icons")
+                        BundleImage(name: "coin.png", folder: "GameAssets/Icons")
                             .frame(width: 18, height: 18)
                         Text("\(mode.unlockCost)")
                             .font(.subheadline.weight(.bold))
                             .foregroundStyle(.yellow)
                     }
                 } else {
-                    BundleImage(name: "play.png", folder: "Resources/Icons")
+                    BundleImage(name: "play.png", folder: "GameAssets/Icons")
                         .frame(width: 28, height: 28)
                 }
             }
             .padding()
             .background(
-                BundleImage(name: "panel.png", folder: "Resources/UI")
+                BundleImage(name: "panel.png", folder: "GameAssets/UI")
                     .opacity(0.85)
             )
             .clipShape(RoundedRectangle(cornerRadius: 14))
@@ -251,7 +251,7 @@ struct ShopView: View {
                         AudioManager.shared.click()
                         route = .menu
                     } label: {
-                        BundleImage(name: "home.png", folder: "Resources/Icons")
+                        BundleImage(name: "home.png", folder: "GameAssets/Icons")
                             .frame(width: 32, height: 32)
                     }
                     Spacer()
@@ -297,12 +297,12 @@ struct ShopView: View {
 
     private func shopRow(_ item: ShopItemKind) -> some View {
         HStack {
-            BundleImage(name: "\(item.iconName).png", folder: "Resources/Icons")
+            BundleImage(name: "\(item.iconName).png", folder: "GameAssets/Icons")
                 .frame(width: 40, height: 40)
             VStack(alignment: .leading) {
                 Text(item.title).font(.headline).foregroundStyle(.white)
                 HStack(spacing: 4) {
-                    BundleImage(name: "coin.png", folder: "Resources/Icons").frame(width: 16, height: 16)
+                    BundleImage(name: "coin.png", folder: "GameAssets/Icons").frame(width: 16, height: 16)
                     Text("\(item.price)").foregroundStyle(.yellow).font(.subheadline.weight(.bold))
                 }
             }
@@ -318,13 +318,13 @@ struct ShopView: View {
             .frame(width: 130)
         }
         .padding()
-        .background(BundleImage(name: "panel.png", folder: "Resources/UI").opacity(0.85))
+        .background(BundleImage(name: "panel.png", folder: "GameAssets/UI").opacity(0.85))
         .clipShape(RoundedRectangle(cornerRadius: 14))
     }
 
     private func modeUnlockRow(_ mode: SolitaireMode) -> some View {
         HStack {
-            BundleImage(name: "locked.png", folder: "Resources/Icons").frame(width: 36, height: 36)
+            BundleImage(name: "locked.png", folder: "GameAssets/Icons").frame(width: 36, height: 36)
             VStack(alignment: .leading) {
                 Text(mode.title).font(.headline).foregroundStyle(.white)
                 Text(mode.subtitle).font(.caption).foregroundStyle(.white.opacity(0.7))
@@ -340,7 +340,7 @@ struct ShopView: View {
             .frame(width: 130)
         }
         .padding()
-        .background(BundleImage(name: "panel.png", folder: "Resources/UI").opacity(0.85))
+        .background(BundleImage(name: "panel.png", folder: "GameAssets/UI").opacity(0.85))
         .clipShape(RoundedRectangle(cornerRadius: 14))
     }
 }
