@@ -1,3 +1,22 @@
+# Mejoras v1.0 build 4 — Patience Ascent
+
+## Cambios principales (build 4)
+
+### Instrucciones rápidas
+- Tutorial de 3 pantallas la primera vez (toca, pista/deshacer, progreso)
+- Botón **Cómo jugar** en menú con reglas de los 8 modos
+- Banner con regla rápida al iniciar cada partida (por sesión)
+- Botón **?** en partida para ayuda contextual del modo
+- Ajustes → **Ver tutorial otra vez**
+
+### Visual refinado
+- Paleta verde fieltro + mesa crema + dorado con mejor contraste
+- Marco dorado en fondo y mesa de juego
+- Tipografía rounded bold, paneles glass sobre verde
+- Botones y paneles unificados en `Theme` + `SharedViews`
+
+---
+
 # Mejoras v1.0 build 3 — Patience Ascent
 
 ## Cambios principales
@@ -21,7 +40,7 @@
 - `ITSAppUsesNonExemptEncryption = false`
 - `UIRequiresFullScreen` para iPad vertical
 - Pantalla de lanzamiento con color verde
-- Build 3
+- Build 4
 
 ## Compilar
 
