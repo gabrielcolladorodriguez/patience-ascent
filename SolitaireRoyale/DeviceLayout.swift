@@ -20,7 +20,6 @@ enum DeviceLayout {
     static func cardWidth(for mode: SolitaireMode, in size: CGSize) -> CGFloat {
         let w = max(size.width, 280)
         let pad = isPad(w)
-        let phone = !pad
 
         switch mode {
         case .klondike, .yukon:

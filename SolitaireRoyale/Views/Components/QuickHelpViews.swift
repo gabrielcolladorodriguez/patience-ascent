@@ -5,6 +5,7 @@ import SwiftUI
 struct OnboardingView: View {
     let onFinish: () -> Void
     @State private var page = 0
+    @State private var iconPulse: CGFloat = 1
 
     private let pages: [(icon: String, title: String, lines: [String])] = [
         ("hand.tap.fill", "Toca y arrastra", [
@@ -32,7 +33,18 @@ struct OnboardingView: View {
                 Image(systemName: pages[page].icon)
                     .font(.system(size: 56))
                     .foregroundStyle(AppTheme.gold)
-                    .symbolEffect(.bounce, value: page)
+                    .scaleEffect(iconPulse)
+                    .onChange(of: page) { _ in
+                        iconPulse = 0.88
+                        withAnimation(.spring(response: 0.32, dampingFraction: 0.55)) {
+                            iconPulse = 1.06
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.18) {
+                            withAnimation(.spring(response: 0.28, dampingFraction: 0.72)) {
+                                iconPulse = 1
+                            }
+                        }
+                    }
 
                 Text(pages[page].title)
                     .font(AppTheme.titleFont(28))
