@@ -25,18 +25,11 @@ enum SolitaireMode: String, CaseIterable, Identifiable, Codable {
         }
     }
 
-    var sumTarget: Int {
-        ProgressStore.shared.levelConfig(for: self).sumTarget
+    func levelConfig(level: Int = 1) -> LevelConfig {
+        LevelConfig.forMode(self, level: level)
     }
 
-    func levelConfig(level: Int? = nil) -> LevelConfig {
-        if let level {
-            return LevelConfig.forMode(self, level: level)
-        }
-        return ProgressStore.shared.levelConfig(for: self)
-    }
-
-    func rules(level: Int? = nil) -> GlyphLinkRules {
+    func rules(level: Int = 1) -> GlyphLinkRules {
         let config = levelConfig(level: level)
         switch self {
         case .glyphLink:
@@ -77,8 +70,6 @@ enum SolitaireMode: String, CaseIterable, Identifiable, Codable {
             )
         }
     }
-
-    var rules: GlyphLinkRules { rules() }
 
     var quickRules: [String] {
         switch self {

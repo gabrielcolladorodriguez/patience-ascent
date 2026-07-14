@@ -23,7 +23,7 @@ final class GlyphLinkEngine {
     var canUndo: Bool { !moveHistory.isEmpty }
 
     init(mode: SolitaireMode, levelConfig: LevelConfig? = nil, seed: UInt64? = nil) {
-        let config = levelConfig ?? mode.levelConfig()
+        let config = levelConfig ?? LevelConfig.forMode(mode, level: 1)
         self.levelConfig = config
         autoReshuffle = mode.rules(level: config.level).autoReshuffle
         matchStyle = mode.matchStyle
