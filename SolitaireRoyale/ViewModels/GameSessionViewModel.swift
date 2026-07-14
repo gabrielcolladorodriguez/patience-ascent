@@ -142,7 +142,7 @@ final class GameSessionViewModel: ObservableObject {
             selectedPile = to
             HapticsManager.tap()
         } else {
-            message = "Movimiento no válido"
+            message = L10n.s("invalid_move")
             combo = 0
             HapticsManager.invalid()
         }
@@ -182,7 +182,7 @@ final class GameSessionViewModel: ObservableObject {
                 self?.hintPiles = nil
             }
         } else {
-            message = "No hay movimientos visibles"
+            message = L10n.s("no_moves")
         }
     }
 

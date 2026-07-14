@@ -67,6 +67,7 @@ struct ConfettiView: View {
 struct WinCelebrationOverlay: View {
     let time: String
     let moves: Int
+    let score: Int?
     let isNewBest: Bool
     let mode: SolitaireMode
     let onPlayAgain: () -> Void
@@ -86,24 +87,27 @@ struct WinCelebrationOverlay: View {
                     .foregroundStyle(AppTheme.gold)
                     .scaleEffect(scale)
 
-                Text("¡Victoria!")
+                Text(score != nil ? L10n.s("time_up") : L10n.s("you_win"))
                     .font(AppTheme.titleFont(38))
                     .foregroundStyle(AppTheme.gold)
 
                 if isNewBest {
-                    Text("¡Nuevo récord en \(mode.title)!")
+                    Text(L10n.s(score != nil ? "new_best_score_fmt" : "new_best_fmt", mode.title))
                         .font(.subheadline.weight(.bold))
                         .foregroundStyle(.white)
                 }
 
                 HStack(spacing: 20) {
-                    statBadge(icon: "clock.fill", value: time)
+                    if let score {
+                        statBadge(icon: "star.fill", value: L10n.s("score_fmt", score))
+                    }
+                    statBadge(icon: score != nil ? "timer" : "clock.fill", value: time)
                     statBadge(icon: "arrow.triangle.swap", value: "\(moves)")
                 }
 
                 VStack(spacing: 10) {
-                    AppButton(title: "Otra partida", systemImage: "arrow.clockwise", style: .primary, action: onPlayAgain)
-                    AppButton(title: "Menú", systemImage: "house.fill", style: .secondary, action: onMenu)
+                    AppButton(title: L10n.s("play_again"), systemImage: "arrow.clockwise", style: .gold, action: onPlayAgain)
+                    AppButton(title: L10n.s("menu"), systemImage: "house.fill", style: .secondary, action: onMenu)
                 }
                 .padding(.horizontal, 28)
             }

@@ -11,8 +11,14 @@ struct BundleImage: View {
             Image(uiImage: uiImage)
                 .resizable()
         } else {
-            RoundedRectangle(cornerRadius: 6)
-                .fill(AppTheme.panelFill)
+            RoundedRectangle(cornerRadius: 8)
+                .fill(
+                    LinearGradient(
+                        colors: [Color.white.opacity(0.9), AppTheme.tableSurface2],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
         }
     }
 
@@ -35,29 +41,61 @@ struct GameBackground: View {
     var body: some View {
         ZStack {
             LinearGradient(
-                colors: [AppTheme.feltTop, AppTheme.feltBottom],
+                colors: [AppTheme.feltTop, AppTheme.feltMid, AppTheme.feltBottom],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
             RadialGradient(
-                colors: [AppTheme.feltGlow.opacity(0.35), .clear],
-                center: .top,
-                startRadius: 20,
+                colors: [AppTheme.feltGlow.opacity(0.45), .clear],
+                center: .init(x: 0.5, y: 0.12),
+                startRadius: 10,
+                endRadius: 560
+            )
+            SuitPatternOverlay()
+                .opacity(0.06)
+            RadialGradient(
+                colors: [.clear, Color.black.opacity(0.28)],
+                center: .bottom,
+                startRadius: 60,
                 endRadius: 520
             )
-            RadialGradient(
-                colors: [.clear, Color.black.opacity(0.18)],
-                center: .bottom,
-                startRadius: 80,
-                endRadius: 480
-            )
-            // Marco fino decorativo (como el icono)
             RoundedRectangle(cornerRadius: 0)
-                .stroke(AppTheme.tableGoldFrame.opacity(0.22), lineWidth: 2)
-                .padding(10)
+                .stroke(
+                    LinearGradient(
+                        colors: [AppTheme.gold.opacity(0.35), AppTheme.goldDark.opacity(0.15)],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    ),
+                    lineWidth: 2
+                )
+                .padding(8)
                 .allowsHitTesting(false)
         }
         .ignoresSafeArea()
+    }
+}
+
+private struct SuitPatternOverlay: View {
+    private let suits = ["suit.spade.fill", "suit.heart.fill", "suit.diamond.fill", "suit.club.fill"]
+
+    var body: some View {
+        GeometryReader { geo in
+            let cols = 5
+            let rows = 8
+            ForEach(0..<(cols * rows), id: \.self) { i in
+                let col = i % cols
+                let row = i / cols
+                Image(systemName: suits[i % suits.count])
+                    .font(.system(size: 28 + CGFloat(i % 3) * 4))
+                    .foregroundStyle(.white)
+                    .position(
+                        x: geo.size.width * (CGFloat(col) + 0.5) / CGFloat(cols),
+                        y: geo.size.height * (CGFloat(row) + 0.5) / CGFloat(rows)
+                    )
+                    .rotationEffect(.degrees(Double((i * 17) % 40) - 20))
+            }
+        }
+        .allowsHitTesting(false)
     }
 }
 
@@ -69,24 +107,33 @@ struct GameTableSurface<Content: View>: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(
                 ZStack {
-                    RoundedRectangle(cornerRadius: 22)
-                        .fill(AppTheme.tableSurface)
-                    RoundedRectangle(cornerRadius: 22)
-                        .stroke(AppTheme.tableBorder, lineWidth: 1.5)
-                    RoundedRectangle(cornerRadius: 22)
-                        .stroke(AppTheme.tableGoldFrame.opacity(0.45), lineWidth: 2)
+                    RoundedRectangle(cornerRadius: 24)
+                        .fill(
+                            LinearGradient(
+                                colors: [AppTheme.tableSurface, AppTheme.tableSurface2],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
+                        )
+                    RoundedRectangle(cornerRadius: 24)
+                        .stroke(AppTheme.tableBorder, lineWidth: 1.2)
+                    RoundedRectangle(cornerRadius: 24)
+                        .stroke(AppTheme.tableGoldFrame.opacity(0.55), lineWidth: 2.5)
                         .padding(3)
+                    RoundedRectangle(cornerRadius: 22)
+                        .stroke(Color.white.opacity(0.65), lineWidth: 1)
+                        .padding(6)
+                        .blendMode(.overlay)
                 }
-                .shadow(color: .black.opacity(0.14), radius: 10, y: 5)
+                .shadow(color: .black.opacity(0.22), radius: 16, y: 8)
             )
-            .padding(.horizontal, 8)
-            .padding(.vertical, 4)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
     }
 }
 
 // MARK: - Layout
 
-/// Centra y limita ancho en iPad para menús y formularios.
 struct AdaptiveMenuContainer<Content: View>: View {
     @ViewBuilder let content: Content
 
@@ -111,14 +158,14 @@ struct AppButton: View {
     var style: Style = .primary
     let action: () -> Void
 
-    enum Style { case primary, secondary, compact }
+    enum Style { case primary, secondary, compact, gold }
 
     var body: some View {
         Button {
             AudioManager.shared.click()
             action()
         } label: {
-            HStack(spacing: 8) {
+            HStack(spacing: 10) {
                 if let systemImage {
                     Image(systemName: systemImage)
                         .font(style == .compact ? .caption.weight(.bold) : .body.weight(.semibold))
@@ -126,25 +173,36 @@ struct AppButton: View {
                 Text(title)
                     .font(style == .compact ? .caption.weight(.bold) : .headline.weight(.bold))
                     .lineLimit(1)
-                    .minimumScaleFactor(0.8)
+                    .minimumScaleFactor(0.75)
             }
             .foregroundStyle(foreground)
             .frame(maxWidth: .infinity)
-            .frame(height: style == .compact ? 40 : AppTheme.buttonHeight)
+            .frame(height: style == .compact ? 42 : AppTheme.buttonHeight)
             .background(background)
             .clipShape(RoundedRectangle(cornerRadius: style == .compact ? 12 : AppTheme.cornerRadius))
             .overlay(
                 RoundedRectangle(cornerRadius: style == .compact ? 12 : AppTheme.cornerRadius)
-                    .stroke(border, lineWidth: style == .secondary ? 1.5 : 0)
+                    .stroke(border, lineWidth: borderWidth)
             )
-            .shadow(color: style == .primary ? .black.opacity(0.18) : .clear, radius: 4, y: 2)
+            .overlay(
+                RoundedRectangle(cornerRadius: style == .compact ? 12 : AppTheme.cornerRadius)
+                    .fill(
+                        LinearGradient(
+                            colors: [Color.white.opacity(style == .primary || style == .gold ? 0.22 : 0.08), .clear],
+                            startPoint: .top,
+                            endPoint: .center
+                        )
+                    )
+                    .allowsHitTesting(false)
+            )
+            .shadow(color: shadowColor, radius: style == .primary || style == .gold ? 8 : 2, y: 4)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableButtonStyle())
     }
 
     private var foreground: Color {
         switch style {
-        case .primary: return .white
+        case .primary, .gold: return .white
         case .secondary: return AppTheme.textOnGreen
         case .compact: return AppTheme.textOnTable
         }
@@ -154,20 +212,47 @@ struct AppButton: View {
     private var background: some View {
         switch style {
         case .primary:
-            LinearGradient(
-                colors: [AppTheme.accent, AppTheme.accentPressed],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
+            AppTheme.primaryButtonGradient
+        case .gold:
+            AppTheme.goldShineGradient
         case .secondary:
-            AppTheme.panelFillStrong
+            ZStack {
+                AppTheme.panelFillStrong
+                Color.white.opacity(0.06)
+            }
         case .compact:
             Color.white
         }
     }
 
     private var border: Color {
-        style == .secondary ? AppTheme.panelStroke : .clear
+        switch style {
+        case .secondary: return AppTheme.panelStroke
+        case .gold: return AppTheme.goldLight.opacity(0.8)
+        case .primary: return AppTheme.accentLight.opacity(0.5)
+        case .compact: return AppTheme.tableBorder
+        }
+    }
+
+    private var borderWidth: CGFloat {
+        style == .secondary || style == .gold ? 1.5 : 0
+    }
+
+    private var shadowColor: Color {
+        switch style {
+        case .primary: return AppTheme.accentPressed.opacity(0.45)
+        case .gold: return AppTheme.goldDark.opacity(0.4)
+        default: return .black.opacity(0.12)
+        }
+    }
+}
+
+struct PressableButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.97 : 1)
+            .opacity(configuration.isPressed ? 0.92 : 1)
+            .animation(.spring(response: 0.22, dampingFraction: 0.7), value: configuration.isPressed)
     }
 }
 
@@ -182,12 +267,16 @@ struct NavBackButton: View {
             Image(systemName: "chevron.left")
                 .font(.body.weight(.bold))
                 .foregroundStyle(AppTheme.textOnGreen)
-                .frame(width: 40, height: 40)
-                .background(Circle().fill(AppTheme.panelFill))
-                .overlay(Circle().stroke(AppTheme.panelStroke, lineWidth: 1))
+                .frame(width: 42, height: 42)
+                .background(
+                    Circle()
+                        .fill(AppTheme.panelFillStrong)
+                        .overlay(Circle().stroke(AppTheme.panelStroke, lineWidth: 1))
+                )
+                .shadow(color: .black.opacity(0.15), radius: 4, y: 2)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Volver")
+        .accessibilityLabel(L10n.s("back"))
     }
 }
 
@@ -208,6 +297,21 @@ struct ScreenHeader: View {
     }
 }
 
+struct NewBadge: View {
+    var body: some View {
+        Text(L10n.s("new_badge"))
+            .font(.caption2.weight(.black))
+            .foregroundStyle(.black)
+            .padding(.horizontal, 7)
+            .padding(.vertical, 3)
+            .background(
+                Capsule()
+                    .fill(AppTheme.goldShineGradient)
+                    .shadow(color: AppTheme.goldDark.opacity(0.35), radius: 3, y: 1)
+            )
+    }
+}
+
 // MARK: - Panels
 
 struct AppPanel<Content: View>: View {
@@ -220,11 +324,12 @@ struct AppPanel<Content: View>: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(
                 RoundedRectangle(cornerRadius: AppTheme.cornerRadius)
-                    .fill(onTable ? Color.white : AppTheme.panelFill)
+                    .fill(onTable ? Color.white : AppTheme.panelFillStrong)
                     .overlay(
                         RoundedRectangle(cornerRadius: AppTheme.cornerRadius)
                             .stroke(onTable ? AppTheme.tableBorder : AppTheme.panelStroke, lineWidth: 1)
                     )
+                    .shadow(color: .black.opacity(onTable ? 0.08 : 0.12), radius: 6, y: 3)
             )
     }
 }
@@ -253,18 +358,23 @@ struct CardFaceView: View {
         .clipShape(RoundedRectangle(cornerRadius: radius))
         .overlay(
             RoundedRectangle(cornerRadius: radius)
-                .stroke(Color.black.opacity(0.08), lineWidth: 0.5)
+                .stroke(
+                    LinearGradient(
+                        colors: [Color.white.opacity(0.5), Color.black.opacity(0.12)],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    ),
+                    lineWidth: 1
+                )
         )
-        .scaleEffect(lifted ? 1.05 : 1)
-        .offset(y: lifted ? -5 : 0)
-        .animation(.spring(response: 0.28, dampingFraction: 0.72), value: lifted)
+        .scaleEffect(lifted ? 1.06 : 1)
+        .offset(y: lifted ? -6 : 0)
+        .animation(.spring(response: 0.26, dampingFraction: 0.68), value: lifted)
         .overlay(
             RoundedRectangle(cornerRadius: radius)
                 .stroke(highlighted ? AppTheme.gold : Color.clear, lineWidth: 3)
-                .shadow(color: highlighted ? AppTheme.gold.opacity(0.5) : .clear, radius: 5)
+                .shadow(color: highlighted ? AppTheme.gold.opacity(0.65) : .clear, radius: 8)
         )
-        .shadow(color: .black.opacity(lifted ? 0.25 : 0.12), radius: lifted ? 6 : 2, y: lifted ? 4 : 1)
+        .shadow(color: .black.opacity(lifted ? 0.32 : 0.16), radius: lifted ? 10 : 4, y: lifted ? 6 : 2)
     }
 }
-
-// Legacy removed — use AppButton

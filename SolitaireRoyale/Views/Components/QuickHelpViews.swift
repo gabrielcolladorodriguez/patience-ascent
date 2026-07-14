@@ -5,18 +5,25 @@ struct OnboardingView: View {
     @State private var page = 0
     @State private var iconPulse: CGFloat = 1
 
-    private let pages: [(icon: String, title: String, lines: [String])] = [
-        ("hand.tap.fill", "Así se juega", [
-            "Toca una carta y arrástrala donde encaje.",
-            "Pista y Deshacer son ilimitados.",
-            "Gana lo más rápido que puedas."
-        ]),
-        ("chart.bar.fill", "Rankings", [
-            "Compite en Game Center.",
-            "Mejor tiempo por modo y tiempo total jugado.",
-            "Relájate con música lofi."
-        ])
-    ]
+    private var pages: [(icon: String, title: String, lines: [String])] {
+        [
+            ("link.circle.fill", L10n.s("onboarding_glyph_title"), [
+                L10n.s("onboarding_glyph_1"),
+                L10n.s("onboarding_glyph_2"),
+                L10n.s("onboarding_glyph_3")
+            ]),
+            ("bolt.circle.fill", L10n.s("onboarding_modes_title"), [
+                L10n.s("onboarding_modes_1"),
+                L10n.s("onboarding_modes_2"),
+                L10n.s("onboarding_modes_3")
+            ]),
+            ("music.note", L10n.s("onboarding_relax_title"), [
+                L10n.s("onboarding_relax_1"),
+                L10n.s("onboarding_relax_2"),
+                L10n.s("onboarding_relax_3")
+            ])
+        ]
+    }
 
     var body: some View {
         ZStack {
@@ -25,9 +32,10 @@ struct OnboardingView: View {
                 VStack(spacing: 22) {
                     Spacer()
                     Image(systemName: pages[page].icon)
-                        .font(.system(size: 56))
-                        .foregroundStyle(AppTheme.gold)
+                        .font(.system(size: 58))
+                        .foregroundStyle(AppTheme.goldShineGradient)
                         .scaleEffect(iconPulse)
+                        .shadow(color: AppTheme.gold.opacity(0.35), radius: 12)
                         .onChange(of: page) { _ in
                             iconPulse = 0.9
                             withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) { iconPulse = 1.05 }
@@ -60,14 +68,14 @@ struct OnboardingView: View {
                     }
 
                     AppButton(
-                        title: page < pages.count - 1 ? "Siguiente" : "¡A jugar!",
+                        title: page < pages.count - 1 ? L10n.s("next") : L10n.s("lets_play"),
                         systemImage: page < pages.count - 1 ? "arrow.right" : "play.fill",
                         style: .primary
                     ) {
                         if page < pages.count - 1 { page += 1 } else { onFinish() }
                     }
 
-                    Button("Saltar") { onFinish() }
+                    Button(L10n.s("skip")) { onFinish() }
                         .font(.subheadline.weight(.semibold))
                         .foregroundStyle(AppTheme.textMutedOnGreen)
 
@@ -115,11 +123,11 @@ struct QuickHelpSheet: View {
                 )
                 .padding(.horizontal)
 
-                AppButton(title: "Entendido", systemImage: "checkmark", style: .primary) { dismiss() }
+                AppButton(title: L10n.s("got_it"), systemImage: "checkmark", style: .primary) { dismiss() }
                     .padding(.horizontal)
             }
             .padding(.vertical, 24)
         }
-        .presentationDetents([.medium])
+        .presentationDetents([.medium, .large])
     }
 }

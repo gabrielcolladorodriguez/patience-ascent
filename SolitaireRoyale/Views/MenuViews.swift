@@ -10,79 +10,163 @@ struct MainMenuView: View {
         ZStack {
             GameBackground()
             AdaptiveMenuContainer {
-                VStack(spacing: 20) {
-                    Spacer(minLength: 16)
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 18) {
+                        header
 
-                    header
-
-                    if !progress.dailyChallenge.completed {
-                        dailyCard
-                    }
-
-                    VStack(spacing: 12) {
-                        AppButton(title: "Jugar", systemImage: "play.fill", style: .primary) {
-                            route = .game(.klondike, daily: false)
+                        if !progress.dailyChallenge.completed {
+                            dailyCard
                         }
 
-                        AppButton(title: "Elegir modo", systemImage: "square.grid.2x2", style: .secondary) {
-                            route = .modes
+                        playHeroButton
+
+                        VStack(spacing: 10) {
+                            ForEach(SolitaireMode.puzzleModes) { mode in
+                                modeQuickRow(mode)
+                            }
                         }
 
-                        AppButton(title: "Rankings", systemImage: "chart.bar.fill", style: .secondary) {
-                            route = .rankings
+                        HStack(spacing: 10) {
+                            AppButton(title: L10n.s("rankings"), systemImage: "chart.bar.fill", style: .secondary) {
+                                route = .rankings
+                            }
+                            AppButton(title: L10n.s("how_to_play"), systemImage: "questionmark.circle.fill", style: .secondary) {
+                                route = .modes
+                            }
                         }
-                    }
 
-                    quickStats
+                        quickStats
+                        audioToggles
 
-                    audioToggles
+                        if gameCenter.isAuthenticated {
+                            Text(L10n.s("game_center_fmt", gameCenter.playerName))
+                                .font(.caption2)
+                                .foregroundStyle(AppTheme.textMutedOnGreen)
+                        }
 
-                    Spacer(minLength: 8)
-
-                    if gameCenter.isAuthenticated {
-                        Text("Game Center · \(gameCenter.playerName)")
+                        Link(L10n.s("privacy"), destination: URL(string: AppIdentity.privacyURL)!)
                             .font(.caption2)
-                            .foregroundStyle(AppTheme.textMutedOnGreen)
+                            .foregroundStyle(AppTheme.textMutedOnGreen.opacity(0.7))
                     }
-
-                    Link("Privacidad", destination: URL(string: AppIdentity.privacyURL)!)
-                        .font(.caption2)
-                        .foregroundStyle(AppTheme.textMutedOnGreen.opacity(0.7))
+                    .padding(.horizontal, 22)
+                    .padding(.vertical, 16)
                 }
-                .padding(.horizontal, 22)
             }
         }
         .onAppear { AudioManager.shared.playMusic("menu_music.wav") }
     }
 
+    private var playHeroButton: some View {
+        Button {
+            AudioManager.shared.click()
+            route = .game(.glyphLink, daily: false)
+        } label: {
+            HStack(spacing: 14) {
+                Image(systemName: "play.circle.fill")
+                    .font(.system(size: 44))
+                    .foregroundStyle(AppTheme.goldShineGradient)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(L10n.s("play_now"))
+                        .font(.title3.weight(.black))
+                        .foregroundStyle(AppTheme.textOnGreen)
+                    Text(L10n.s("glyph_link_tagline"))
+                        .font(.caption)
+                        .foregroundStyle(AppTheme.textMutedOnGreen)
+                        .multilineTextAlignment(.leading)
+                }
+                Spacer()
+            }
+            .padding(16)
+            .background(heroPanel)
+        }
+        .buttonStyle(PressableButtonStyle())
+    }
+
+    private var heroPanel: some View {
+        RoundedRectangle(cornerRadius: AppTheme.cornerRadius)
+            .fill(AppTheme.panelFillStrong)
+            .overlay(
+                RoundedRectangle(cornerRadius: AppTheme.cornerRadius)
+                    .stroke(
+                        LinearGradient(
+                            colors: [AppTheme.goldLight, AppTheme.goldDark.opacity(0.6)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ),
+                        lineWidth: 2
+                    )
+            )
+            .shadow(color: AppTheme.goldDark.opacity(0.25), radius: 10, y: 4)
+    }
+
     private var header: some View {
-        VStack(spacing: 8) {
-            Image(systemName: "suit.spade.fill")
-                .font(.system(size: 48))
-                .foregroundStyle(AppTheme.gold)
-                .shadow(color: AppTheme.gold.opacity(0.3), radius: 10)
+        VStack(spacing: 10) {
+            Image("BrandIcon")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 88, height: 88)
+                .clipShape(RoundedRectangle(cornerRadius: 20))
+                .shadow(color: .black.opacity(0.25), radius: 8, y: 4)
+
             Text(AppIdentity.name)
                 .font(AppTheme.titleFont(34))
                 .foregroundStyle(AppTheme.textOnGreen)
-            Text("Relájate. Juega. Mejora tu tiempo.")
-                .font(.subheadline.weight(.medium))
+                .shadow(color: .black.opacity(0.2), radius: 2, y: 1)
+
+            Text(L10n.tagline)
+                .font(.subheadline.weight(.semibold))
                 .foregroundStyle(AppTheme.textMutedOnGreen)
                 .multilineTextAlignment(.center)
         }
+        .padding(.top, 8)
+    }
+
+    private func modeQuickRow(_ mode: SolitaireMode) -> some View {
+        Button {
+            AudioManager.shared.click()
+            route = .game(mode, daily: false)
+        } label: {
+            HStack(spacing: 12) {
+                Image(systemName: mode.iconName)
+                    .font(.title2)
+                    .foregroundStyle(AppTheme.gold)
+                    .frame(width: 36)
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(mode.title)
+                        .font(.headline.weight(.bold))
+                        .foregroundStyle(AppTheme.textOnGreen)
+                    Text(mode.subtitle)
+                        .font(.caption)
+                        .foregroundStyle(AppTheme.textMutedOnGreen)
+                        .lineLimit(2)
+                }
+                Spacer()
+                Image(systemName: "play.circle.fill")
+                    .font(.title2)
+                    .foregroundStyle(AppTheme.gold)
+            }
+            .padding(14)
+            .background(
+                RoundedRectangle(cornerRadius: AppTheme.cornerRadius)
+                    .fill(AppTheme.panelFill)
+                    .overlay(RoundedRectangle(cornerRadius: AppTheme.cornerRadius).stroke(AppTheme.panelStroke, lineWidth: 1))
+            )
+        }
+        .buttonStyle(PressableButtonStyle())
     }
 
     private var quickStats: some View {
         HStack(spacing: 10) {
-            statPill("Victorias", "\(progress.totalWins)")
-            statPill("Racha", "\(progress.streak)")
-            statPill("Tiempo", formatDuration(progress.totalTimePlayed))
+            statPill(L10n.s("wins"), "\(progress.totalWins)")
+            statPill(L10n.s("streak"), "\(progress.streak)")
+            statPill(L10n.s("time"), formatDuration(progress.totalTimePlayed))
         }
     }
 
     private var audioToggles: some View {
         HStack(spacing: 10) {
-            miniToggle("Música", isOn: $audio.musicEnabled)
-            miniToggle("Sonido", isOn: $audio.sfxEnabled)
+            miniToggle(L10n.s("music"), isOn: $audio.musicEnabled)
+            miniToggle(L10n.s("sound"), isOn: $audio.sfxEnabled)
         }
     }
 
@@ -97,7 +181,7 @@ struct MainMenuView: View {
                     .font(.title2)
                     .foregroundStyle(AppTheme.gold)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Desafío de hoy")
+                    Text(L10n.s("today_challenge"))
                         .font(.headline.weight(.bold))
                         .foregroundStyle(AppTheme.textOnGreen)
                     Text(dc.mode.title)
@@ -144,14 +228,11 @@ struct MainMenuView: View {
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(AppTheme.textOnGreen)
         }
-        .tint(AppTheme.accent)
+        .tint(AppTheme.accentLight)
         .padding(.horizontal, 12)
         .padding(.vertical, 8)
         .frame(maxWidth: .infinity)
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(AppTheme.panelFill)
-        )
+        .background(RoundedRectangle(cornerRadius: 12).fill(AppTheme.panelFill))
     }
 
     private func formatDuration(_ t: TimeInterval) -> String {
@@ -169,12 +250,17 @@ struct ModeSelectView: View {
         ZStack {
             GameBackground()
             VStack(spacing: 0) {
-                ScreenHeader(title: "Modos", onBack: { route = .menu })
+                ScreenHeader(title: L10n.s("how_to_play"), onBack: { route = .menu })
                 ScrollView {
                     AdaptiveMenuContainer {
-                        LazyVStack(spacing: 10) {
-                            ForEach(SolitaireMode.allCases) { mode in
-                                modeRow(mode)
+                        LazyVStack(spacing: 12) {
+                            Text(L10n.s("modes_intro"))
+                                .font(.subheadline)
+                                .foregroundStyle(AppTheme.textMutedOnGreen)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+
+                            ForEach(SolitaireMode.puzzleModes) { mode in
+                                modeHelpCard(mode)
                             }
                         }
                         .padding(16)
@@ -184,17 +270,13 @@ struct ModeSelectView: View {
         }
     }
 
-    private func modeRow(_ mode: SolitaireMode) -> some View {
-        Button {
-            AudioManager.shared.click()
-            route = .game(mode, daily: false)
-        } label: {
-            HStack(spacing: 12) {
+    private func modeHelpCard(_ mode: SolitaireMode) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 10) {
                 Image(systemName: mode.iconName)
                     .font(.title2)
                     .foregroundStyle(AppTheme.gold)
-                    .frame(width: 36)
-                VStack(alignment: .leading, spacing: 3) {
+                VStack(alignment: .leading, spacing: 2) {
                     Text(mode.title)
                         .font(.headline.weight(.bold))
                         .foregroundStyle(AppTheme.textOnGreen)
@@ -203,18 +285,29 @@ struct ModeSelectView: View {
                         .foregroundStyle(AppTheme.textMutedOnGreen)
                 }
                 Spacer()
-                Image(systemName: "play.circle.fill")
-                    .font(.title2)
+            }
+
+            VStack(alignment: .leading, spacing: 6) {
+                ForEach(mode.quickRules, id: \.self) { rule in
+                    Text("• \(rule)")
+                        .font(.caption)
+                        .foregroundStyle(AppTheme.textMutedOnGreen)
+                }
+                Text("• \(mode.controlsHint)")
+                    .font(.caption.weight(.semibold))
                     .foregroundStyle(AppTheme.gold)
             }
-            .padding(14)
-            .background(
-                RoundedRectangle(cornerRadius: AppTheme.cornerRadius)
-                    .fill(AppTheme.panelFill)
-                    .overlay(RoundedRectangle(cornerRadius: AppTheme.cornerRadius).stroke(AppTheme.panelStroke, lineWidth: 1))
-            )
+
+            AppButton(title: L10n.s("play_mode_fmt", mode.title), systemImage: "play.fill", style: .gold) {
+                route = .game(mode, daily: false)
+            }
         }
-        .buttonStyle(.plain)
+        .padding(14)
+        .background(
+            RoundedRectangle(cornerRadius: AppTheme.cornerRadius)
+                .fill(AppTheme.panelFill)
+                .overlay(RoundedRectangle(cornerRadius: AppTheme.cornerRadius).stroke(AppTheme.panelStroke, lineWidth: 1))
+        )
     }
 }
 
@@ -227,24 +320,24 @@ struct RankingsView: View {
         ZStack {
             GameBackground()
             VStack(spacing: 0) {
-                ScreenHeader(title: "Rankings", onBack: { route = .menu })
+                ScreenHeader(title: L10n.s("rankings"), onBack: { route = .menu })
                 ScrollView {
                     AdaptiveMenuContainer {
                         VStack(spacing: 12) {
                             summaryCard
 
-                            AppButton(title: "Ver Game Center", systemImage: "gamecontroller.fill", style: .primary) {
+                            AppButton(title: L10n.s("open_game_center"), systemImage: "gamecontroller.fill", style: .gold) {
                                 gameCenter.showLeaderboards()
                             }
 
-                            Text("Tus mejores tiempos")
+                            Text(L10n.s("your_best_times"))
                                 .font(.headline)
                                 .foregroundStyle(AppTheme.textMutedOnGreen)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(.top, 4)
 
-                            ForEach(SolitaireMode.allCases) { mode in
-                                bestTimeRow(mode)
+                            ForEach(SolitaireMode.puzzleModes) { mode in
+                                bestRow(mode)
                             }
                         }
                         .padding(16)
@@ -256,13 +349,13 @@ struct RankingsView: View {
 
     private var summaryCard: some View {
         VStack(spacing: 8) {
-            Text("Tiempo total jugado")
+            Text(L10n.s("total_play_time"))
                 .font(.caption)
                 .foregroundStyle(AppTheme.textMutedOnGreen)
             Text(formatLong(progress.totalTimePlayed))
                 .font(.title.weight(.black))
                 .foregroundStyle(AppTheme.gold)
-            Text("\(progress.totalWins) victorias · racha \(progress.streak)")
+            Text(L10n.s("wins_streak_fmt", progress.totalWins, progress.streak))
                 .font(.caption)
                 .foregroundStyle(AppTheme.textMutedOnGreen)
         }
@@ -271,12 +364,16 @@ struct RankingsView: View {
         .background(panel)
     }
 
-    private func bestTimeRow(_ mode: SolitaireMode) -> some View {
+    private func bestRow(_ mode: SolitaireMode) -> some View {
         HStack {
             Text(mode.title)
                 .foregroundStyle(AppTheme.textOnGreen)
             Spacer()
-            if let t = progress.bestTimes[mode.rawValue] {
+            if mode.usesScoreLeaderboard, let s = progress.bestScores[mode.rawValue] {
+                Text(L10n.s("score_fmt", s))
+                    .font(.headline.weight(.bold))
+                    .foregroundStyle(AppTheme.gold)
+            } else if let t = progress.bestTimes[mode.rawValue] {
                 Text(formatTime(t))
                     .font(.headline.weight(.bold))
                     .foregroundStyle(AppTheme.gold)

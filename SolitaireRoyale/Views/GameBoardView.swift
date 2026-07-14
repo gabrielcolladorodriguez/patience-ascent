@@ -92,9 +92,9 @@ struct GameBoardView: View {
 
     private var controlBar: some View {
         HStack(spacing: 8) {
-            gameActionButton(title: "Pista", icon: "lightbulb.fill") { session.showHint() }
-            gameActionButton(title: "Deshacer", icon: "arrow.uturn.backward") { session.undo() }
-            gameActionButton(title: "Nueva", icon: "arrow.clockwise") { session.newGame() }
+            gameActionButton(title: L10n.s("hint"), icon: "lightbulb.fill") { session.showHint() }
+            gameActionButton(title: L10n.s("undo"), icon: "arrow.uturn.backward") { session.undo() }
+            gameActionButton(title: L10n.s("new_game"), icon: "arrow.clockwise") { session.newGame() }
         }
         .padding(.horizontal, 12)
         .padding(.bottom, 8)

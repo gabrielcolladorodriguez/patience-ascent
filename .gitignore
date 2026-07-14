@@ -10,3 +10,6 @@ downloads/
 *.p8
 api_key.json
 AuthKey_*.p8
+scripts/.env
+__pycache__/
+*.pyc

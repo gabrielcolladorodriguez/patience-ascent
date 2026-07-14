@@ -145,6 +145,7 @@ enum EngineFactory {
         case .golf: return GolfEngine()
         case .yukon: return YukonEngine()
         case .fortyThieves: return FortyThievesEngine()
+        case .glyphLink: return BaseEngine(mode: .glyphLink)
         }
     }
 }

@@ -22,8 +22,8 @@ struct RootView: View {
                 case .rankings:
                     RankingsView(route: $route)
                 case .game(let mode, let daily):
-                    GameBoardView(
-                        session: GameSessionViewModel(
+                    GlyphLinkBoardView(
+                        session: GlyphLinkSessionViewModel(
                             mode: mode,
                             dailySeed: daily ? ProgressStore.shared.dailyChallenge.seed : nil
                         ),

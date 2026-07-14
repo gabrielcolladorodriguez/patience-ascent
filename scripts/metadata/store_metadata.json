@@ -1,0 +1,284 @@
+{
+  "app": {
+    "name": "Patience Ascent",
+    "copyright": "© 2026 Gabriel Collado Rodriguez",
+    "privacyPolicyUrl": "https://gabrielcolladorodriguez.github.io/patience-ascent/privacy.html",
+    "supportUrl": "https://github.com/gabrielcolladorodriguez/patience-ascent/issues",
+    "marketingUrl": "https://github.com/gabrielcolladorodriguez/patience-ascent",
+    "primaryCategory": "GAMES",
+    "primarySubcategoryOne": "GAMES_PUZZLE"
+  },
+  "version": "1.0",
+  "promotionalText": {
+    "en-US": "Connect matching symbols in 4 original modes. Unlimited hints, lofi music, daily challenge — free, no ads on iPhone & iPad.",
+    "en-GB": "Connect matching symbols in 4 original modes. Unlimited hints, lofi music, daily challenge — free, no ads on iPhone & iPad.",
+    "en-AU": "Connect matching symbols in 4 original modes. Unlimited hints, lofi music, daily challenge — free, no ads on iPhone & iPad.",
+    "en-CA": "Connect matching symbols in 4 original modes. Unlimited hints, lofi music, daily challenge — free, no ads on iPhone & iPad.",
+    "es-ES": "Conecta símbolos iguales en 4 modos originales. Pistas ilimitadas, música lofi y desafío diario — gratis, sin anuncios.",
+    "es-MX": "Conecta símbolos iguales en 4 modos originales. Pistas ilimitadas, música lofi y desafío diario — gratis, sin anuncios.",
+    "fr-FR": "Associez des symboles dans 4 modes originaux. Indices illimités, musique lofi, défi quotidien — gratuit, sans pub.",
+    "fr-CA": "Associez des symboles dans 4 modes originaux. Indices illimités, musique lofi, défi quotidien — gratuit, sans pub.",
+    "de-DE": "Verbinde Symbole in 4 Originalmodi. Unbegrenzte Tipps, Lofi-Musik, Tagesherausforderung — kostenlos, ohne Werbung.",
+    "it": "Collega simboli in 4 modalità originali. Suggerimenti illimitati, musica lofi, sfida giornaliera — gratis, senza pubblicità.",
+    "pt-BR": "Combine símbolos em 4 modos originais. Dicas ilimitadas, música lofi, desafio diário — grátis, sem anúncios.",
+    "pt-PT": "Combine símbolos em 4 modos originais. Dicas ilimitadas, música lofi, desafio diário — grátis, sem anúncios.",
+    "ja": "4つのオリジナルモードでシンボルをマッチ。無制限ヒント、ローファイ音楽、デイリーチャレンジ——無料、広告なし。",
+    "ko": "4가지 오리지널 모드에서 심볼을 매칭하세요. 무제한 힌트, 로파이 음악, 일일 챌린지 — 무료, 광고 없음.",
+    "zh-Hans": "四种原创模式中连接相同符号。无限提示、低保真音乐、每日挑战——免费，无广告。",
+    "zh-Hant": "四種原創模式中連接相同符號。無限提示、低保真音樂、每日挑戰——免費，無廣告。",
+    "ru": "Соединяйте символы в 4 оригинальных режимах. Безлимитные подсказки, lofi-музыка, ежедневный вызов — бесплатно.",
+    "nl-NL": "Connect matching symbols in 4 original modes. Unlimited hints, lofi music, daily challenge — free, no ads on iPhone & iPad.",
+    "sv": "Connect matching symbols in 4 original modes. Unlimited hints, lofi music, daily challenge — free, no ads on iPhone & iPad.",
+    "da": "Connect matching symbols in 4 original modes. Unlimited hints, lofi music, daily challenge — free, no ads on iPhone & iPad.",
+    "no": "Connect matching symbols in 4 original modes. Unlimited hints, lofi music, daily challenge — free, no ads on iPhone & iPad.",
+    "fi": "Connect matching symbols in 4 original modes. Unlimited hints, lofi music, daily challenge — free, no ads on iPhone & iPad.",
+    "pl": "Connect matching symbols in 4 original modes. Unlimited hints, lofi music, daily challenge — free, no ads on iPhone & iPad.",
+    "tr": "Connect matching symbols in 4 original modes. Unlimited hints, lofi music, daily challenge — free, no ads on iPhone & iPad.",
+    "th": "Connect matching symbols in 4 original modes. Unlimited hints, lofi music, daily challenge — free, no ads on iPhone & iPad.",
+    "vi": "Connect matching symbols in 4 original modes. Unlimited hints, lofi music, daily challenge — free, no ads on iPhone & iPad.",
+    "id": "Connect matching symbols in 4 original modes. Unlimited hints, lofi music, daily challenge — free, no ads on iPhone & iPad.",
+    "ms": "Connect matching symbols in 4 original modes. Unlimited hints, lofi music, daily challenge — free, no ads on iPhone & iPad.",
+    "ca": "Conecta símbolos iguales en 4 modos originales. Pistas ilimitadas, música lofi y desafío diario — gratis, sin anuncios.",
+    "cs": "Connect matching symbols in 4 original modes. Unlimited hints, lofi music, daily challenge — free, no ads on iPhone & iPad.",
+    "el": "Connect matching symbols in 4 original modes. Unlimited hints, lofi music, daily challenge — free, no ads on iPhone & iPad.",
+    "hu": "Connect matching symbols in 4 original modes. Unlimited hints, lofi music, daily challenge — free, no ads on iPhone & iPad.",
+    "ro": "Connect matching symbols in 4 original modes. Unlimited hints, lofi music, daily challenge — free, no ads on iPhone & iPad.",
+    "sk": "Connect matching symbols in 4 original modes. Unlimited hints, lofi music, daily challenge — free, no ads on iPhone & iPad.",
+    "uk": "Соединяйте символы в 4 оригинальных режимах. Безлимитные подсказки, lofi-музыка, ежедневный вызов — бесплатно.",
+    "hi": "Connect matching symbols in 4 original modes. Unlimited hints, lofi music, daily challenge — free, no ads on iPhone & iPad.",
+    "ar-SA": "Connect matching symbols in 4 original modes. Unlimited hints, lofi music, daily challenge — free, no ads on iPhone & iPad.",
+    "he": "Connect matching symbols in 4 original modes. Unlimited hints, lofi music, daily challenge — free, no ads on iPhone & iPad."
+  },
+  "whatsNew": {
+    "en-US": "Build 14 — Original puzzle game\n\n• Arc Weave, Flux Surge, Nova Blitz & Haze Drift\n• Symbol-matching puzzle — not solitaire\n• 32 languages, Game Center rankings\n• Unlimited hints, lofi music, daily challenge",
+    "en-GB": "Build 14 — Original puzzle game\n\n• Arc Weave, Flux Surge, Nova Blitz & Haze Drift\n• Symbol-matching puzzle — not solitaire\n• 32 languages, Game Center rankings\n• Unlimited hints, lofi music, daily challenge",
+    "en-AU": "Build 14 — Original puzzle game\n\n• Arc Weave, Flux Surge, Nova Blitz & Haze Drift\n• Symbol-matching puzzle — not solitaire\n• 32 languages, Game Center rankings\n• Unlimited hints, lofi music, daily challenge",
+    "en-CA": "Build 14 — Original puzzle game\n\n• Arc Weave, Flux Surge, Nova Blitz & Haze Drift\n• Symbol-matching puzzle — not solitaire\n• 32 languages, Game Center rankings\n• Unlimited hints, lofi music, daily challenge",
+    "es-ES": "Build 14 — Puzzle original\n\n• Tejido Arcano, Oleada Flux, Nova Blitz y Bruma Serena\n• Puzzle de símbolos — no es solitario\n• 32 idiomas y rankings Game Center\n• Pistas ilimitadas, música lofi, desafío diario",
+    "es-MX": "Build 14 — Puzzle original\n\n• Tejido Arcano, Oleada Flux, Nova Blitz y Bruma Serena\n• Puzzle de símbolos — no es solitario\n• 32 idiomas y rankings Game Center\n• Pistas ilimitadas, música lofi, desafío diario",
+    "fr-FR": "Build 14 — Puzzle original\n\n• Tisseau d'Arc, Flux Ravage, Nova Blitz, Brume Lente\n• Puzzle de symboles — pas de solitaire\n• 32 langues et classements Game Center",
+    "fr-CA": "Build 14 — Puzzle original\n\n• Tisseau d'Arc, Flux Ravage, Nova Blitz, Brume Lente\n• Puzzle de symboles — pas de solitaire\n• 32 langues et classements Game Center",
+    "de-DE": "Build 14 — Originales Puzzle\n\n• Arkangewebe, Flux-Schwall, Nova Blitz, Nebeltreib\n• Symbol-Puzzle — kein Solitaire\n• 32 Sprachen, Game Center-Ranglisten",
+    "it": "Build 14 — Puzzle originale\n\n• Tessuto Arcano, Onda Flux, Nova Blitz, Bruma Quieta\n• Puzzle di simboli — non solitario\n• 32 lingue, classifiche Game Center",
+    "pt-BR": "Build 14 — Puzzle original\n\n• Tecido Arcano, Onda Flux, Nova Blitz, Névoa Serena\n• Puzzle de símbolos — não é paciência\n• 32 idiomas, rankings Game Center",
+    "pt-PT": "Build 14 — Puzzle original\n\n• Tecido Arcano, Onda Flux, Nova Blitz, Névoa Serena\n• Puzzle de símbolos — não é paciência\n• 32 idiomas, rankings Game Center",
+    "ja": "Build 14 — オリジナルパズル\n\n• アークウィーブ、フラックスサージ、ノヴァブリッツ、ヘイズドリフト\n• シンボルマッチパズル——ソリティアではありません\n• 32言語、Game Centerランキング",
+    "ko": "Build 14 — 오리지널 퍼즐\n\n• 아크 위브, 플럭스 서지, 노바 블리츠, 헤이즈 드리프트\n• 심볼 매칭 퍼즐 — 솔리테어 아님\n• 32개 언어, Game Center 순위",
+    "zh-Hans": "Build 14 — 原创益智游戏\n\n• 弧光编织、通量涌浪、新星闪击、薄雾漂流\n• 符号连线益智——不是纸牌接龙\n• 32种语言，Game Center 排行榜",
+    "zh-Hant": "Build 14 — 原創益智遊戲\n\n• 弧光編織、通量湧浪、新星閃擊、薄霧漂流\n• 符號連線益智——不是接龍\n• 32種語言，Game Center 排行榜",
+    "ru": "Build 14 — Оригинальная головоломка\n\n• Ткань Дуги, Поток Всплеск, Нова Блиц, Туманный Дрейф\n• Не пасьянс\n• 32 языка, Game Center",
+    "nl-NL": "Build 14 — Original puzzle game\n\n• Arc Weave, Flux Surge, Nova Blitz & Haze Drift\n• Symbol-matching puzzle — not solitaire\n• 32 languages, Game Center rankings\n• Unlimited hints, lofi music, daily challenge",
+    "sv": "Build 14 — Original puzzle game\n\n• Arc Weave, Flux Surge, Nova Blitz & Haze Drift\n• Symbol-matching puzzle — not solitaire\n• 32 languages, Game Center rankings\n• Unlimited hints, lofi music, daily challenge",
+    "da": "Build 14 — Original puzzle game\n\n• Arc Weave, Flux Surge, Nova Blitz & Haze Drift\n• Symbol-matching puzzle — not solitaire\n• 32 languages, Game Center rankings\n• Unlimited hints, lofi music, daily challenge",
+    "no": "Build 14 — Original puzzle game\n\n• Arc Weave, Flux Surge, Nova Blitz & Haze Drift\n• Symbol-matching puzzle — not solitaire\n• 32 languages, Game Center rankings\n• Unlimited hints, lofi music, daily challenge",
+    "fi": "Build 14 — Original puzzle game\n\n• Arc Weave, Flux Surge, Nova Blitz & Haze Drift\n• Symbol-matching puzzle — not solitaire\n• 32 languages, Game Center rankings\n• Unlimited hints, lofi music, daily challenge",
+    "pl": "Build 14 — Original puzzle game\n\n• Arc Weave, Flux Surge, Nova Blitz & Haze Drift\n• Symbol-matching puzzle — not solitaire\n• 32 languages, Game Center rankings\n• Unlimited hints, lofi music, daily challenge",
+    "tr": "Build 14 — Original puzzle game\n\n• Arc Weave, Flux Surge, Nova Blitz & Haze Drift\n• Symbol-matching puzzle — not solitaire\n• 32 languages, Game Center rankings\n• Unlimited hints, lofi music, daily challenge",
+    "th": "Build 14 — Original puzzle game\n\n• Arc Weave, Flux Surge, Nova Blitz & Haze Drift\n• Symbol-matching puzzle — not solitaire\n• 32 languages, Game Center rankings\n• Unlimited hints, lofi music, daily challenge",
+    "vi": "Build 14 — Original puzzle game\n\n• Arc Weave, Flux Surge, Nova Blitz & Haze Drift\n• Symbol-matching puzzle — not solitaire\n• 32 languages, Game Center rankings\n• Unlimited hints, lofi music, daily challenge",
+    "id": "Build 14 — Original puzzle game\n\n• Arc Weave, Flux Surge, Nova Blitz & Haze Drift\n• Symbol-matching puzzle — not solitaire\n• 32 languages, Game Center rankings\n• Unlimited hints, lofi music, daily challenge",
+    "ms": "Build 14 — Original puzzle game\n\n• Arc Weave, Flux Surge, Nova Blitz & Haze Drift\n• Symbol-matching puzzle — not solitaire\n• 32 languages, Game Center rankings\n• Unlimited hints, lofi music, daily challenge",
+    "ca": "Build 14 — Puzzle original\n\n• Tejido Arcano, Oleada Flux, Nova Blitz y Bruma Serena\n• Puzzle de símbolos — no es solitario\n• 32 idiomas y rankings Game Center\n• Pistas ilimitadas, música lofi, desafío diario",
+    "cs": "Build 14 — Original puzzle game\n\n• Arc Weave, Flux Surge, Nova Blitz & Haze Drift\n• Symbol-matching puzzle — not solitaire\n• 32 languages, Game Center rankings\n• Unlimited hints, lofi music, daily challenge",
+    "el": "Build 14 — Original puzzle game\n\n• Arc Weave, Flux Surge, Nova Blitz & Haze Drift\n• Symbol-matching puzzle — not solitaire\n• 32 languages, Game Center rankings\n• Unlimited hints, lofi music, daily challenge",
+    "hu": "Build 14 — Original puzzle game\n\n• Arc Weave, Flux Surge, Nova Blitz & Haze Drift\n• Symbol-matching puzzle — not solitaire\n• 32 languages, Game Center rankings\n• Unlimited hints, lofi music, daily challenge",
+    "ro": "Build 14 — Original puzzle game\n\n• Arc Weave, Flux Surge, Nova Blitz & Haze Drift\n• Symbol-matching puzzle — not solitaire\n• 32 languages, Game Center rankings\n• Unlimited hints, lofi music, daily challenge",
+    "sk": "Build 14 — Original puzzle game\n\n• Arc Weave, Flux Surge, Nova Blitz & Haze Drift\n• Symbol-matching puzzle — not solitaire\n• 32 languages, Game Center rankings\n• Unlimited hints, lofi music, daily challenge",
+    "uk": "Build 14 — Оригинальная головоломка\n\n• Ткань Дуги, Поток Всплеск, Нова Блиц, Туманный Дрейф\n• Не пасьянс\n• 32 языка, Game Center",
+    "hi": "Build 14 — Original puzzle game\n\n• Arc Weave, Flux Surge, Nova Blitz & Haze Drift\n• Symbol-matching puzzle — not solitaire\n• 32 languages, Game Center rankings\n• Unlimited hints, lofi music, daily challenge",
+    "ar-SA": "Build 14 — Original puzzle game\n\n• Arc Weave, Flux Surge, Nova Blitz & Haze Drift\n• Symbol-matching puzzle — not solitaire\n• 32 languages, Game Center rankings\n• Unlimited hints, lofi music, daily challenge",
+    "he": "Build 14 — Original puzzle game\n\n• Arc Weave, Flux Surge, Nova Blitz & Haze Drift\n• Symbol-matching puzzle — not solitaire\n• 32 languages, Game Center rankings\n• Unlimited hints, lofi music, daily challenge"
+  },
+  "locales": {
+    "en-US": {
+      "subtitle": "Match Symbols · Brain Puzzle",
+      "keywords": "tile,connect,link,logic,mahjong,zen,combo,offline,free,casual,lofi,daily,challenge,relax,portrait",
+      "description": "Patience Ascent is a free symbol-matching puzzle game for iPhone and iPad — connect tiles, train your brain, and relax with lofi music. Not solitaire. No ads.\n\nWHY PLAYERS LOVE IT\n• Easy to learn in 30 seconds — addictive match-and-clear gameplay\n• Four original modes on one gorgeous 6×8 board\n• Unlimited hints and undo — never stuck\n• Portrait play, no scrolling, perfect for one hand\n• Daily challenge and Game Center leaderboards\n\nFOUR ORIGINAL MODES\n• Arc Weave — connect matching symbols, paths bend twice\n• Flux Surge — chain nearby matches for massive combos\n• Nova Blitz — 90-second score attack, how high can you go?\n• Haze Drift — calm zen mode, play at your own pace\n\nPERFECT FOR\nBrain training, commute breaks, relaxing before sleep, puzzle fans who want something fresh — not another card solitaire clone.\n\nFREE FOREVER\nNo coins, no energy, no shop, no ads. Just puzzles, music, and your best time.\n\nDownload Patience Ascent — the symbol puzzle game built to be different."
+    },
+    "en-GB": {
+      "subtitle": "Match Symbols · Brain Puzzle",
+      "keywords": "tile,connect,link,logic,mahjong,zen,combo,offline,free,casual,lofi,daily,challenge,relax,portrait",
+      "description": "Patience Ascent is a free symbol-matching puzzle game for iPhone and iPad — connect tiles, train your brain, and relax with lofi music. Not solitaire. No ads.\n\nWHY PLAYERS LOVE IT\n• Easy to learn in 30 seconds — addictive match-and-clear gameplay\n• Four original modes on one gorgeous 6×8 board\n• Unlimited hints and undo — never stuck\n• Portrait play, no scrolling, perfect for one hand\n• Daily challenge and Game Center leaderboards\n\nFOUR ORIGINAL MODES\n• Arc Weave — connect matching symbols, paths bend twice\n• Flux Surge — chain nearby matches for massive combos\n• Nova Blitz — 90-second score attack, how high can you go?\n• Haze Drift — calm zen mode, play at your own pace\n\nPERFECT FOR\nBrain training, commute breaks, relaxing before sleep, puzzle fans who want something fresh — not another card solitaire clone.\n\nFREE FOREVER\nNo coins, no energy, no shop, no ads. Just puzzles, music, and your best time.\n\nDownload Patience Ascent — the symbol puzzle game built to be different."
+    },
+    "en-AU": {
+      "subtitle": "Match Symbols · Brain Puzzle",
+      "keywords": "tile,connect,link,logic,mahjong,zen,combo,offline,free,casual,lofi,daily,challenge,relax,portrait",
+      "description": "Patience Ascent is a free symbol-matching puzzle game for iPhone and iPad — connect tiles, train your brain, and relax with lofi music. Not solitaire. No ads.\n\nWHY PLAYERS LOVE IT\n• Easy to learn in 30 seconds — addictive match-and-clear gameplay\n• Four original modes on one gorgeous 6×8 board\n• Unlimited hints and undo — never stuck\n• Portrait play, no scrolling, perfect for one hand\n• Daily challenge and Game Center leaderboards\n\nFOUR ORIGINAL MODES\n• Arc Weave — connect matching symbols, paths bend twice\n• Flux Surge — chain nearby matches for massive combos\n• Nova Blitz — 90-second score attack, how high can you go?\n• Haze Drift — calm zen mode, play at your own pace\n\nPERFECT FOR\nBrain training, commute breaks, relaxing before sleep, puzzle fans who want something fresh — not another card solitaire clone.\n\nFREE FOREVER\nNo coins, no energy, no shop, no ads. Just puzzles, music, and your best time.\n\nDownload Patience Ascent — the symbol puzzle game built to be different."
+    },
+    "en-CA": {
+      "subtitle": "Match Symbols · Brain Puzzle",
+      "keywords": "tile,connect,link,logic,mahjong,zen,combo,offline,free,casual,lofi,daily,challenge,relax,portrait",
+      "description": "Patience Ascent is a free symbol-matching puzzle game for iPhone and iPad — connect tiles, train your brain, and relax with lofi music. Not solitaire. No ads.\n\nWHY PLAYERS LOVE IT\n• Easy to learn in 30 seconds — addictive match-and-clear gameplay\n• Four original modes on one gorgeous 6×8 board\n• Unlimited hints and undo — never stuck\n• Portrait play, no scrolling, perfect for one hand\n• Daily challenge and Game Center leaderboards\n\nFOUR ORIGINAL MODES\n• Arc Weave — connect matching symbols, paths bend twice\n• Flux Surge — chain nearby matches for massive combos\n• Nova Blitz — 90-second score attack, how high can you go?\n• Haze Drift — calm zen mode, play at your own pace\n\nPERFECT FOR\nBrain training, commute breaks, relaxing before sleep, puzzle fans who want something fresh — not another card solitaire clone.\n\nFREE FOREVER\nNo coins, no energy, no shop, no ads. Just puzzles, music, and your best time.\n\nDownload Patience Ascent — the symbol puzzle game built to be different."
+    },
+    "es-ES": {
+      "subtitle": "Empareja · Puzzle Cerebral",
+      "keywords": "tile,conectar,enlace,logica,mahjong,zen,combo,offline,gratis,casual,lofi,diario,reto,relajar,vertica",
+      "description": "Patience Ascent es un puzzle gratuito de símbolos para iPhone y iPad. Conecta fichas, entrena tu cerebro y relájate con música lofi. No es solitario. Sin anuncios.\n\nPOR QUÉ ENCAJA\n• Aprende en 30 segundos — adictivo y fácil de jugar\n• Cuatro modos originales en un tablero 6×8\n• Pistas y deshacer ilimitados\n• Vertical, sin scroll, ideal con una mano\n• Desafío diario y rankings en Game Center\n\nCUATRO MODOS ORIGINALES\n• Tejido Arcano — conecta símbolos, caminos con dos giros\n• Oleada Flux — encadena parejas cercanas para combos enormes\n• Nova Blitz — 90 segundos, máxima puntuación\n• Bruma Serena — modo zen tranquilo\n\nGRATIS PARA SIEMPRE\nSin monedas, sin energía, sin tienda, sin anuncios.\n\nDescarga Patience Ascent — un puzzle de símbolos diferente a todo lo demás."
+    },
+    "es-MX": {
+      "subtitle": "Empareja · Puzzle Cerebral",
+      "keywords": "tile,conectar,enlace,logica,mahjong,zen,combo,offline,gratis,casual,lofi,diario,reto,relajar,vertica",
+      "description": "Patience Ascent es un puzzle gratuito de símbolos para iPhone y iPad. Conecta fichas, entrena tu cerebro y relájate con música lofi. No es solitario. Sin anuncios.\n\nPOR QUÉ ENCAJA\n• Aprende en 30 segundos — adictivo y fácil de jugar\n• Cuatro modos originales en un tablero 6×8\n• Pistas y deshacer ilimitados\n• Vertical, sin scroll, ideal con una mano\n• Desafío diario y rankings en Game Center\n\nCUATRO MODOS ORIGINALES\n• Tejido Arcano — conecta símbolos, caminos con dos giros\n• Oleada Flux — encadena parejas cercanas para combos enormes\n• Nova Blitz — 90 segundos, máxima puntuación\n• Bruma Serena — modo zen tranquilo\n\nGRATIS PARA SIEMPRE\nSin monedas, sin energía, sin tienda, sin anuncios.\n\nDescarga Patience Ascent — un puzzle de símbolos diferente a todo lo demás."
+    },
+    "fr-FR": {
+      "subtitle": "Symboles · Puzzle Cérébral",
+      "keywords": "tuile,connecter,lien,logique,mahjong,zen,combo,horsligne,gratuit,casual,lofi,quotidien,defi,relax,po",
+      "description": "Patience Ascent est un puzzle gratuit de symboles pour iPhone et iPad. Connectez les tuiles, stimulez votre cerveau, détendez-vous avec de la musique lofi. Pas de solitaire. Sans publicité.\n\nQUATRE MODES ORIGINAUX\n• Tisseau d'Arc — connectez les symboles, chemins à deux virages\n• Flux Ravage — enchaînez les paires proches\n• Nova Blitz — 90 secondes, score maximum\n• Brume Lente — mode zen tranquille\n\nIndices et annulations illimités. Défi quotidien. Classements Game Center. Gratuit, sans pub."
+    },
+    "fr-CA": {
+      "subtitle": "Symboles · Puzzle Cérébral",
+      "keywords": "tuile,connecter,lien,logique,mahjong,zen,combo,horsligne,gratuit,casual,lofi,quotidien,defi,relax,po",
+      "description": "Patience Ascent est un puzzle gratuit de symboles pour iPhone et iPad. Connectez les tuiles, stimulez votre cerveau, détendez-vous avec de la musique lofi. Pas de solitaire. Sans publicité.\n\nQUATRE MODES ORIGINAUX\n• Tisseau d'Arc — connectez les symboles, chemins à deux virages\n• Flux Ravage — enchaînez les paires proches\n• Nova Blitz — 90 secondes, score maximum\n• Brume Lente — mode zen tranquille\n\nIndices et annulations illimités. Défi quotidien. Classements Game Center. Gratuit, sans pub."
+    },
+    "de-DE": {
+      "subtitle": "Symbole Match Denkspiel",
+      "keywords": "kachel,verbinden,link,logik,mahjong,zen,combo,offline,frei,casual,lofi,täglich,challenge,entspann,ho",
+      "description": "Patience Ascent ist ein kostenloses Symbol-Puzzle für iPhone und iPad. Verbinde Kacheln, trainiere dein Gehirn, entspanne mit Lofi-Musik. Kein Solitaire. Keine Werbung.\n\nVIER ORIGINALMODI: Arkangewebe, Flux-Schwall, Nova Blitz, Nebeltreib. Unbegrenzte Tipps. Tägliche Herausforderung. Game Center. Kostenlos."
+    },
+    "it": {
+      "subtitle": "Abbina Simboli · Puzzle",
+      "keywords": "tile,collega,link,logica,mahjong,zen,combo,offline,gratis,casual,lofi,giornaliero,sfida,rilass,verti",
+      "description": "Patience Ascent è un puzzle gratuito di simboli per iPhone e iPad. Collega le tessere, allenati e rilassati con musica lofi. Non solitario. Nessuna pubblicità. Quattro modalità originali, suggerimenti illimitati, sfida giornaliera e Game Center."
+    },
+    "pt-BR": {
+      "subtitle": "Combine Símbolos Puzzle",
+      "keywords": "tile,conectar,link,logica,mahjong,zen,combo,offline,gratis,casual,lofi,diario,desafio,relax,vertical",
+      "description": "Patience Ascent é um puzzle gratuito de símbolos para iPhone e iPad. Conecte peças, treine o cérebro e relaxe com música lofi. Não é solitário. Sem anúncios. Quatro modos originais, dicas ilimitadas, desafio diário e Game Center."
+    },
+    "pt-PT": {
+      "subtitle": "Combine Símbolos Puzzle",
+      "keywords": "tile,conectar,link,logica,mahjong,zen,combo,offline,gratis,casual,lofi,diario,desafio,relax,vertical",
+      "description": "Patience Ascent é um puzzle gratuito de símbolos para iPhone e iPad. Conecte peças, treine o cérebro e relaxe com música lofi. Não é solitário. Sem anúncios. Quatro modos originais, dicas ilimitadas, desafio diário e Game Center."
+    },
+    "ja": {
+      "subtitle": "シンボルマッチ脳トレパズル",
+      "keywords": "タイル,連結,リンク,論理,まちゃん,禅,コンボ,オフライン,無料,カジュアル,ローファイ,デイリー,チャレンジ,リラックス,縦画面",
+      "description": "Patience AscentはiPhone/iPad向けの無料シンボルマッチパズルです。タイルを繋ぎ、脳トレし、ローファイ音楽でリラックス。ソリティアではありません。広告なし。4つのオリジナルモード、無制限ヒント、デイリーチャレンジ、Game Center対応。"
+    },
+    "ko": {
+      "subtitle": "심볼 매칭 두뇌 퍼즐",
+      "keywords": "타일,연결,링크,논리,마작,젠,콤보,오프라인,무료,캐주얼,로파이,데일리,챌린지,휴식,세로",
+      "description": "Patience Ascent는 iPhone/iPad용 무료 심볼 매칭 퍼즐입니다. 타일을 연결하고 두뇌를 훈련하며 로파이 음악으로 휴식하세요. 솔리테어가 아닙니다. 광고 없음. 4가지 오리지널 모드, 무제한 힌트, 일일 챌린지, Game Center."
+    },
+    "zh-Hans": {
+      "subtitle": "符号连线·脑力益智",
+      "keywords": "方块,连接,连线,逻辑,麻将,禅,连击,离线,免费,休闲,低保真,每日,挑战,放松,竖屏",
+      "description": "Patience Ascent 是一款免费的符号连线益智游戏，适用于 iPhone 和 iPad。连接方块、锻炼大脑、用低保真音乐放松。不是纸牌接龙。无广告。四种原创模式、无限提示、每日挑战、Game Center 排行榜。"
+    },
+    "zh-Hant": {
+      "subtitle": "符號連線·腦力益智",
+      "keywords": "方塊,連接,連線,邏輯,麻將,禪,連擊,離線,免費,休閒,低保真,每日,挑戰,放鬆,直向",
+      "description": "Patience Ascent 是一款免費的符號連線益智遊戲，適用於 iPhone 和 iPad。連接方塊、鍛鍊大腦、用低保真音樂放鬆。不是接龍。無廣告。四種原創模式、無限提示、每日挑戰、Game Center 排行榜。"
+    },
+    "ru": {
+      "subtitle": "Символы · Головоломка",
+      "keywords": "плитка,связь,логика,маджонг,дзен,комбо,офлайн,бесплатно,казуал,lofi,ежедневно,челлендж,релакс,портре",
+      "description": "Patience Ascent — бесплатная головоломка со символами для iPhone и iPad. Соединяйте плитки, тренируйте мозг, расслабляйтесь под lofi. Не пасьянс. Без рекламы. Четыре оригинальных режима, безлимитные подсказки, ежедневный вызов."
+    },
+    "nl-NL": {
+      "subtitle": "Match Symbols · Brain Puzzle",
+      "keywords": "tile,connect,link,logic,mahjong,zen,combo,offline,free,casual,lofi,daily,challenge,relax,portrait",
+      "description": "Patience Ascent is a free symbol-matching puzzle game for iPhone and iPad — connect tiles, train your brain, and relax with lofi music. Not solitaire. No ads.\n\nWHY PLAYERS LOVE IT\n• Easy to learn in 30 seconds — addictive match-and-clear gameplay\n• Four original modes on one gorgeous 6×8 board\n• Unlimited hints and undo — never stuck\n• Portrait play, no scrolling, perfect for one hand\n• Daily challenge and Game Center leaderboards\n\nFOUR ORIGINAL MODES\n• Arc Weave — connect matching symbols, paths bend twice\n• Flux Surge — chain nearby matches for massive combos\n• Nova Blitz — 90-second score attack, how high can you go?\n• Haze Drift — calm zen mode, play at your own pace\n\nPERFECT FOR\nBrain training, commute breaks, relaxing before sleep, puzzle fans who want something fresh — not another card solitaire clone.\n\nFREE FOREVER\nNo coins, no energy, no shop, no ads. Just puzzles, music, and your best time.\n\nDownload Patience Ascent — the symbol puzzle game built to be different."
+    },
+    "sv": {
+      "subtitle": "Match Symbols · Brain Puzzle",
+      "keywords": "tile,connect,link,logic,mahjong,zen,combo,offline,free,casual,lofi,daily,challenge,relax,portrait",
+      "description": "Patience Ascent is a free symbol-matching puzzle game for iPhone and iPad — connect tiles, train your brain, and relax with lofi music. Not solitaire. No ads.\n\nWHY PLAYERS LOVE IT\n• Easy to learn in 30 seconds — addictive match-and-clear gameplay\n• Four original modes on one gorgeous 6×8 board\n• Unlimited hints and undo — never stuck\n• Portrait play, no scrolling, perfect for one hand\n• Daily challenge and Game Center leaderboards\n\nFOUR ORIGINAL MODES\n• Arc Weave — connect matching symbols, paths bend twice\n• Flux Surge — chain nearby matches for massive combos\n• Nova Blitz — 90-second score attack, how high can you go?\n• Haze Drift — calm zen mode, play at your own pace\n\nPERFECT FOR\nBrain training, commute breaks, relaxing before sleep, puzzle fans who want something fresh — not another card solitaire clone.\n\nFREE FOREVER\nNo coins, no energy, no shop, no ads. Just puzzles, music, and your best time.\n\nDownload Patience Ascent — the symbol puzzle game built to be different."
+    },
+    "da": {
+      "subtitle": "Match Symbols · Brain Puzzle",
+      "keywords": "tile,connect,link,logic,mahjong,zen,combo,offline,free,casual,lofi,daily,challenge,relax,portrait",
+      "description": "Patience Ascent is a free symbol-matching puzzle game for iPhone and iPad — connect tiles, train your brain, and relax with lofi music. Not solitaire. No ads.\n\nWHY PLAYERS LOVE IT\n• Easy to learn in 30 seconds — addictive match-and-clear gameplay\n• Four original modes on one gorgeous 6×8 board\n• Unlimited hints and undo — never stuck\n• Portrait play, no scrolling, perfect for one hand\n• Daily challenge and Game Center leaderboards\n\nFOUR ORIGINAL MODES\n• Arc Weave — connect matching symbols, paths bend twice\n• Flux Surge — chain nearby matches for massive combos\n• Nova Blitz — 90-second score attack, how high can you go?\n• Haze Drift — calm zen mode, play at your own pace\n\nPERFECT FOR\nBrain training, commute breaks, relaxing before sleep, puzzle fans who want something fresh — not another card solitaire clone.\n\nFREE FOREVER\nNo coins, no energy, no shop, no ads. Just puzzles, music, and your best time.\n\nDownload Patience Ascent — the symbol puzzle game built to be different."
+    },
+    "no": {
+      "subtitle": "Match Symbols · Brain Puzzle",
+      "keywords": "tile,connect,link,logic,mahjong,zen,combo,offline,free,casual,lofi,daily,challenge,relax,portrait",
+      "description": "Patience Ascent is a free symbol-matching puzzle game for iPhone and iPad — connect tiles, train your brain, and relax with lofi music. Not solitaire. No ads.\n\nWHY PLAYERS LOVE IT\n• Easy to learn in 30 seconds — addictive match-and-clear gameplay\n• Four original modes on one gorgeous 6×8 board\n• Unlimited hints and undo — never stuck\n• Portrait play, no scrolling, perfect for one hand\n• Daily challenge and Game Center leaderboards\n\nFOUR ORIGINAL MODES\n• Arc Weave — connect matching symbols, paths bend twice\n• Flux Surge — chain nearby matches for massive combos\n• Nova Blitz — 90-second score attack, how high can you go?\n• Haze Drift — calm zen mode, play at your own pace\n\nPERFECT FOR\nBrain training, commute breaks, relaxing before sleep, puzzle fans who want something fresh — not another card solitaire clone.\n\nFREE FOREVER\nNo coins, no energy, no shop, no ads. Just puzzles, music, and your best time.\n\nDownload Patience Ascent — the symbol puzzle game built to be different."
+    },
+    "fi": {
+      "subtitle": "Match Symbols · Brain Puzzle",
+      "keywords": "tile,connect,link,logic,mahjong,zen,combo,offline,free,casual,lofi,daily,challenge,relax,portrait",
+      "description": "Patience Ascent is a free symbol-matching puzzle game for iPhone and iPad — connect tiles, train your brain, and relax with lofi music. Not solitaire. No ads.\n\nWHY PLAYERS LOVE IT\n• Easy to learn in 30 seconds — addictive match-and-clear gameplay\n• Four original modes on one gorgeous 6×8 board\n• Unlimited hints and undo — never stuck\n• Portrait play, no scrolling, perfect for one hand\n• Daily challenge and Game Center leaderboards\n\nFOUR ORIGINAL MODES\n• Arc Weave — connect matching symbols, paths bend twice\n• Flux Surge — chain nearby matches for massive combos\n• Nova Blitz — 90-second score attack, how high can you go?\n• Haze Drift — calm zen mode, play at your own pace\n\nPERFECT FOR\nBrain training, commute breaks, relaxing before sleep, puzzle fans who want something fresh — not another card solitaire clone.\n\nFREE FOREVER\nNo coins, no energy, no shop, no ads. Just puzzles, music, and your best time.\n\nDownload Patience Ascent — the symbol puzzle game built to be different."
+    },
+    "pl": {
+      "subtitle": "Match Symbols · Brain Puzzle",
+      "keywords": "tile,connect,link,logic,mahjong,zen,combo,offline,free,casual,lofi,daily,challenge,relax,portrait",
+      "description": "Patience Ascent is a free symbol-matching puzzle game for iPhone and iPad — connect tiles, train your brain, and relax with lofi music. Not solitaire. No ads.\n\nWHY PLAYERS LOVE IT\n• Easy to learn in 30 seconds — addictive match-and-clear gameplay\n• Four original modes on one gorgeous 6×8 board\n• Unlimited hints and undo — never stuck\n• Portrait play, no scrolling, perfect for one hand\n• Daily challenge and Game Center leaderboards\n\nFOUR ORIGINAL MODES\n• Arc Weave — connect matching symbols, paths bend twice\n• Flux Surge — chain nearby matches for massive combos\n• Nova Blitz — 90-second score attack, how high can you go?\n• Haze Drift — calm zen mode, play at your own pace\n\nPERFECT FOR\nBrain training, commute breaks, relaxing before sleep, puzzle fans who want something fresh — not another card solitaire clone.\n\nFREE FOREVER\nNo coins, no energy, no shop, no ads. Just puzzles, music, and your best time.\n\nDownload Patience Ascent — the symbol puzzle game built to be different."
+    },
+    "tr": {
+      "subtitle": "Match Symbols · Brain Puzzle",
+      "keywords": "tile,connect,link,logic,mahjong,zen,combo,offline,free,casual,lofi,daily,challenge,relax,portrait",
+      "description": "Patience Ascent is a free symbol-matching puzzle game for iPhone and iPad — connect tiles, train your brain, and relax with lofi music. Not solitaire. No ads.\n\nWHY PLAYERS LOVE IT\n• Easy to learn in 30 seconds — addictive match-and-clear gameplay\n• Four original modes on one gorgeous 6×8 board\n• Unlimited hints and undo — never stuck\n• Portrait play, no scrolling, perfect for one hand\n• Daily challenge and Game Center leaderboards\n\nFOUR ORIGINAL MODES\n• Arc Weave — connect matching symbols, paths bend twice\n• Flux Surge — chain nearby matches for massive combos\n• Nova Blitz — 90-second score attack, how high can you go?\n• Haze Drift — calm zen mode, play at your own pace\n\nPERFECT FOR\nBrain training, commute breaks, relaxing before sleep, puzzle fans who want something fresh — not another card solitaire clone.\n\nFREE FOREVER\nNo coins, no energy, no shop, no ads. Just puzzles, music, and your best time.\n\nDownload Patience Ascent — the symbol puzzle game built to be different."
+    },
+    "th": {
+      "subtitle": "Match Symbols · Brain Puzzle",
+      "keywords": "tile,connect,link,logic,mahjong,zen,combo,offline,free,casual,lofi,daily,challenge,relax,portrait",
+      "description": "Patience Ascent is a free symbol-matching puzzle game for iPhone and iPad — connect tiles, train your brain, and relax with lofi music. Not solitaire. No ads.\n\nWHY PLAYERS LOVE IT\n• Easy to learn in 30 seconds — addictive match-and-clear gameplay\n• Four original modes on one gorgeous 6×8 board\n• Unlimited hints and undo — never stuck\n• Portrait play, no scrolling, perfect for one hand\n• Daily challenge and Game Center leaderboards\n\nFOUR ORIGINAL MODES\n• Arc Weave — connect matching symbols, paths bend twice\n• Flux Surge — chain nearby matches for massive combos\n• Nova Blitz — 90-second score attack, how high can you go?\n• Haze Drift — calm zen mode, play at your own pace\n\nPERFECT FOR\nBrain training, commute breaks, relaxing before sleep, puzzle fans who want something fresh — not another card solitaire clone.\n\nFREE FOREVER\nNo coins, no energy, no shop, no ads. Just puzzles, music, and your best time.\n\nDownload Patience Ascent — the symbol puzzle game built to be different."
+    },
+    "vi": {
+      "subtitle": "Match Symbols · Brain Puzzle",
+      "keywords": "tile,connect,link,logic,mahjong,zen,combo,offline,free,casual,lofi,daily,challenge,relax,portrait",
+      "description": "Patience Ascent is a free symbol-matching puzzle game for iPhone and iPad — connect tiles, train your brain, and relax with lofi music. Not solitaire. No ads.\n\nWHY PLAYERS LOVE IT\n• Easy to learn in 30 seconds — addictive match-and-clear gameplay\n• Four original modes on one gorgeous 6×8 board\n• Unlimited hints and undo — never stuck\n• Portrait play, no scrolling, perfect for one hand\n• Daily challenge and Game Center leaderboards\n\nFOUR ORIGINAL MODES\n• Arc Weave — connect matching symbols, paths bend twice\n• Flux Surge — chain nearby matches for massive combos\n• Nova Blitz — 90-second score attack, how high can you go?\n• Haze Drift — calm zen mode, play at your own pace\n\nPERFECT FOR\nBrain training, commute breaks, relaxing before sleep, puzzle fans who want something fresh — not another card solitaire clone.\n\nFREE FOREVER\nNo coins, no energy, no shop, no ads. Just puzzles, music, and your best time.\n\nDownload Patience Ascent — the symbol puzzle game built to be different."
+    },
+    "id": {
+      "subtitle": "Match Symbols · Brain Puzzle",
+      "keywords": "tile,connect,link,logic,mahjong,zen,combo,offline,free,casual,lofi,daily,challenge,relax,portrait",
+      "description": "Patience Ascent is a free symbol-matching puzzle game for iPhone and iPad — connect tiles, train your brain, and relax with lofi music. Not solitaire. No ads.\n\nWHY PLAYERS LOVE IT\n• Easy to learn in 30 seconds — addictive match-and-clear gameplay\n• Four original modes on one gorgeous 6×8 board\n• Unlimited hints and undo — never stuck\n• Portrait play, no scrolling, perfect for one hand\n• Daily challenge and Game Center leaderboards\n\nFOUR ORIGINAL MODES\n• Arc Weave — connect matching symbols, paths bend twice\n• Flux Surge — chain nearby matches for massive combos\n• Nova Blitz — 90-second score attack, how high can you go?\n• Haze Drift — calm zen mode, play at your own pace\n\nPERFECT FOR\nBrain training, commute breaks, relaxing before sleep, puzzle fans who want something fresh — not another card solitaire clone.\n\nFREE FOREVER\nNo coins, no energy, no shop, no ads. Just puzzles, music, and your best time.\n\nDownload Patience Ascent — the symbol puzzle game built to be different."
+    },
+    "ms": {
+      "subtitle": "Match Symbols · Brain Puzzle",
+      "keywords": "tile,connect,link,logic,mahjong,zen,combo,offline,free,casual,lofi,daily,challenge,relax,portrait",
+      "description": "Patience Ascent is a free symbol-matching puzzle game for iPhone and iPad — connect tiles, train your brain, and relax with lofi music. Not solitaire. No ads.\n\nWHY PLAYERS LOVE IT\n• Easy to learn in 30 seconds — addictive match-and-clear gameplay\n• Four original modes on one gorgeous 6×8 board\n• Unlimited hints and undo — never stuck\n• Portrait play, no scrolling, perfect for one hand\n• Daily challenge and Game Center leaderboards\n\nFOUR ORIGINAL MODES\n• Arc Weave — connect matching symbols, paths bend twice\n• Flux Surge — chain nearby matches for massive combos\n• Nova Blitz — 90-second score attack, how high can you go?\n• Haze Drift — calm zen mode, play at your own pace\n\nPERFECT FOR\nBrain training, commute breaks, relaxing before sleep, puzzle fans who want something fresh — not another card solitaire clone.\n\nFREE FOREVER\nNo coins, no energy, no shop, no ads. Just puzzles, music, and your best time.\n\nDownload Patience Ascent — the symbol puzzle game built to be different."
+    },
+    "ca": {
+      "subtitle": "Empareja · Puzzle Cerebral",
+      "keywords": "tile,conectar,enlace,logica,mahjong,zen,combo,offline,gratis,casual,lofi,diario,reto,relajar,vertica",
+      "description": "Patience Ascent es un puzzle gratuito de símbolos para iPhone y iPad. Conecta fichas, entrena tu cerebro y relájate con música lofi. No es solitario. Sin anuncios.\n\nPOR QUÉ ENCAJA\n• Aprende en 30 segundos — adictivo y fácil de jugar\n• Cuatro modos originales en un tablero 6×8\n• Pistas y deshacer ilimitados\n• Vertical, sin scroll, ideal con una mano\n• Desafío diario y rankings en Game Center\n\nCUATRO MODOS ORIGINALES\n• Tejido Arcano — conecta símbolos, caminos con dos giros\n• Oleada Flux — encadena parejas cercanas para combos enormes\n• Nova Blitz — 90 segundos, máxima puntuación\n• Bruma Serena — modo zen tranquilo\n\nGRATIS PARA SIEMPRE\nSin monedas, sin energía, sin tienda, sin anuncios.\n\nDescarga Patience Ascent — un puzzle de símbolos diferente a todo lo demás."
+    },
+    "cs": {
+      "subtitle": "Match Symbols · Brain Puzzle",
+      "keywords": "tile,connect,link,logic,mahjong,zen,combo,offline,free,casual,lofi,daily,challenge,relax,portrait",
+      "description": "Patience Ascent is a free symbol-matching puzzle game for iPhone and iPad — connect tiles, train your brain, and relax with lofi music. Not solitaire. No ads.\n\nWHY PLAYERS LOVE IT\n• Easy to learn in 30 seconds — addictive match-and-clear gameplay\n• Four original modes on one gorgeous 6×8 board\n• Unlimited hints and undo — never stuck\n• Portrait play, no scrolling, perfect for one hand\n• Daily challenge and Game Center leaderboards\n\nFOUR ORIGINAL MODES\n• Arc Weave — connect matching symbols, paths bend twice\n• Flux Surge — chain nearby matches for massive combos\n• Nova Blitz — 90-second score attack, how high can you go?\n• Haze Drift — calm zen mode, play at your own pace\n\nPERFECT FOR\nBrain training, commute breaks, relaxing before sleep, puzzle fans who want something fresh — not another card solitaire clone.\n\nFREE FOREVER\nNo coins, no energy, no shop, no ads. Just puzzles, music, and your best time.\n\nDownload Patience Ascent — the symbol puzzle game built to be different."
+    },
+    "el": {
+      "subtitle": "Match Symbols · Brain Puzzle",
+      "keywords": "tile,connect,link,logic,mahjong,zen,combo,offline,free,casual,lofi,daily,challenge,relax,portrait",
+      "description": "Patience Ascent is a free symbol-matching puzzle game for iPhone and iPad — connect tiles, train your brain, and relax with lofi music. Not solitaire. No ads.\n\nWHY PLAYERS LOVE IT\n• Easy to learn in 30 seconds — addictive match-and-clear gameplay\n• Four original modes on one gorgeous 6×8 board\n• Unlimited hints and undo — never stuck\n• Portrait play, no scrolling, perfect for one hand\n• Daily challenge and Game Center leaderboards\n\nFOUR ORIGINAL MODES\n• Arc Weave — connect matching symbols, paths bend twice\n• Flux Surge — chain nearby matches for massive combos\n• Nova Blitz — 90-second score attack, how high can you go?\n• Haze Drift — calm zen mode, play at your own pace\n\nPERFECT FOR\nBrain training, commute breaks, relaxing before sleep, puzzle fans who want something fresh — not another card solitaire clone.\n\nFREE FOREVER\nNo coins, no energy, no shop, no ads. Just puzzles, music, and your best time.\n\nDownload Patience Ascent — the symbol puzzle game built to be different."
+    },
+    "hu": {
+      "subtitle": "Match Symbols · Brain Puzzle",
+      "keywords": "tile,connect,link,logic,mahjong,zen,combo,offline,free,casual,lofi,daily,challenge,relax,portrait",
+      "description": "Patience Ascent is a free symbol-matching puzzle game for iPhone and iPad — connect tiles, train your brain, and relax with lofi music. Not solitaire. No ads.\n\nWHY PLAYERS LOVE IT\n• Easy to learn in 30 seconds — addictive match-and-clear gameplay\n• Four original modes on one gorgeous 6×8 board\n• Unlimited hints and undo — never stuck\n• Portrait play, no scrolling, perfect for one hand\n• Daily challenge and Game Center leaderboards\n\nFOUR ORIGINAL MODES\n• Arc Weave — connect matching symbols, paths bend twice\n• Flux Surge — chain nearby matches for massive combos\n• Nova Blitz — 90-second score attack, how high can you go?\n• Haze Drift — calm zen mode, play at your own pace\n\nPERFECT FOR\nBrain training, commute breaks, relaxing before sleep, puzzle fans who want something fresh — not another card solitaire clone.\n\nFREE FOREVER\nNo coins, no energy, no shop, no ads. Just puzzles, music, and your best time.\n\nDownload Patience Ascent — the symbol puzzle game built to be different."
+    },
+    "ro": {
+      "subtitle": "Match Symbols · Brain Puzzle",
+      "keywords": "tile,connect,link,logic,mahjong,zen,combo,offline,free,casual,lofi,daily,challenge,relax,portrait",
+      "description": "Patience Ascent is a free symbol-matching puzzle game for iPhone and iPad — connect tiles, train your brain, and relax with lofi music. Not solitaire. No ads.\n\nWHY PLAYERS LOVE IT\n• Easy to learn in 30 seconds — addictive match-and-clear gameplay\n• Four original modes on one gorgeous 6×8 board\n• Unlimited hints and undo — never stuck\n• Portrait play, no scrolling, perfect for one hand\n• Daily challenge and Game Center leaderboards\n\nFOUR ORIGINAL MODES\n• Arc Weave — connect matching symbols, paths bend twice\n• Flux Surge — chain nearby matches for massive combos\n• Nova Blitz — 90-second score attack, how high can you go?\n• Haze Drift — calm zen mode, play at your own pace\n\nPERFECT FOR\nBrain training, commute breaks, relaxing before sleep, puzzle fans who want something fresh — not another card solitaire clone.\n\nFREE FOREVER\nNo coins, no energy, no shop, no ads. Just puzzles, music, and your best time.\n\nDownload Patience Ascent — the symbol puzzle game built to be different."
+    },
+    "sk": {
+      "subtitle": "Match Symbols · Brain Puzzle",
+      "keywords": "tile,connect,link,logic,mahjong,zen,combo,offline,free,casual,lofi,daily,challenge,relax,portrait",
+      "description": "Patience Ascent is a free symbol-matching puzzle game for iPhone and iPad — connect tiles, train your brain, and relax with lofi music. Not solitaire. No ads.\n\nWHY PLAYERS LOVE IT\n• Easy to learn in 30 seconds — addictive match-and-clear gameplay\n• Four original modes on one gorgeous 6×8 board\n• Unlimited hints and undo — never stuck\n• Portrait play, no scrolling, perfect for one hand\n• Daily challenge and Game Center leaderboards\n\nFOUR ORIGINAL MODES\n• Arc Weave — connect matching symbols, paths bend twice\n• Flux Surge — chain nearby matches for massive combos\n• Nova Blitz — 90-second score attack, how high can you go?\n• Haze Drift — calm zen mode, play at your own pace\n\nPERFECT FOR\nBrain training, commute breaks, relaxing before sleep, puzzle fans who want something fresh — not another card solitaire clone.\n\nFREE FOREVER\nNo coins, no energy, no shop, no ads. Just puzzles, music, and your best time.\n\nDownload Patience Ascent — the symbol puzzle game built to be different."
+    },
+    "uk": {
+      "subtitle": "Символы · Головоломка",
+      "keywords": "плитка,связь,логика,маджонг,дзен,комбо,офлайн,бесплатно,казуал,lofi,ежедневно,челлендж,релакс,портре",
+      "description": "Patience Ascent — бесплатная головоломка со символами для iPhone и iPad. Соединяйте плитки, тренируйте мозг, расслабляйтесь под lofi. Не пасьянс. Без рекламы. Четыре оригинальных режима, безлимитные подсказки, ежедневный вызов."
+    },
+    "hi": {
+      "subtitle": "Match Symbols · Brain Puzzle",
+      "keywords": "tile,connect,link,logic,mahjong,zen,combo,offline,free,casual,lofi,daily,challenge,relax,portrait",
+      "description": "Patience Ascent is a free symbol-matching puzzle game for iPhone and iPad — connect tiles, train your brain, and relax with lofi music. Not solitaire. No ads.\n\nWHY PLAYERS LOVE IT\n• Easy to learn in 30 seconds — addictive match-and-clear gameplay\n• Four original modes on one gorgeous 6×8 board\n• Unlimited hints and undo — never stuck\n• Portrait play, no scrolling, perfect for one hand\n• Daily challenge and Game Center leaderboards\n\nFOUR ORIGINAL MODES\n• Arc Weave — connect matching symbols, paths bend twice\n• Flux Surge — chain nearby matches for massive combos\n• Nova Blitz — 90-second score attack, how high can you go?\n• Haze Drift — calm zen mode, play at your own pace\n\nPERFECT FOR\nBrain training, commute breaks, relaxing before sleep, puzzle fans who want something fresh — not another card solitaire clone.\n\nFREE FOREVER\nNo coins, no energy, no shop, no ads. Just puzzles, music, and your best time.\n\nDownload Patience Ascent — the symbol puzzle game built to be different."
+    },
+    "ar-SA": {
+      "subtitle": "Match Symbols · Brain Puzzle",
+      "keywords": "tile,connect,link,logic,mahjong,zen,combo,offline,free,casual,lofi,daily,challenge,relax,portrait",
+      "description": "Patience Ascent is a free symbol-matching puzzle game for iPhone and iPad — connect tiles, train your brain, and relax with lofi music. Not solitaire. No ads.\n\nWHY PLAYERS LOVE IT\n• Easy to learn in 30 seconds — addictive match-and-clear gameplay\n• Four original modes on one gorgeous 6×8 board\n• Unlimited hints and undo — never stuck\n• Portrait play, no scrolling, perfect for one hand\n• Daily challenge and Game Center leaderboards\n\nFOUR ORIGINAL MODES\n• Arc Weave — connect matching symbols, paths bend twice\n• Flux Surge — chain nearby matches for massive combos\n• Nova Blitz — 90-second score attack, how high can you go?\n• Haze Drift — calm zen mode, play at your own pace\n\nPERFECT FOR\nBrain training, commute breaks, relaxing before sleep, puzzle fans who want something fresh — not another card solitaire clone.\n\nFREE FOREVER\nNo coins, no energy, no shop, no ads. Just puzzles, music, and your best time.\n\nDownload Patience Ascent — the symbol puzzle game built to be different."
+    },
+    "he": {
+      "subtitle": "Match Symbols · Brain Puzzle",
+      "keywords": "tile,connect,link,logic,mahjong,zen,combo,offline,free,casual,lofi,daily,challenge,relax,portrait",
+      "description": "Patience Ascent is a free symbol-matching puzzle game for iPhone and iPad — connect tiles, train your brain, and relax with lofi music. Not solitaire. No ads.\n\nWHY PLAYERS LOVE IT\n• Easy to learn in 30 seconds — addictive match-and-clear gameplay\n• Four original modes on one gorgeous 6×8 board\n• Unlimited hints and undo — never stuck\n• Portrait play, no scrolling, perfect for one hand\n• Daily challenge and Game Center leaderboards\n\nFOUR ORIGINAL MODES\n• Arc Weave — connect matching symbols, paths bend twice\n• Flux Surge — chain nearby matches for massive combos\n• Nova Blitz — 90-second score attack, how high can you go?\n• Haze Drift — calm zen mode, play at your own pace\n\nPERFECT FOR\nBrain training, commute breaks, relaxing before sleep, puzzle fans who want something fresh — not another card solitaire clone.\n\nFREE FOREVER\nNo coins, no energy, no shop, no ads. Just puzzles, music, and your best time.\n\nDownload Patience Ascent — the symbol puzzle game built to be different."
+    }
+  }
+}

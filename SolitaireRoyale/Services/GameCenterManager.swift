@@ -46,6 +46,16 @@ final class GameCenterManager: NSObject, ObservableObject {
         ) { _ in }
     }
 
+    func submitHighScore(_ score: Int, mode: SolitaireMode) {
+        guard isAuthenticated, score > 0 else { return }
+        GKLeaderboard.submitScore(
+            score,
+            context: 0,
+            player: GKLocalPlayer.local,
+            leaderboardIDs: [LeaderboardID.bestTime(mode)]
+        ) { _ in }
+    }
+
     func submitBestTime(_ seconds: TimeInterval, mode: SolitaireMode) {
         guard isAuthenticated, seconds > 0 else { return }
         let score = max(1, Int(seconds.rounded()))
