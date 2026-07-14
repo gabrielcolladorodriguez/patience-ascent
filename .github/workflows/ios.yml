@@ -20,6 +20,7 @@ jobs:
         run: |
           sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
           xcodebuild -version
+          xcrun simctl list runtimes | head -20 || true
 
       - name: Build for iOS device (sin firma, igual que Codemagic archive)
         run: |
