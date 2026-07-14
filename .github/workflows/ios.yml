@@ -26,7 +26,7 @@ jobs:
           xcodebuild \
             -project SolitaireRoyale.xcodeproj \
             -scheme SolitaireRoyale \
-            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+            -destination 'generic/platform=iOS Simulator' \
             -configuration Release \
             CODE_SIGNING_ALLOWED=NO \
             build
