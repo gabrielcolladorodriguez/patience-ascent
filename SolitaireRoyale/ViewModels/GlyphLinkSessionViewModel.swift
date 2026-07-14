@@ -118,7 +118,7 @@ final class GlyphLinkSessionViewModel: ObservableObject {
         case .matched(let a, let b, let won):
             startTimerIfNeeded()
             moves += 1
-            applyCombo(for: a, b)
+            applyCombo(for: a, b: b)
             selected = nil
             flashPair = (a, b)
             audio.cardPlace()
