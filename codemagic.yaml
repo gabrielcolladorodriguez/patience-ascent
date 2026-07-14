@@ -15,7 +15,7 @@ workflows:
         APPLE_TEAM_ID: T8GC6LS6RS
         XCODE_PROJECT: SolitaireRoyale.xcodeproj
         XCODE_SCHEME: SolitaireRoyale
-      xcode: latest
+      xcode: 16.4
 
     scripts:
       - name: Set up code signing
@@ -63,10 +63,16 @@ workflows:
       - name: Build IPA
         script: |
           set -ex
-          xcode-project build-ipa \
+          if ! xcode-project build-ipa \
             --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
             --scheme "$XCODE_SCHEME" \
-            --config Release
+            --config Release; then
+            echo "========== xcodebuild errors (last 120 lines) =========="
+            for log in /tmp/xcodebuild_logs/*.log; do
+              [ -f "$log" ] && tail -120 "$log"
+            done
+            exit 1
+          fi
 
     artifacts:
       - build/ios/ipa/*.ipa
