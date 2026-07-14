@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - Image loading
+
 struct BundleImage: View {
     let name: String
     var folder: String = "GameAssets"
@@ -9,7 +11,8 @@ struct BundleImage: View {
             Image(uiImage: uiImage)
                 .resizable()
         } else {
-            Rectangle().fill(Color.gray.opacity(0.3))
+            RoundedRectangle(cornerRadius: 6)
+                .fill(AppTheme.panelFill)
         }
     }
 
@@ -25,6 +28,177 @@ struct BundleImage: View {
         return nil
     }
 }
+
+// MARK: - Backgrounds
+
+struct GameBackground: View {
+    var body: some View {
+        ZStack {
+            LinearGradient(
+                colors: [AppTheme.feltTop, AppTheme.feltBottom],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            RadialGradient(
+                colors: [Color.white.opacity(0.08), .clear],
+                center: .top,
+                startRadius: 10,
+                endRadius: 500
+            )
+        }
+        .ignoresSafeArea()
+    }
+}
+
+struct GameTableSurface<Content: View>: View {
+    @ViewBuilder let content: Content
+
+    var body: some View {
+        content
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(AppTheme.tableSurface)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 20)
+                            .stroke(AppTheme.tableBorder, lineWidth: 1)
+                    )
+                    .shadow(color: .black.opacity(0.12), radius: 8, y: 4)
+            )
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+    }
+}
+
+// MARK: - Buttons
+
+struct AppButton: View {
+    let title: String
+    var systemImage: String? = nil
+    var style: Style = .primary
+    let action: () -> Void
+
+    enum Style { case primary, secondary, compact }
+
+    var body: some View {
+        Button {
+            AudioManager.shared.click()
+            action()
+        } label: {
+            HStack(spacing: 8) {
+                if let systemImage {
+                    Image(systemName: systemImage)
+                        .font(style == .compact ? .caption.weight(.bold) : .body.weight(.semibold))
+                }
+                Text(title)
+                    .font(style == .compact ? .caption.weight(.bold) : .headline.weight(.bold))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+            }
+            .foregroundStyle(foreground)
+            .frame(maxWidth: .infinity)
+            .frame(height: style == .compact ? 40 : AppTheme.buttonHeight)
+            .background(background)
+            .clipShape(RoundedRectangle(cornerRadius: style == .compact ? 12 : AppTheme.cornerRadius))
+            .overlay(
+                RoundedRectangle(cornerRadius: style == .compact ? 12 : AppTheme.cornerRadius)
+                    .stroke(border, lineWidth: style == .secondary ? 1.5 : 0)
+            )
+            .shadow(color: style == .primary ? .black.opacity(0.18) : .clear, radius: 4, y: 2)
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var foreground: Color {
+        switch style {
+        case .primary: return .white
+        case .secondary: return AppTheme.textOnGreen
+        case .compact: return AppTheme.textOnTable
+        }
+    }
+
+    @ViewBuilder
+    private var background: some View {
+        switch style {
+        case .primary:
+            LinearGradient(
+                colors: [AppTheme.accent, AppTheme.accentPressed],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+        case .secondary:
+            AppTheme.panelFill
+        case .compact:
+            Color.white
+        }
+    }
+
+    private var border: Color {
+        style == .secondary ? AppTheme.panelStroke : .clear
+    }
+}
+
+struct NavBackButton: View {
+    let action: () -> Void
+
+    var body: some View {
+        Button {
+            AudioManager.shared.click()
+            action()
+        } label: {
+            Image(systemName: "chevron.left")
+                .font(.body.weight(.bold))
+                .foregroundStyle(AppTheme.textOnGreen)
+                .frame(width: 40, height: 40)
+                .background(Circle().fill(AppTheme.panelFill))
+                .overlay(Circle().stroke(AppTheme.panelStroke, lineWidth: 1))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Volver")
+    }
+}
+
+struct ScreenHeader: View {
+    let title: String
+    let onBack: () -> Void
+    var showCoins: Bool = true
+
+    var body: some View {
+        HStack(spacing: 12) {
+            NavBackButton(action: onBack)
+            Text(title)
+                .font(.title2.weight(.bold))
+                .foregroundStyle(AppTheme.textOnGreen)
+            Spacer()
+            if showCoins { CoinBar() }
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 10)
+    }
+}
+
+// MARK: - Panels
+
+struct AppPanel<Content: View>: View {
+    var onTable: Bool = false
+    @ViewBuilder let content: Content
+
+    var body: some View {
+        content
+            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(
+                RoundedRectangle(cornerRadius: AppTheme.cornerRadius)
+                    .fill(onTable ? Color.white : AppTheme.panelFill)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: AppTheme.cornerRadius)
+                            .stroke(onTable ? AppTheme.tableBorder : AppTheme.panelStroke, lineWidth: 1)
+                    )
+            )
+    }
+}
+
+// MARK: - Cards
 
 struct CardFaceView: View {
     let card: PlayingCard?
@@ -44,48 +218,15 @@ struct CardFaceView: View {
             }
         }
         .frame(width: width)
-        .scaleEffect(lifted ? 1.06 : 1)
-        .offset(y: lifted ? -6 : 0)
+        .scaleEffect(lifted ? 1.05 : 1)
+        .offset(y: lifted ? -5 : 0)
         .animation(.spring(response: 0.28, dampingFraction: 0.72), value: lifted)
         .overlay(
             RoundedRectangle(cornerRadius: 6)
-                .stroke(highlighted ? Color.yellow : Color.clear, lineWidth: 3)
-                .shadow(color: highlighted ? .yellow.opacity(0.6) : .clear, radius: 6)
+                .stroke(highlighted ? AppTheme.gold : Color.clear, lineWidth: 3)
+                .shadow(color: highlighted ? AppTheme.gold.opacity(0.5) : .clear, radius: 5)
         )
-        .shadow(color: .black.opacity(lifted ? 0.45 : 0.25), radius: lifted ? 8 : 2, x: 0, y: lifted ? 6 : 2)
-    }
-}
-
-struct KenneyButton: View {
-    let title: String
-    let icon: String?
-    var style: ButtonStyleKind = .primary
-    let action: () -> Void
-
-    enum ButtonStyleKind { case primary, secondary }
-
-    var body: some View {
-        Button(action: action) {
-            ZStack {
-                BundleImage(
-                    name: style == .primary ? "button_primary.png" : "button_secondary.png",
-                    folder: "GameAssets/UI"
-                )
-                .aspectRatio(3.2, contentMode: .fit)
-                HStack(spacing: 8) {
-                    if let icon {
-                        BundleImage(name: "\(icon).png", folder: "GameAssets/Icons")
-                            .frame(width: 22, height: 22)
-                    }
-                    Text(title)
-                        .font(.headline.weight(.bold))
-                        .foregroundStyle(.white)
-                        .shadow(radius: 1)
-                }
-                .padding(.horizontal, 8)
-            }
-        }
-        .buttonStyle(.plain)
+        .shadow(color: .black.opacity(lifted ? 0.25 : 0.12), radius: lifted ? 6 : 2, y: lifted ? 4 : 1)
     }
 }
 
@@ -95,39 +236,19 @@ struct CoinBar: View {
     var body: some View {
         HStack(spacing: 6) {
             BundleImage(name: "coin.png", folder: "GameAssets/Icons")
-                .frame(width: 28, height: 28)
+                .frame(width: 22, height: 22)
             Text("\(progress.coins)")
-                .font(.title3.weight(.heavy))
-                .foregroundStyle(.yellow)
-                .shadow(color: .black, radius: 1)
+                .font(.subheadline.weight(.heavy))
+                .foregroundStyle(AppTheme.gold)
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 6)
         .background(
-            BundleImage(name: "panel.png", folder: "GameAssets/UI")
-                .opacity(0.9)
+            Capsule()
+                .fill(AppTheme.panelFill)
+                .overlay(Capsule().stroke(AppTheme.panelStroke, lineWidth: 1))
         )
     }
 }
 
-struct GameBackground: View {
-    var body: some View {
-        ZStack {
-            LinearGradient(
-                colors: [
-                    Color(red: 0.05, green: 0.28, blue: 0.14),
-                    Color(red: 0.02, green: 0.12, blue: 0.08)
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            RadialGradient(
-                colors: [Color.white.opacity(0.06), .clear],
-                center: .top,
-                startRadius: 20,
-                endRadius: 420
-            )
-        }
-        .ignoresSafeArea()
-    }
-}
+// Legacy removed — use AppButton

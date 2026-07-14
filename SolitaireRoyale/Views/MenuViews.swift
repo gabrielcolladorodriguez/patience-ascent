@@ -8,65 +8,60 @@ struct MainMenuView: View {
     var body: some View {
         ZStack {
             GameBackground()
-            VStack(spacing: 20) {
-                Spacer()
-                BundleImage(name: "trophy.png", folder: "GameAssets/Icons")
-                    .frame(width: 72, height: 72)
-                Text(AppIdentity.name)
-                    .font(.system(size: 34, weight: .black, design: .rounded))
-                    .foregroundStyle(.white)
-                Text(AppIdentity.tagline)
-                    .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.8))
+            VStack(spacing: 18) {
+                Spacer(minLength: 8)
 
-                levelBar
+                VStack(spacing: 6) {
+                    Image(systemName: "suit.spade.fill")
+                        .font(.system(size: 44))
+                        .foregroundStyle(AppTheme.gold)
+                    Text(AppIdentity.name)
+                        .font(.system(size: 32, weight: .black, design: .rounded))
+                        .foregroundStyle(AppTheme.textOnGreen)
+                    Text("Solitarios sencillos en vertical")
+                        .font(.subheadline)
+                        .foregroundStyle(AppTheme.textMutedOnGreen)
+                }
 
-                HStack(spacing: 16) {
-                    statPill(title: "Racha", value: "\(progress.streak)")
-                    statPill(title: "Victorias", value: "\(progress.wins.values.reduce(0, +))")
-                    statPill(title: "Nivel", value: "\(progress.level)")
+                HStack(spacing: 12) {
+                    miniStat("Victorias", "\(progress.wins.values.reduce(0, +))")
+                    miniStat("Racha", "\(progress.streak)")
+                    miniStat("Nivel", "\(progress.level)")
                 }
 
                 if !progress.dailyChallenge.completed {
                     dailyChallengeCard
                 }
 
-                VStack(spacing: 12) {
-                    KenneyButton(title: "JUGAR", icon: "play", style: .primary) {
-                        AudioManager.shared.click()
+                VStack(spacing: 10) {
+                    AppButton(title: "Jugar Klondike", systemImage: "play.fill", style: .primary) {
+                        route = .game(.klondike, daily: false)
+                    }
+
+                    AppButton(title: "Elegir modo", systemImage: "square.grid.2x2.fill", style: .secondary) {
                         route = .modes
                     }
+
                     HStack(spacing: 10) {
-                        KenneyButton(title: "TIENDA", icon: "shop", style: .secondary) {
-                            AudioManager.shared.click()
-                            route = .shop
-                        }
-                        KenneyButton(title: "LOGROS", icon: "trophy", style: .secondary) {
-                            AudioManager.shared.click()
-                            route = .achievements
-                        }
-                    }
-                    HStack(spacing: 10) {
-                        KenneyButton(title: "STATS", icon: "star", style: .secondary) {
-                            AudioManager.shared.click()
+                        AppButton(title: "Stats", systemImage: "chart.bar.fill", style: .secondary) {
                             route = .stats
                         }
-                        KenneyButton(title: "AJUSTES", icon: "home", style: .secondary) {
-                            AudioManager.shared.click()
+                        AppButton(title: "Ajustes", systemImage: "gearshape.fill", style: .secondary) {
                             route = .settings
                         }
                     }
+
                     if progress.canClaimDaily {
-                        KenneyButton(title: "RECOMPENSA DIARIA", icon: "coin", style: .primary) {
+                        AppButton(title: "Recompensa diaria", systemImage: "gift.fill", style: .primary) {
                             dailyReward = progress.claimDailyReward()
                             AudioManager.shared.win()
                         }
                     }
                 }
-                .padding(.horizontal, 28)
+                .padding(.horizontal, 24)
 
                 CoinBar()
-                Spacer()
+                Spacer(minLength: 12)
             }
         }
         .alert("¡Recompensa diaria!", isPresented: .init(
@@ -77,20 +72,25 @@ struct MainMenuView: View {
         } message: {
             Text("Has recibido \(dailyReward) monedas")
         }
-        .onAppear {
-            AudioManager.shared.playMusic("menu_music.ogg")
-        }
+        .onAppear { AudioManager.shared.playMusic("menu_music.wav") }
     }
 
-    private var levelBar: some View {
-        VStack(spacing: 4) {
-            ProgressView(value: progress.xpProgress)
-                .tint(.yellow)
-                .frame(width: 220)
-            Text("Nivel \(progress.level) · \(progress.xp % progress.xpForNextLevel)/\(progress.xpForNextLevel) XP")
+    private func miniStat(_ title: String, _ value: String) -> some View {
+        VStack(spacing: 2) {
+            Text(value)
+                .font(.headline.weight(.bold))
+                .foregroundStyle(AppTheme.textOnGreen)
+            Text(title)
                 .font(.caption2)
-                .foregroundStyle(.white.opacity(0.75))
+                .foregroundStyle(AppTheme.textMutedOnGreen)
         }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 10)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(AppTheme.panelFill)
+                .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppTheme.panelStroke, lineWidth: 1))
+        )
     }
 
     private var dailyChallengeCard: some View {
@@ -99,41 +99,31 @@ struct MainMenuView: View {
             AudioManager.shared.click()
             route = .game(dc.mode, daily: true)
         } label: {
-            HStack {
-                BundleImage(name: "star.png", folder: "GameAssets/Icons")
-                    .frame(width: 32, height: 32)
+            HStack(spacing: 12) {
+                Image(systemName: "star.circle.fill")
+                    .font(.title2)
+                    .foregroundStyle(AppTheme.gold)
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Desafío del día")
                         .font(.headline.weight(.bold))
-                        .foregroundStyle(.white)
+                        .foregroundStyle(AppTheme.textOnGreen)
                     Text("\(dc.mode.title) · +150 monedas")
                         .font(.caption)
-                        .foregroundStyle(.yellow)
+                        .foregroundStyle(AppTheme.gold)
                 }
                 Spacer()
-                BundleImage(name: "play.png", folder: "GameAssets/Icons")
-                    .frame(width: 28, height: 28)
+                Image(systemName: "chevron.right")
+                    .foregroundStyle(AppTheme.textMutedOnGreen)
             }
-            .padding()
+            .padding(14)
             .background(
-                LinearGradient(colors: [.purple.opacity(0.5), .blue.opacity(0.4)], startPoint: .leading, endPoint: .trailing)
+                RoundedRectangle(cornerRadius: AppTheme.cornerRadius)
+                    .fill(AppTheme.panelFill)
+                    .overlay(RoundedRectangle(cornerRadius: AppTheme.cornerRadius).stroke(AppTheme.gold.opacity(0.4), lineWidth: 1))
             )
-            .clipShape(RoundedRectangle(cornerRadius: 14))
-            .overlay(RoundedRectangle(cornerRadius: 14).stroke(Color.yellow.opacity(0.5), lineWidth: 1))
         }
         .buttonStyle(.plain)
-        .padding(.horizontal, 28)
-    }
-
-    private func statPill(title: String, value: String) -> some View {
-        VStack(spacing: 4) {
-            Text(title).font(.caption).foregroundStyle(.white.opacity(0.7))
-            Text(value).font(.headline.weight(.bold)).foregroundStyle(.white)
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 8)
-        .background(Color.black.opacity(0.25))
-        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .padding(.horizontal, 24)
     }
 }
 
@@ -146,14 +136,14 @@ struct ModeSelectView: View {
         ZStack {
             GameBackground()
             VStack(spacing: 0) {
-                header
+                ScreenHeader(title: "Modos", onBack: { route = .menu })
                 ScrollView {
-                    LazyVStack(spacing: 12) {
+                    LazyVStack(spacing: 10) {
                         ForEach(SolitaireMode.allCases) { mode in
                             modeRow(mode)
                         }
                     }
-                    .padding()
+                    .padding(16)
                 }
             }
         }
@@ -165,25 +155,6 @@ struct ModeSelectView: View {
         } message: {
             Text(alertMessage ?? "")
         }
-    }
-
-    private var header: some View {
-        HStack {
-            Button {
-                AudioManager.shared.click()
-                route = .menu
-            } label: {
-                BundleImage(name: "home.png", folder: "GameAssets/Icons")
-                    .frame(width: 32, height: 32)
-            }
-            Spacer()
-            Text("Modos")
-                .font(.title2.weight(.bold))
-                .foregroundStyle(.white)
-            Spacer()
-            CoinBar()
-        }
-        .padding()
     }
 
     private func modeRow(_ mode: SolitaireMode) -> some View {
@@ -199,39 +170,39 @@ struct ModeSelectView: View {
             }
         } label: {
             HStack(spacing: 12) {
-                BundleImage(name: unlocked ? "unlocked.png" : "locked.png", folder: "GameAssets/Icons")
-                    .frame(width: 36, height: 36)
-                VStack(alignment: .leading, spacing: 4) {
+                Image(systemName: unlocked ? "lock.open.fill" : "lock.fill")
+                    .font(.title3)
+                    .foregroundStyle(unlocked ? AppTheme.gold : AppTheme.textMutedOnGreen)
+                    .frame(width: 32)
+                VStack(alignment: .leading, spacing: 3) {
                     Text(mode.title)
                         .font(.headline.weight(.bold))
-                        .foregroundStyle(.white)
+                        .foregroundStyle(AppTheme.textOnGreen)
                     Text(mode.subtitle)
                         .font(.caption)
-                        .foregroundStyle(.white.opacity(0.75))
-                    Text("+\(mode.winReward) monedas al ganar")
-                        .font(.caption2)
-                        .foregroundStyle(.yellow.opacity(0.9))
+                        .foregroundStyle(AppTheme.textMutedOnGreen)
                 }
                 Spacer()
                 if !unlocked {
                     HStack(spacing: 4) {
                         BundleImage(name: "coin.png", folder: "GameAssets/Icons")
-                            .frame(width: 18, height: 18)
+                            .frame(width: 16, height: 16)
                         Text("\(mode.unlockCost)")
                             .font(.subheadline.weight(.bold))
-                            .foregroundStyle(.yellow)
+                            .foregroundStyle(AppTheme.gold)
                     }
                 } else {
-                    BundleImage(name: "play.png", folder: "GameAssets/Icons")
-                        .frame(width: 28, height: 28)
+                    Image(systemName: "play.circle.fill")
+                        .font(.title2)
+                        .foregroundStyle(AppTheme.gold)
                 }
             }
-            .padding()
+            .padding(14)
             .background(
-                BundleImage(name: "panel.png", folder: "GameAssets/UI")
-                    .opacity(0.85)
+                RoundedRectangle(cornerRadius: AppTheme.cornerRadius)
+                    .fill(AppTheme.panelFill)
+                    .overlay(RoundedRectangle(cornerRadius: AppTheme.cornerRadius).stroke(AppTheme.panelStroke, lineWidth: 1))
             )
-            .clipShape(RoundedRectangle(cornerRadius: 14))
         }
         .buttonStyle(.plain)
     }
@@ -246,25 +217,9 @@ struct ShopView: View {
         ZStack {
             GameBackground()
             VStack(spacing: 0) {
-                HStack {
-                    Button {
-                        AudioManager.shared.click()
-                        route = .menu
-                    } label: {
-                        BundleImage(name: "home.png", folder: "GameAssets/Icons")
-                            .frame(width: 32, height: 32)
-                    }
-                    Spacer()
-                    Text("Tienda")
-                        .font(.title2.weight(.bold))
-                        .foregroundStyle(.white)
-                    Spacer()
-                    CoinBar()
-                }
-                .padding()
-
+                ScreenHeader(title: "Tienda", onBack: { route = .menu })
                 ScrollView {
-                    LazyVStack(spacing: 12) {
+                    LazyVStack(spacing: 10) {
                         ForEach(ShopItemKind.allCases.filter { !$0.isIAPPlaceholder }) { item in
                             shopRow(item)
                         }
@@ -272,11 +227,8 @@ struct ShopView: View {
                         ForEach(SolitaireMode.allCases.filter { !$0.isFree && !progress.isUnlocked($0) }) { mode in
                             modeUnlockRow(mode)
                         }
-                        if !progress.ownedCardBacks.contains("card_back_blue") || !progress.ownedCardBacks.contains("card_back_green") {
-                            sectionHeader("Reversos de carta")
-                        }
                     }
-                    .padding()
+                    .padding(16)
                 }
             }
         }
@@ -290,24 +242,25 @@ struct ShopView: View {
     private func sectionHeader(_ text: String) -> some View {
         Text(text)
             .font(.headline)
-            .foregroundStyle(.white.opacity(0.9))
+            .foregroundStyle(AppTheme.textMutedOnGreen)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.top, 8)
     }
 
     private func shopRow(_ item: ShopItemKind) -> some View {
         HStack {
-            BundleImage(name: "\(item.iconName).png", folder: "GameAssets/Icons")
-                .frame(width: 40, height: 40)
+            Image(systemName: "sparkles")
+                .foregroundStyle(AppTheme.gold)
+                .frame(width: 32)
             VStack(alignment: .leading) {
-                Text(item.title).font(.headline).foregroundStyle(.white)
+                Text(item.title).font(.headline).foregroundStyle(AppTheme.textOnGreen)
                 HStack(spacing: 4) {
-                    BundleImage(name: "coin.png", folder: "GameAssets/Icons").frame(width: 16, height: 16)
-                    Text("\(item.price)").foregroundStyle(.yellow).font(.subheadline.weight(.bold))
+                    BundleImage(name: "coin.png", folder: "GameAssets/Icons").frame(width: 14, height: 14)
+                    Text("\(item.price)").foregroundStyle(AppTheme.gold).font(.subheadline.weight(.bold))
                 }
             }
             Spacer()
-            KenneyButton(title: "Comprar", icon: nil, style: .secondary) {
+            AppButton(title: "Comprar", style: .secondary) {
                 if progress.purchase(item) {
                     AudioManager.shared.win()
                     toast = "¡Comprado!"
@@ -315,32 +268,38 @@ struct ShopView: View {
                     toast = "Monedas insuficientes"
                 }
             }
-            .frame(width: 130)
+            .frame(width: 110)
         }
-        .padding()
-        .background(BundleImage(name: "panel.png", folder: "GameAssets/UI").opacity(0.85))
-        .clipShape(RoundedRectangle(cornerRadius: 14))
+        .padding(14)
+        .background(
+            RoundedRectangle(cornerRadius: AppTheme.cornerRadius)
+                .fill(AppTheme.panelFill)
+                .overlay(RoundedRectangle(cornerRadius: AppTheme.cornerRadius).stroke(AppTheme.panelStroke, lineWidth: 1))
+        )
     }
 
     private func modeUnlockRow(_ mode: SolitaireMode) -> some View {
         HStack {
-            BundleImage(name: "locked.png", folder: "GameAssets/Icons").frame(width: 36, height: 36)
+            Image(systemName: "lock.fill").foregroundStyle(AppTheme.textMutedOnGreen)
             VStack(alignment: .leading) {
-                Text(mode.title).font(.headline).foregroundStyle(.white)
-                Text(mode.subtitle).font(.caption).foregroundStyle(.white.opacity(0.7))
+                Text(mode.title).font(.headline).foregroundStyle(AppTheme.textOnGreen)
+                Text(mode.subtitle).font(.caption).foregroundStyle(AppTheme.textMutedOnGreen)
             }
             Spacer()
-            KenneyButton(title: "\(mode.unlockCost)", icon: "coin", style: .primary) {
+            AppButton(title: "\(mode.unlockCost)", systemImage: "dollarsign.circle.fill", style: .primary) {
                 if progress.unlockMode(mode) {
                     toast = "\(mode.title) desbloqueado"
                 } else {
                     toast = "Monedas insuficientes"
                 }
             }
-            .frame(width: 130)
+            .frame(width: 110)
         }
-        .padding()
-        .background(BundleImage(name: "panel.png", folder: "GameAssets/UI").opacity(0.85))
-        .clipShape(RoundedRectangle(cornerRadius: 14))
+        .padding(14)
+        .background(
+            RoundedRectangle(cornerRadius: AppTheme.cornerRadius)
+                .fill(AppTheme.panelFill)
+                .overlay(RoundedRectangle(cornerRadius: AppTheme.cornerRadius).stroke(AppTheme.panelStroke, lineWidth: 1))
+        )
     }
 }

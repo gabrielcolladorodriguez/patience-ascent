@@ -8,12 +8,14 @@ struct GameBoardView: View {
     var body: some View {
         ZStack {
             GameBackground()
-            VStack(spacing: 8) {
+            VStack(spacing: 6) {
                 gameHUD
-                GeometryReader { geo in
-                    ScrollView([.horizontal, .vertical], showsIndicators: false) {
-                        boardContent(in: geo.size)
-                            .padding(8)
+                GameTableSurface {
+                    GeometryReader { geo in
+                        ScrollView([.horizontal, .vertical], showsIndicators: false) {
+                            boardContent(in: geo.size)
+                                .padding(10)
+                        }
                     }
                 }
                 controlBar
@@ -24,96 +26,111 @@ struct GameBoardView: View {
                     coinsEarned: session.lastWinRewards.coins,
                     xpEarned: session.lastWinRewards.xp,
                     onPlayAgain: { session.newGame() },
-                    onMenu: { route = .menu }
+                    onMenu: {
+                        AudioManager.shared.stopMusic()
+                        AudioManager.shared.playMusic("menu_music.wav")
+                        route = .menu
+                    }
                 )
                 .transition(.opacity)
             }
         }
         .id(session.boardVersion)
-        .onAppear {
-            AudioManager.shared.playMusic("game_music.ogg")
-        }
+        .onAppear { AudioManager.shared.playMusic("game_music.wav") }
         .onDisappear {
-            AudioManager.shared.playMusic("menu_music.ogg")
+            if !session.showWin {
+                AudioManager.shared.stopMusic()
+                AudioManager.shared.playMusic("menu_music.wav")
+            }
         }
     }
 
     private var gameHUD: some View {
-        HStack {
-            Button {
-                AudioManager.shared.click()
-                route = .modes
-            } label: {
-                BundleImage(name: "home.png", folder: "GameAssets/Icons")
-                    .frame(width: 30, height: 30)
-            }
+        HStack(spacing: 10) {
+            NavBackButton { route = .menu }
             VStack(alignment: .leading, spacing: 2) {
                 Text(session.mode.title)
                     .font(.headline.weight(.bold))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(AppTheme.textOnGreen)
                 HStack(spacing: 8) {
-                    Text("\(session.formattedTime) · \(session.moves) movs")
+                    Label(session.formattedTime, systemImage: "clock")
+                    Text("· \(session.moves) movs")
                     if session.combo > 1 {
-                        Text("COMBO x\(session.combo)")
-                            .foregroundStyle(.orange)
+                        Text("x\(session.combo)")
+                            .foregroundStyle(AppTheme.gold)
                             .fontWeight(.heavy)
                     }
                 }
                 .font(.caption)
-                .foregroundStyle(.white.opacity(0.8))
-                Text("Puntos: \(session.score)")
-                    .font(.caption2)
-                    .foregroundStyle(.yellow.opacity(0.9))
+                .foregroundStyle(AppTheme.textMutedOnGreen)
             }
             Spacer()
             CoinBar()
         }
-        .padding(.horizontal)
-        .padding(.top, 8)
+        .padding(.horizontal, 12)
+        .padding(.top, 6)
     }
 
     private var controlBar: some View {
-        HStack(spacing: 10) {
-            smallButton(title: "Pista (\(progress.hints))", icon: "star") { session.showHint() }
-            smallButton(title: "Deshacer (\(progress.undos))", icon: "play") { session.undo() }
-            smallButton(title: "Nueva", icon: "play") { session.newGame() }
+        HStack(spacing: 8) {
+            gameActionButton(title: "Pista", icon: "lightbulb.fill", badge: "\(progress.hints)") {
+                session.showHint()
+            }
+            gameActionButton(title: "Deshacer", icon: "arrow.uturn.backward", badge: "\(progress.undos)") {
+                session.undo()
+            }
+            gameActionButton(title: "Nueva", icon: "arrow.clockwise", badge: nil) {
+                session.newGame()
+            }
         }
-        .padding(.horizontal)
-        .padding(.bottom, 12)
+        .padding(.horizontal, 12)
+        .padding(.bottom, 10)
     }
 
-    private func smallButton(title: String, icon: String, action: @escaping () -> Void) -> some View {
-        Button(action: {
+    private func gameActionButton(title: String, icon: String, badge: String?, action: @escaping () -> Void) -> some View {
+        Button {
             AudioManager.shared.click()
             action()
-        }) {
+        } label: {
             VStack(spacing: 4) {
-                BundleImage(name: "\(icon).png", folder: "GameAssets/Icons")
-                    .frame(width: 22, height: 22)
+                ZStack(alignment: .topTrailing) {
+                    Image(systemName: icon)
+                        .font(.body.weight(.semibold))
+                    if let badge {
+                        Text(badge)
+                            .font(.system(size: 9, weight: .bold))
+                            .foregroundStyle(.white)
+                            .padding(3)
+                            .background(Circle().fill(AppTheme.accent))
+                            .offset(x: 8, y: -6)
+                    }
+                }
                 Text(title)
                     .font(.caption2.weight(.semibold))
-                    .foregroundStyle(.white)
                     .lineLimit(1)
-                    .minimumScaleFactor(0.7)
             }
+            .foregroundStyle(AppTheme.textOnTable)
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 8)
-            .background(BundleImage(name: "panel.png", folder: "GameAssets/UI").opacity(0.85))
-            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .padding(.vertical, 10)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.white)
+                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppTheme.tableBorder, lineWidth: 1))
+            )
         }
         .buttonStyle(.plain)
     }
 
     @ViewBuilder
     private func boardContent(in size: CGSize) -> some View {
-        let cardW = min(size.width * 0.11, 56)
+        let cardW = min(size.width * 0.12, 58)
         switch session.mode {
         case .klondike, .yukon:
             klondikeLayout(cardW: cardW)
         case .freeCell:
             freeCellLayout(cardW: cardW)
         case .spider, .fortyThieves:
-            wideTableauLayout(columns: session.mode == .spider ? 10 : 10, cardW: cardW * 0.85)
+            wideTableauLayout(columns: 10, cardW: cardW * 0.82)
         case .pyramid:
             pyramidLayout(cardW: cardW)
         case .triPeaks:
@@ -135,13 +152,11 @@ struct GameBoardView: View {
         let lifted = session.selectedPile == ref
         let isDropTarget = session.draggingFrom.map { session.validDropTargets(from: $0).contains(ref) } ?? false
 
-        return Button {
-            session.tapPile(ref)
-        } label: {
+        return Button { session.tapPile(ref) } label: {
             ZStack(alignment: .top) {
                 if cards.isEmpty {
                     CardFaceView(card: nil, cardBackName: cardBackName(), width: cardW, highlighted: highlighted || isDropTarget)
-                        .opacity(0.35)
+                        .opacity(0.4)
                 } else if stacked {
                     ForEach(Array(cards.enumerated()), id: \.element.id) { idx, card in
                         CardFaceView(
@@ -151,16 +166,16 @@ struct GameBoardView: View {
                             highlighted: highlighted && idx == cards.count - 1,
                             lifted: lifted && idx == cards.count - 1
                         )
-                        .offset(y: CGFloat(idx) * (cardW * 0.22))
+                        .offset(y: CGFloat(idx) * (cardW * 0.20))
                     }
                 } else {
                     CardFaceView(card: cards.last, cardBackName: cardBackName(), width: cardW, highlighted: highlighted, lifted: lifted)
                 }
             }
-            .frame(width: cardW, height: stacked ? cardW * 1.5 + CGFloat(max(0, cards.count - 1)) * cardW * 0.22 : cardW * 1.45)
+            .frame(width: cardW, height: stacked ? cardW * 1.5 + CGFloat(max(0, cards.count - 1)) * cardW * 0.20 : cardW * 1.45)
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
-                    .stroke(isDropTarget ? Color.cyan : .clear, lineWidth: 2)
+                    .stroke(isDropTarget ? AppTheme.accent : .clear, lineWidth: 2)
             )
         }
         .buttonStyle(.plain)
@@ -177,7 +192,7 @@ struct GameBoardView: View {
 
     private func klondikeLayout(cardW: CGFloat) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            HStack(spacing: cardW * 0.3) {
+            HStack(spacing: cardW * 0.25) {
                 pileView(PileRef(kind: .stock, index: 0), cardW: cardW)
                 pileView(PileRef(kind: .waste, index: 0), cardW: cardW)
                 Spacer()
@@ -185,13 +200,13 @@ struct GameBoardView: View {
                     pileView(PileRef(kind: .foundation, index: i), cardW: cardW)
                 }
             }
-            HStack(alignment: .top, spacing: cardW * 0.15) {
+            HStack(alignment: .top, spacing: cardW * 0.12) {
                 ForEach(0..<7, id: \.self) { col in
                     pileView(PileRef(kind: .tableau, index: col), cardW: cardW, stacked: true)
                 }
             }
         }
-        .frame(minWidth: cardW * 8)
+        .frame(minWidth: cardW * 7.5)
     }
 
     private func freeCellLayout(cardW: CGFloat) -> some View {
@@ -221,20 +236,19 @@ struct GameBoardView: View {
                     pileView(PileRef(kind: .waste, index: 0), cardW: cardW)
                 }
                 Spacer()
-                let foundationCount = session.mode == .fortyThieves ? 8 : 0
-                if foundationCount > 0 {
-                    ForEach(0..<foundationCount, id: \.self) { i in
+                if session.mode == .fortyThieves {
+                    ForEach(0..<8, id: \.self) { i in
                         pileView(PileRef(kind: .foundation, index: i), cardW: cardW * 0.9)
                     }
                 }
             }
-            HStack(alignment: .top, spacing: 4) {
+            HStack(alignment: .top, spacing: 3) {
                 ForEach(0..<columns, id: \.self) { col in
                     pileView(PileRef(kind: .tableau, index: col), cardW: cardW, stacked: true)
                 }
             }
         }
-        .frame(minWidth: cardW * CGFloat(columns) * 1.1)
+        .frame(minWidth: cardW * CGFloat(columns) * 1.05)
     }
 
     private func pyramidLayout(cardW: CGFloat) -> some View {
@@ -300,9 +314,7 @@ struct GameBoardView: View {
 
     private func cardButton(card: PlayingCard, ref: PileRef, cardW: CGFloat) -> some View {
         let highlighted = session.selectedPile == ref || session.hintPiles?.0 == ref || session.hintPiles?.1 == ref
-        return Button {
-            session.tapPile(ref)
-        } label: {
+        return Button { session.tapPile(ref) } label: {
             CardFaceView(card: card, cardBackName: cardBackName(), width: cardW, highlighted: highlighted)
         }
         .buttonStyle(.plain)

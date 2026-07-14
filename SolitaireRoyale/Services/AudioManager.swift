@@ -1,32 +1,46 @@
 import Foundation
 import AVFoundation
+import SwiftUI
 
 @MainActor
 final class AudioManager: ObservableObject {
     static let shared = AudioManager()
 
-    @Published var musicEnabled = true
-    @Published var sfxEnabled = true
+    @AppStorage("musicEnabled") var musicEnabled = true
+    @AppStorage("sfxEnabled") var sfxEnabled = true
 
     private var musicPlayer: AVAudioPlayer?
     private var sfxPlayers: [AVAudioPlayer] = []
 
     private init() {
-        try? AVAudioSession.sharedInstance().setCategory(.ambient, mode: .default)
-        try? AVAudioSession.sharedInstance().setActive(true)
+        configureSession()
+    }
+
+    private func configureSession() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers])
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch {
+            print("Audio session error: \(error)")
+        }
     }
 
     func playMusic(_ name: String, loop: Bool = true) {
-        guard musicEnabled, let url = Bundle.main.url(forResource: name, withExtension: nil, subdirectory: "GameAssets/Audio/Music")
-            ?? Bundle.main.url(forResource: name.replacingOccurrences(of: ".ogg", with: ""), withExtension: "ogg") else { return }
+        guard musicEnabled else { return }
+        guard let url = audioURL(name: name, folder: "GameAssets/Audio/Music") else {
+            print("Music not found: \(name)")
+            return
+        }
         do {
             musicPlayer?.stop()
             musicPlayer = try AVAudioPlayer(contentsOf: url)
             musicPlayer?.numberOfLoops = loop ? -1 : 0
-            musicPlayer?.volume = 0.35
+            musicPlayer?.volume = 0.28
             musicPlayer?.prepareToPlay()
             musicPlayer?.play()
-        } catch {}
+        } catch {
+            print("Music play error: \(error)")
+        }
     }
 
     func stopMusic() {
@@ -36,24 +50,42 @@ final class AudioManager: ObservableObject {
 
     func playSFX(_ filename: String) {
         guard sfxEnabled else { return }
-        let base = (filename as NSString).deletingPathExtension
-        let ext = (filename as NSString).pathExtension.isEmpty ? "ogg" : (filename as NSString).pathExtension
-        guard let url = Bundle.main.url(forResource: base, withExtension: ext, subdirectory: "GameAssets/Audio/SFX")
-            ?? Bundle.main.url(forResource: base, withExtension: ext) else { return }
+        guard let url = audioURL(name: filename, folder: "GameAssets/Audio/SFX") else {
+            print("SFX not found: \(filename)")
+            return
+        }
         do {
             let player = try AVAudioPlayer(contentsOf: url)
-            player.volume = 0.7
+            player.volume = 0.65
             player.prepareToPlay()
             player.play()
             sfxPlayers.append(player)
             sfxPlayers.removeAll { !$0.isPlaying }
-        } catch {}
+        } catch {
+            print("SFX play error: \(error)")
+        }
     }
 
-    func click() { playSFX("click.ogg") }
-    func tap() { playSFX("tap.ogg") }
-    func cardPlace() { playSFX("card_place.ogg") }
-    func cardSlide() { playSFX("card_slide.ogg") }
-    func cardShuffle() { playSFX("card_shuffle.ogg") }
-    func win() { playSFX("switch.ogg") }
+    private func audioURL(name: String, folder: String) -> URL? {
+        let base = (name as NSString).deletingPathExtension
+        for ext in ["wav", "m4a", "caf", "mp3", "ogg"] {
+            if let url = Bundle.main.url(forResource: base, withExtension: ext, subdirectory: folder) {
+                return url
+            }
+        }
+        if let url = Bundle.main.url(forResource: base, withExtension: "wav") {
+            return url
+        }
+        return nil
+    }
+
+    func click() { playSFX("click.wav") }
+    func tap() { playSFX("tap.wav") }
+    func cardPlace() { playSFX("card_place.wav") }
+    func cardSlide() { playSFX("card_slide.wav") }
+    func cardShuffle() { playSFX("card_shuffle.wav") }
+    func win() {
+        playSFX("switch.wav")
+        playMusic("win_music.wav", loop: false)
+    }
 }

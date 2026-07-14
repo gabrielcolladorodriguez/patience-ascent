@@ -8,39 +8,38 @@ struct StatsView: View {
         ZStack {
             GameBackground()
             VStack(spacing: 0) {
-                navBar(title: "Estadísticas")
+                ScreenHeader(title: "Estadísticas", onBack: { route = .menu })
                 ScrollView {
-                    VStack(spacing: 14) {
+                    VStack(spacing: 12) {
                         levelCard
-                        gridStat(title: "Victorias", value: "\(progress.wins.values.reduce(0, +))", icon: "trophy")
-                        gridStat(title: "Racha actual", value: "\(progress.streak)", icon: "star")
-                        gridStat(title: "Mejor racha", value: "\(progress.bestStreak)", icon: "trophy")
-                        gridStat(title: "Nivel", value: "\(progress.level)", icon: "trophy")
-                        gridStat(title: "Combo máximo", value: "\(progress.maxCombo)", icon: "play")
-                        gridStat(title: "Movimientos totales", value: "\(progress.totalMoves)", icon: "play")
+                        gridStat(title: "Victorias", value: "\(progress.wins.values.reduce(0, +))", icon: "trophy.fill")
+                        gridStat(title: "Racha actual", value: "\(progress.streak)", icon: "flame.fill")
+                        gridStat(title: "Mejor racha", value: "\(progress.bestStreak)", icon: "star.fill")
+                        gridStat(title: "Nivel", value: "\(progress.level)", icon: "chart.line.uptrend.xyaxis")
+                        gridStat(title: "Combo máximo", value: "\(progress.maxCombo)", icon: "bolt.fill")
 
                         Text("Por modo")
                             .font(.headline)
-                            .foregroundStyle(.white)
+                            .foregroundStyle(AppTheme.textMutedOnGreen)
                             .frame(maxWidth: .infinity, alignment: .leading)
 
                         ForEach(SolitaireMode.allCases) { mode in
                             HStack {
-                                Text(mode.title).foregroundStyle(.white)
+                                Text(mode.title).foregroundStyle(AppTheme.textOnGreen)
                                 Spacer()
-                                Text("\(progress.wins[mode.rawValue, default: 0]) W")
-                                    .foregroundStyle(.yellow)
+                                Text("\(progress.wins[mode.rawValue, default: 0]) victorias")
+                                    .foregroundStyle(AppTheme.gold)
                                 if let t = progress.bestTimes[mode.rawValue] {
                                     Text(bestTime(t))
                                         .font(.caption)
-                                        .foregroundStyle(.white.opacity(0.7))
+                                        .foregroundStyle(AppTheme.textMutedOnGreen)
                                 }
                             }
-                            .padding()
-                            .background(glassPanel)
+                            .padding(14)
+                            .background(panel)
                         }
                     }
-                    .padding()
+                    .padding(16)
                 }
             }
         }
@@ -50,52 +49,41 @@ struct StatsView: View {
         VStack(spacing: 8) {
             Text("Nivel \(progress.level)")
                 .font(.title2.weight(.black))
-                .foregroundStyle(.white)
+                .foregroundStyle(AppTheme.textOnGreen)
             ProgressView(value: progress.xpProgress)
-                .tint(.yellow)
+                .tint(AppTheme.gold)
             Text("\(progress.xp % progress.xpForNextLevel) / \(progress.xpForNextLevel) XP")
                 .font(.caption)
-                .foregroundStyle(.white.opacity(0.8))
+                .foregroundStyle(AppTheme.textMutedOnGreen)
         }
-        .padding()
-        .background(glassPanel)
+        .padding(16)
+        .background(panel)
     }
 
     private func gridStat(title: String, value: String, icon: String) -> some View {
-        HStack {
-            BundleImage(name: "\(icon).png", folder: "GameAssets/Icons")
-                .frame(width: 32, height: 32)
+        HStack(spacing: 12) {
+            Image(systemName: icon)
+                .font(.title3)
+                .foregroundStyle(AppTheme.gold)
+                .frame(width: 28)
             VStack(alignment: .leading) {
-                Text(title).font(.caption).foregroundStyle(.white.opacity(0.7))
-                Text(value).font(.title3.weight(.bold)).foregroundStyle(.white)
+                Text(title).font(.caption).foregroundStyle(AppTheme.textMutedOnGreen)
+                Text(value).font(.title3.weight(.bold)).foregroundStyle(AppTheme.textOnGreen)
             }
             Spacer()
         }
-        .padding()
-        .background(glassPanel)
+        .padding(14)
+        .background(panel)
     }
 
     private func bestTime(_ t: TimeInterval) -> String {
         String(format: "%d:%02d", Int(t) / 60, Int(t) % 60)
     }
 
-    private var glassPanel: some View {
-        BundleImage(name: "panel.png", folder: "GameAssets/UI")
-            .opacity(0.85)
-            .clipShape(RoundedRectangle(cornerRadius: 14))
-    }
-
-    private func navBar(title: String) -> some View {
-        HStack {
-            Button { route = .menu; AudioManager.shared.click() } label: {
-                BundleImage(name: "home.png", folder: "GameAssets/Icons").frame(width: 32, height: 32)
-            }
-            Spacer()
-            Text(title).font(.title2.weight(.bold)).foregroundStyle(.white)
-            Spacer()
-            CoinBar()
-        }
-        .padding()
+    private var panel: some View {
+        RoundedRectangle(cornerRadius: AppTheme.cornerRadius)
+            .fill(AppTheme.panelFill)
+            .overlay(RoundedRectangle(cornerRadius: AppTheme.cornerRadius).stroke(AppTheme.panelStroke, lineWidth: 1))
     }
 }
 
@@ -109,31 +97,40 @@ struct SettingsView: View {
         ZStack {
             GameBackground()
             VStack(spacing: 0) {
-                navBar(title: "Ajustes")
+                ScreenHeader(title: "Ajustes", onBack: { route = .menu }, showCoins: false)
                 ScrollView {
                     VStack(spacing: 12) {
                         toggleRow("Música", isOn: $audio.musicEnabled)
                         toggleRow("Efectos de sonido", isOn: $audio.sfxEnabled)
-                        toggleRow("Vibración háptica", isOn: $hapticsEnabled)
+                        toggleRow("Vibración", isOn: $hapticsEnabled)
                             .onChange(of: hapticsEnabled) { HapticsManager.enabled = $0 }
                         toggleRow("Auto-completar al ganar", isOn: $autoComplete)
 
-                        VStack(alignment: .leading, spacing: 6) {
-                            Text(AppIdentity.name)
-                                .font(.headline)
-                                .foregroundStyle(.white)
-                            Text("v\(AppIdentity.version) (\(AppIdentity.build))")
-                                .font(.caption)
-                                .foregroundStyle(.white.opacity(0.6))
-                            Text("Bundle: \(AppIdentity.bundleID)")
-                                .font(.caption2)
-                                .foregroundStyle(.white.opacity(0.5))
+                        AppButton(title: "Tienda", systemImage: "bag.fill", style: .secondary) {
+                            route = .shop
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding()
-                        .background(glassPanel)
+                        AppButton(title: "Logros", systemImage: "trophy.fill", style: .secondary) {
+                            route = .achievements
+                        }
+
+                        AppPanel {
+                            VStack(alignment: .leading, spacing: 6) {
+                                Text(AppIdentity.name)
+                                    .font(.headline)
+                                    .foregroundStyle(AppTheme.textOnGreen)
+                                Text("Versión \(AppIdentity.version) (\(AppIdentity.build))")
+                                    .font(.caption)
+                                    .foregroundStyle(AppTheme.textMutedOnGreen)
+                                Link("Política de privacidad", destination: URL(string: AppIdentity.privacyURL)!)
+                                    .font(.caption)
+                                    .foregroundStyle(AppTheme.gold)
+                                Text("Assets CC0: Kenney, Byron Knoll")
+                                    .font(.caption2)
+                                    .foregroundStyle(AppTheme.textMutedOnGreen)
+                            }
+                        }
                     }
-                    .padding()
+                    .padding(16)
                 }
             }
         }
@@ -142,30 +139,17 @@ struct SettingsView: View {
 
     private func toggleRow(_ title: String, isOn: Binding<Bool>) -> some View {
         Toggle(isOn: isOn) {
-            Text(title).foregroundStyle(.white).font(.body.weight(.medium))
+            Text(title)
+                .foregroundStyle(AppTheme.textOnGreen)
+                .font(.body.weight(.medium))
         }
-        .tint(.green)
-        .padding()
-        .background(glassPanel)
-    }
-
-    private var glassPanel: some View {
-        BundleImage(name: "panel.png", folder: "GameAssets/UI")
-            .opacity(0.85)
-            .clipShape(RoundedRectangle(cornerRadius: 14))
-    }
-
-    private func navBar(title: String) -> some View {
-        HStack {
-            Button { route = .menu; AudioManager.shared.click() } label: {
-                BundleImage(name: "home.png", folder: "GameAssets/Icons").frame(width: 32, height: 32)
-            }
-            Spacer()
-            Text(title).font(.title2.weight(.bold)).foregroundStyle(.white)
-            Spacer()
-            Color.clear.frame(width: 80, height: 1)
-        }
-        .padding()
+        .tint(AppTheme.accent)
+        .padding(14)
+        .background(
+            RoundedRectangle(cornerRadius: AppTheme.cornerRadius)
+                .fill(AppTheme.panelFill)
+                .overlay(RoundedRectangle(cornerRadius: AppTheme.cornerRadius).stroke(AppTheme.panelStroke, lineWidth: 1))
+        )
     }
 }
 
@@ -178,14 +162,14 @@ struct AchievementsView: View {
         ZStack {
             GameBackground()
             VStack(spacing: 0) {
-                navBar(title: "Logros")
+                ScreenHeader(title: "Logros", onBack: { route = .menu })
                 ScrollView {
                     LazyVStack(spacing: 10) {
                         ForEach(progress.achievements) { ach in
                             achievementRow(ach)
                         }
                     }
-                    .padding()
+                    .padding(16)
                 }
             }
         }
@@ -198,13 +182,14 @@ struct AchievementsView: View {
 
     private func achievementRow(_ ach: Achievement) -> some View {
         HStack(spacing: 12) {
-            BundleImage(name: ach.isComplete ? "trophy.png" : "locked.png", folder: "GameAssets/Icons")
-                .frame(width: 36, height: 36)
+            Image(systemName: ach.isComplete ? "trophy.fill" : "lock.fill")
+                .font(.title3)
+                .foregroundStyle(ach.isComplete ? AppTheme.gold : AppTheme.textMutedOnGreen)
             VStack(alignment: .leading, spacing: 4) {
-                Text(ach.title).font(.headline).foregroundStyle(.white)
-                Text(ach.detail).font(.caption).foregroundStyle(.white.opacity(0.7))
+                Text(ach.title).font(.headline).foregroundStyle(AppTheme.textOnGreen)
+                Text(ach.detail).font(.caption).foregroundStyle(AppTheme.textMutedOnGreen)
                 ProgressView(value: Double(ach.progress), total: Double(ach.goal))
-                    .tint(ach.isComplete ? .yellow : .green)
+                    .tint(ach.isComplete ? AppTheme.gold : AppTheme.accent)
             }
             Spacer()
             if ach.isComplete && !ach.claimed {
@@ -215,30 +200,19 @@ struct AchievementsView: View {
                     }
                 }
                 .font(.caption.weight(.bold))
-                .padding(8)
-                .background(Color.yellow.opacity(0.3))
-                .clipShape(Capsule())
+                .foregroundStyle(AppTheme.textOnGreen)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 6)
+                .background(Capsule().fill(AppTheme.gold.opacity(0.35)))
             } else if ach.claimed {
-                Image(systemName: "checkmark.seal.fill").foregroundStyle(.green)
+                Image(systemName: "checkmark.seal.fill").foregroundStyle(AppTheme.accent)
             }
         }
-        .padding()
+        .padding(14)
         .background(
-            BundleImage(name: "panel.png", folder: "GameAssets/UI").opacity(0.85)
+            RoundedRectangle(cornerRadius: AppTheme.cornerRadius)
+                .fill(AppTheme.panelFill)
+                .overlay(RoundedRectangle(cornerRadius: AppTheme.cornerRadius).stroke(AppTheme.panelStroke, lineWidth: 1))
         )
-        .clipShape(RoundedRectangle(cornerRadius: 14))
-    }
-
-    private func navBar(title: String) -> some View {
-        HStack {
-            Button { route = .menu; AudioManager.shared.click() } label: {
-                BundleImage(name: "home.png", folder: "GameAssets/Icons").frame(width: 32, height: 32)
-            }
-            Spacer()
-            Text(title).font(.title2.weight(.bold)).foregroundStyle(.white)
-            Spacer()
-            CoinBar()
-        }
-        .padding()
     }
 }

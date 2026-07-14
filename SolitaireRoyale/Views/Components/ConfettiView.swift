@@ -95,8 +95,8 @@ struct WinCelebrationOverlay: View {
                 }
 
                 VStack(spacing: 12) {
-                    KenneyButton(title: "OTRA PARTIDA", icon: "play", style: .primary, action: onPlayAgain)
-                    KenneyButton(title: "MENÚ", icon: "home", style: .secondary, action: onMenu)
+                    AppButton(title: "Otra partida", systemImage: "arrow.clockwise", style: .primary, action: onPlayAgain)
+                    AppButton(title: "Menú", systemImage: "house.fill", style: .secondary, action: onMenu)
                 }
                 .padding(.horizontal, 32)
             }

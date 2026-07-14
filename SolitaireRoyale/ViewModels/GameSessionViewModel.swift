@@ -229,7 +229,7 @@ final class GameSessionViewModel: ObservableObject {
             lastWinRewards = progress.recordWin(mode: mode, elapsed: elapsed, moves: moves, comboPeak: comboPeak)
             showWin = true
             audio.win()
-            AudioManager.shared.playMusic("win_music.ogg", loop: false)
+            AudioManager.shared.playMusic("win_music.wav", loop: false)
         }
     }
 
