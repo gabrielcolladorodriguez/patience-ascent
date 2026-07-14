@@ -338,7 +338,7 @@ struct GameBoardView: View {
                     if let eng = engine, let card = eng.peaks[idx] {
                         cardButton(card: card, ref: PileRef(kind: .tableau, index: idx), cardW: cardW)
                     } else {
-                        Color.clear.frame(width: cardW, height: cardW * 1.45)
+                        Color.clear.frame(width: cardW, height: cardHeight(for: cardW))
                     }
                 }
             }
