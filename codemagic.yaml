@@ -8,8 +8,6 @@ workflows:
       app_store_connect: app_store_connect
 
     environment:
-      groups:
-        - code-signing
       vars:
         BUNDLE_ID: com.patienceascent.app
         APPLE_TEAM_ID: T8GC6LS6RS
