@@ -44,6 +44,12 @@ workflows:
 
           keychain add-certificates
           xcode-project use-profiles --project "$CM_BUILD_DIR/$XCODE_PROJECT"
+          security find-identity -v -p codesigning
+
+      - name: Prepare resources for code signing
+        script: |
+          set -ex
+          find "$CM_BUILD_DIR/SolitaireRoyale/Resources" -type f -exec chmod 644 {} \;
 
       - name: Build IPA
         script: |
