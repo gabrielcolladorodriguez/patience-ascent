@@ -47,6 +47,8 @@ def main() -> int:
     legacy_sources = [
         "GameSessionViewModel.swift in Sources",
         "GameBoardView.swift in Sources",
+        "GlyphLinkBoardView.swift in Sources",
+        "GlyphLinkEngine.swift in Sources",
         "Card.swift in Sources",
         "KlondikeEngine.swift in Sources",
     ]
@@ -71,9 +73,11 @@ def main() -> int:
             break
         if "CFBundleVersion" in line:
             plist_build = "pending"
-    if "CURRENT_PROJECT_VERSION = 19" not in pbx:
-        errors.append("project.pbxproj: build number should be 19")
-    if plist_build != "19":
+    if "patience_ascent_top100" not in (root / "SolitaireRoyale" / "Services" / "GameCenterManager.swift").read_text(encoding="utf-8"):
+        errors.append("GameCenterManager: missing leaderboard ID patience_ascent_top100")
+    if "CURRENT_PROJECT_VERSION = 21" not in pbx:
+        errors.append("project.pbxproj: build number should be 21")
+    if plist_build != "21":
         errors.append(f"Info.plist CFBundleVersion mismatch: {plist_build!r}")
 
     ent = (root / "SolitaireRoyale" / "SolitaireRoyale.entitlements").read_text(encoding="utf-8")

@@ -146,15 +146,7 @@ final class AudioManager: ObservableObject {
         playWinMusic()
     }
 
-    private static let menuTracks: [String] = {
-        var tracks = (1...16).map { String(format: "lofi_menu_%02d", $0) }
-        tracks.append("menu_music")
-        return tracks
-    }()
+    private static let menuTracks: [String] = (1...24).map { String(format: "cc0_menu_%02d", $0) }
 
-    private static let gameTracks: [String] = {
-        var tracks = (1...16).map { String(format: "lofi_game_%02d", $0) }
-        tracks.append("game_music")
-        return tracks
-    }()
+    private static let gameTracks: [String] = (1...24).map { String(format: "cc0_game_%02d", $0) }
 }

@@ -32,9 +32,13 @@ workflows:
           chmod +x "$CM_BUILD_DIR/scripts/codemagic_signing.sh"
           "$CM_BUILD_DIR/scripts/codemagic_signing.sh"
 
-      - name: Prepare resources for code signing
+      - name: Prepare game assets
         script: |
           set -ex
+          if [ ! -f "$CM_BUILD_DIR/SolitaireRoyale/GameAssets/Audio/Music/cc0_menu_01.mp3" ] && \
+             [ ! -f "$CM_BUILD_DIR/SolitaireRoyale/GameAssets/Audio/Music/cc0_menu_01.wav" ]; then
+            python3 "$CM_BUILD_DIR/scripts/fetch_cc0_music.py"
+          fi
           find "$CM_BUILD_DIR/SolitaireRoyale/GameAssets" -type f -exec chmod 644 {} \;
 
       - name: Build IPA

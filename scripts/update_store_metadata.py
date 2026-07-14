@@ -1,142 +1,117 @@
 #!/usr/bin/env python3
-"""ASO-optimized App Store metadata — puzzle-only, 38 locales."""
+"""ASO metadata — Patience Ascent gravity block puzzle, 38 locales."""
 
 import json
 from pathlib import Path
 
 PATH = Path(__file__).resolve().parent / "metadata" / "store_metadata.json"
 
-# ASO 2026: subtitle 30 chars, no repeat title words (Patience/Ascent), keywords 100 no spaces
 PACKS = {
     "en": {
-        "subtitle": "Match Symbols · Brain Puzzle",
-        "keywords": "tile,connect,link,logic,mahjong,zen,combo,offline,free,casual,lofi,daily,challenge,relax,portrait",
-        "promo": "Connect matching symbols in 4 original modes. Unlimited hints, lofi music, daily challenge — free, no ads on iPhone & iPad.",
-        "whats": "Build 14 — Original puzzle game\n\n• Arc Weave, Flux Surge, Nova Blitz & Haze Drift\n• Symbol-matching puzzle — not solitaire\n• 32 languages, Game Center rankings\n• Unlimited hints, lofi music, daily challenge",
-        "description": """Patience Ascent is a free symbol-matching puzzle game for iPhone and iPad — connect tiles, train your brain, and relax with lofi music. Not solitaire. No ads.
+        # ASO 2026: title=brand only; subtitle=primary keywords; keywords=no overlap
+        "subtitle": "Gravity Drop · Clear Lines",
+        "keywords": "block,blast,grid,stack,combo,offline,free,casual,lofi,rank,undo,wave,piece,fit,brain,zen,square",
+        "promo": "Fit colorful blocks, gravity drops, clear rows & columns. Free block puzzle — Top 100 leaderboard, 48 lofi songs, no ads.",
+        "whats": "Build 21 — New icon & Top 100 ranking\n\n• Colorful block puzzle — place shapes, gravity falls\n• Clear full rows AND columns for combo chains\n• Top 100 Ascent global leaderboard\n• 48 real CC0 lofi tracks\n• Waves, undo, free, no ads",
+        "description": """Patience Ascent is a free block puzzle game for iPhone and iPad. Fit colorful shapes on an 8×8 grid, gravity pulls every block down, and full lines disappear for huge combos. Chase the Top 100 global leaderboard. Not solitaire. No ads.
+
+HOW TO PLAY
+• Pick 1 of 3 block shapes and place it on the board
+• Gravity drops all blocks to the bottom of each column
+• Clear full rows AND columns to score combo points
+• Waves increase — your score multiplier rises as you ascend
 
 WHY PLAYERS LOVE IT
-• Easy to learn in 30 seconds — addictive match-and-clear gameplay
-• Four original modes on one gorgeous 6×8 board
-• Unlimited hints and undo — never stuck
-• Portrait play, no scrolling, perfect for one hand
-• Daily challenge and Game Center leaderboards
+• Learn in 10 seconds, addictive line-clear gameplay
+• Undo mistakes — fair difficulty, always passable
+• 48 unique lofi songs (real music, not loops)
+• Top 100 Ascent — compete with the best worldwide
+• One-hand portrait play for commute & breaks
 
-FOUR ORIGINAL MODES
-• Arc Weave — connect matching symbols, paths bend twice
-• Flux Surge — chain nearby matches for massive combos
-• Nova Blitz — 90-second score attack, how high can you go?
-• Haze Drift — calm zen mode, play at your own pace
+FREE FOREVER — no coins, no energy, no shop, no ads.
 
-PERFECT FOR
-Brain training, commute breaks, relaxing before sleep, puzzle fans who want something fresh — not another card solitaire clone.
-
-FREE FOREVER
-No coins, no energy, no shop, no ads. Just puzzles, music, and your best time.
-
-Download Patience Ascent — the symbol puzzle game built to be different.""",
+Download Patience Ascent — the gravity block puzzle with a twist.""",
     },
     "es": {
-        "subtitle": "Empareja · Puzzle Cerebral",
-        "keywords": "tile,conectar,enlace,logica,mahjong,zen,combo,offline,gratis,casual,lofi,diario,reto,relajar,vertical",
-        "promo": "Conecta símbolos iguales en 4 modos originales. Pistas ilimitadas, música lofi y desafío diario — gratis, sin anuncios.",
-        "whats": "Build 14 — Puzzle original\n\n• Tejido Arcano, Oleada Flux, Nova Blitz y Bruma Serena\n• Puzzle de símbolos — no es solitario\n• 32 idiomas y rankings Game Center\n• Pistas ilimitadas, música lofi, desafío diario",
-        "description": """Patience Ascent es un puzzle gratuito de símbolos para iPhone y iPad. Conecta fichas, entrena tu cerebro y relájate con música lofi. No es solitario. Sin anuncios.
+        "subtitle": "Encaja Bloques · Gravedad",
+        "keywords": "rompecabezas,cuadricula,linea,columna,combo,offline,gratis,casual,lofi,puntos,ranking,deshacer,oleada,pieza,tablero,zen,mani",
+        "promo": "Encaja bloques de colores, cae la gravedad, limpia filas y columnas. Puzzle gratis — Top 100, 48 canciones lofi, sin anuncios.",
+        "whats": "Build 21 — Icono nuevo y Top 100\n\n• Puzzle de bloques con gravedad\n• Filas y columnas completas = combos\n• Ranking global Top 100 Ascent\n• 48 pistas lofi CC0 reales\n• Oleadas, deshacer — gratis, sin anuncios",
+        "description": """Patience Ascent es un puzzle gratuito de bloques para iPhone y iPad. Encaja piezas de colores en un tablero 8×8, la gravedad hace caer todo y las líneas llenas explotan en combos. Compite por el Top 100 mundial. No es solitario. Sin anuncios.
 
-POR QUÉ ENCAJA
-• Aprende en 30 segundos — adictivo y fácil de jugar
-• Cuatro modos originales en un tablero 6×8
-• Pistas y deshacer ilimitados
-• Vertical, sin scroll, ideal con una mano
-• Desafío diario y rankings en Game Center
+CÓMO SE JUEGA
+• Elige una de tres piezas y colócala en el tablero
+• La gravedad tira los bloques al fondo de cada columna
+• Filas y columnas completas se borran con puntos extra
+• Las oleadas suben el multiplicador de puntuación
 
-CUATRO MODOS ORIGINALES
-• Tejido Arcano — conecta símbolos, caminos con dos giros
-• Oleada Flux — encadena parejas cercanas para combos enormes
-• Nova Blitz — 90 segundos, máxima puntuación
-• Bruma Serena — modo zen tranquilo
-
-GRATIS PARA SIEMPRE
-Sin monedas, sin energía, sin tienda, sin anuncios.
-
-Descarga Patience Ascent — un puzzle de símbolos diferente a todo lo demás.""",
+GRATIS PARA SIEMPRE — sin monedas, sin energía, sin tienda, sin anuncios.""",
     },
     "fr": {
-        "subtitle": "Symboles · Puzzle Cérébral",
-        "keywords": "tuile,connecter,lien,logique,mahjong,zen,combo,horsligne,gratuit,casual,lofi,quotidien,defi,relax,portrait",
-        "promo": "Associez des symboles dans 4 modes originaux. Indices illimités, musique lofi, défi quotidien — gratuit, sans pub.",
-        "whats": "Build 14 — Puzzle original\n\n• Tisseau d'Arc, Flux Ravage, Nova Blitz, Brume Lente\n• Puzzle de symboles — pas de solitaire\n• 32 langues et classements Game Center",
-        "description": """Patience Ascent est un puzzle gratuit de symboles pour iPhone et iPad. Connectez les tuiles, stimulez votre cerveau, détendez-vous avec de la musique lofi. Pas de solitaire. Sans publicité.
-
-QUATRE MODES ORIGINAUX
-• Tisseau d'Arc — connectez les symboles, chemins à deux virages
-• Flux Ravage — enchaînez les paires proches
-• Nova Blitz — 90 secondes, score maximum
-• Brume Lente — mode zen tranquille
-
-Indices et annulations illimités. Défi quotidien. Classements Game Center. Gratuit, sans pub.""",
+        "subtitle": "Blocs qui Tombent · Lignes",
+        "keywords": "casse-tete,grille,colonne,combo,horsligne,gratuit,casual,lofi,classement,annuler,vague,piece,cerveau,zen,carre",
+        "promo": "Posez des blocs colorés, gravité, effacez lignes et colonnes. Puzzle gratuit — Top 100, 48 morceaux lofi, sans pub.",
+        "whats": "Build 21 — Nouvelle icône et Top 100\n\n• Puzzle blocs avec gravité\n• Lignes et colonnes = combos\n• Classement Top 100 Ascent\n• 48 morceaux lofi CC0\n• Gratuit, sans pub",
+        "description": """Patience Ascent est un puzzle de blocs gratuit pour iPhone et iPad. Placez des formes colorées, la gravité fait tomber les blocs, effacez les lignes pleines et visez le Top 100 mondial. Pas de solitaire. Sans publicité.""",
     },
     "de": {
-        "subtitle": "Symbole Match Denkspiel",
-        "keywords": "kachel,verbinden,link,logik,mahjong,zen,combo,offline,frei,casual,lofi,täglich,challenge,entspann,hochformat",
-        "promo": "Verbinde Symbole in 4 Originalmodi. Unbegrenzte Tipps, Lofi-Musik, Tagesherausforderung — kostenlos, ohne Werbung.",
-        "whats": "Build 14 — Originales Puzzle\n\n• Arkangewebe, Flux-Schwall, Nova Blitz, Nebeltreib\n• Symbol-Puzzle — kein Solitaire\n• 32 Sprachen, Game Center-Ranglisten",
-        "description": """Patience Ascent ist ein kostenloses Symbol-Puzzle für iPhone und iPad. Verbinde Kacheln, trainiere dein Gehirn, entspanne mit Lofi-Musik. Kein Solitaire. Keine Werbung.
-
-VIER ORIGINALMODI: Arkangewebe, Flux-Schwall, Nova Blitz, Nebeltreib. Unbegrenzte Tipps. Tägliche Herausforderung. Game Center. Kostenlos.""",
+        "subtitle": "Blöcke Fallen · Linien",
+        "keywords": "rätsel,raster,spalte,combo,offline,frei,casual,lofi,rangliste,rückgängig,welle,stein,gehirn,zen,quadrat,klar",
+        "promo": "Bunte Blöcke setzen, Schwerkraft fällt, Reihen löschen. Kostenloses Puzzle — Top 100, 48 Lofi-Songs, ohne Werbung.",
+        "whats": "Build 21 — Neues Icon & Top 100\n\n• Block-Puzzle mit Schwerkraft\n• Reihen und Spalten = Combos\n• Top 100 Ascent Rangliste\n• 48 CC0-Lofi-Tracks\n• Kostenlos, keine Werbung",
+        "description": """Patience Ascent ist ein kostenloses Block-Puzzle für iPhone und iPad. Formen setzen, Schwerkraft fällt, volle Linien löschen, Top 100 jagen. Kein Solitaire. Keine Werbung.""",
     },
     "it": {
-        "subtitle": "Abbina Simboli · Puzzle",
-        "keywords": "tile,collega,link,logica,mahjong,zen,combo,offline,gratis,casual,lofi,giornaliero,sfida,rilass,verticale",
-        "promo": "Collega simboli in 4 modalità originali. Suggerimenti illimitati, musica lofi, sfida giornaliera — gratis, senza pubblicità.",
-        "whats": "Build 14 — Puzzle originale\n\n• Tessuto Arcano, Onda Flux, Nova Blitz, Bruma Quieta\n• Puzzle di simboli — non solitario\n• 32 lingue, classifiche Game Center",
-        "description": """Patience Ascent è un puzzle gratuito di simboli per iPhone e iPad. Collega le tessere, allenati e rilassati con musica lofi. Non solitario. Nessuna pubblicità. Quattro modalità originali, suggerimenti illimitati, sfida giornaliera e Game Center.""",
+        "subtitle": "Blocchi Cadono · Linee",
+        "keywords": "rompicapo,griglia,colonna,combo,offline,gratis,casual,lofi,classifica,annulla,ondata,pezzo,cervello,zen,quadrato",
+        "promo": "Incastra blocchi colorati, gravità, cancella righe e colonne. Puzzle gratis — Top 100, 48 brani lofi, senza pubblicità.",
+        "whats": "Build 21 — Nuova icona e Top 100\n\n• Puzzle blocchi con gravità\n• Righe e colonne = combo\n• Classifica Top 100 Ascent\n• 48 tracce lofi CC0\n• Gratis, senza pubblicità",
+        "description": """Patience Ascent è un puzzle di blocchi gratuito per iPhone e iPad. Incastra forme colorate, la gravità fa cadere i blocchi, cancella le linee e punta alla Top 100. Non solitario. Nessuna pubblicità.""",
     },
     "pt": {
-        "subtitle": "Combine Símbolos Puzzle",
-        "keywords": "tile,conectar,link,logica,mahjong,zen,combo,offline,gratis,casual,lofi,diario,desafio,relax,vertical",
-        "promo": "Combine símbolos em 4 modos originais. Dicas ilimitadas, música lofi, desafio diário — grátis, sem anúncios.",
-        "whats": "Build 14 — Puzzle original\n\n• Tecido Arcano, Onda Flux, Nova Blitz, Névoa Serena\n• Puzzle de símbolos — não é paciência\n• 32 idiomas, rankings Game Center",
-        "description": """Patience Ascent é um puzzle gratuito de símbolos para iPhone e iPad. Conecte peças, treine o cérebro e relaxe com música lofi. Não é solitário. Sem anúncios. Quatro modos originais, dicas ilimitadas, desafio diário e Game Center.""",
+        "subtitle": "Blocos Caem · Linhas",
+        "keywords": "quebra-cabeça,grade,coluna,combo,offline,gratis,casual,lofi,ranking,desfazer,onda,peça,cérebro,zen,quadrado",
+        "promo": "Encaixe blocos coloridos, gravidade cai, limpe linhas e colunas. Puzzle grátis — Top 100, 48 músicas lofi, sem anúncios.",
+        "whats": "Build 21 — Novo ícone e Top 100\n\n• Puzzle de blocos com gravidade\n• Linhas e colunas = combos\n• Ranking Top 100 Ascent\n• 48 faixas lofi CC0\n• Grátis, sem anúncios",
+        "description": """Patience Ascent é um puzzle de blocos gratuito para iPhone e iPad. Encaixe formas coloridas, a gravidade puxa os blocos, limpe linhas e dispute o Top 100 global. Não é paciência. Sem anúncios.""",
     },
     "ja": {
-        "subtitle": "シンボルマッチ脳トレパズル",
-        "keywords": "タイル,連結,リンク,論理,まちゃん,禅,コンボ,オフライン,無料,カジュアル,ローファイ,デイリー,チャレンジ,リラックス,縦画面",
-        "promo": "4つのオリジナルモードでシンボルをマッチ。無制限ヒント、ローファイ音楽、デイリーチャレンジ——無料、広告なし。",
-        "whats": "Build 14 — オリジナルパズル\n\n• アークウィーブ、フラックスサージ、ノヴァブリッツ、ヘイズドリフト\n• シンボルマッチパズル——ソリティアではありません\n• 32言語、Game Centerランキング",
-        "description": """Patience AscentはiPhone/iPad向けの無料シンボルマッチパズルです。タイルを繋ぎ、脳トレし、ローファイ音楽でリラックス。ソリティアではありません。広告なし。4つのオリジナルモード、無制限ヒント、デイリーチャレンジ、Game Center対応。""",
+        "subtitle": "重力ドロップ·ライン消し",
+        "keywords": "ブロック,パズル,グリッド,コンボ,オフライン,無料,カジュアル,ローファイ,ランキング,元に戻す,ウェーブ,ピース,脳トレ,禅,スクエア,8x8",
+        "promo": "カラフルなブロックを配置、重力で落下、ライン消し。無料パズル——Top100、ローファイ48曲、広告なし。",
+        "whats": "Build 21 — 新アイコン＆Top100\n\n• 重力ブロックパズル\n• 横縦ライン消しコンボ\n• Top 100 Ascentランキング\n• CC0ローファイ48曲\n• 無料、広告なし",
+        "description": """Patience AscentはiPhone/iPad向けの無料ブロックパズルです。形を置き、重力で落とし、ラインを消して世界Top100を目指します。ソリティアではありません。広告なし。""",
     },
     "ko": {
-        "subtitle": "심볼 매칭 두뇌 퍼즐",
-        "keywords": "타일,연결,링크,논리,마작,젠,콤보,오프라인,무료,캐주얼,로파이,데일리,챌린지,휴식,세로",
-        "promo": "4가지 오리지널 모드에서 심볼을 매칭하세요. 무제한 힌트, 로파이 음악, 일일 챌린지 — 무료, 광고 없음.",
-        "whats": "Build 14 — 오리지널 퍼즐\n\n• 아크 위브, 플럭스 서지, 노바 블리츠, 헤이즈 드리프트\n• 심볼 매칭 퍼즐 — 솔리테어 아님\n• 32개 언어, Game Center 순위",
-        "description": """Patience Ascent는 iPhone/iPad용 무료 심볼 매칭 퍼즐입니다. 타일을 연결하고 두뇌를 훈련하며 로파이 음악으로 휴식하세요. 솔리테어가 아닙니다. 광고 없음. 4가지 오리지널 모드, 무제한 힌트, 일일 챌린지, Game Center.""",
+        "subtitle": "중력 낙하 · 라인 클리어",
+        "keywords": "블록,퍼즐,격자,콤보,오프라인,무료,캐주얼,로파이,순위,실행취소,웨이브,조각,두뇌,젠,사각,8x8",
+        "promo": "컬러 블록 맞추기, 중력 낙하, 라인 제거. 무료 퍼즐 — Top 100, 로파이 48곡, 광고 없음.",
+        "whats": "Build 21 — 새 아이콘 & Top 100\n\n• 중력 블록 퍼즐\n• 가로세로 라인 클리어\n• Top 100 Ascent 순위\n• CC0 로파이 48곡\n• 무료, 광고 없음",
+        "description": """Patience Ascent는 iPhone/iPad용 무료 블록 퍼즐입니다. 블록을 배치하고 중력으로 떨어뜨려 라인을 지우며 세계 Top 100에 도전하세요. 솔리테어가 아닙니다. 광고 없음.""",
     },
     "zh-Hans": {
-        "subtitle": "符号连线·脑力益智",
-        "keywords": "方块,连接,连线,逻辑,麻将,禅,连击,离线,免费,休闲,低保真,每日,挑战,放松,竖屏",
-        "promo": "四种原创模式中连接相同符号。无限提示、低保真音乐、每日挑战——免费，无广告。",
-        "whats": "Build 14 — 原创益智游戏\n\n• 弧光编织、通量涌浪、新星闪击、薄雾漂流\n• 符号连线益智——不是纸牌接龙\n• 32种语言，Game Center 排行榜",
-        "description": """Patience Ascent 是一款免费的符号连线益智游戏，适用于 iPhone 和 iPad。连接方块、锻炼大脑、用低保真音乐放松。不是纸牌接龙。无广告。四种原创模式、无限提示、每日挑战、Game Center 排行榜。""",
+        "subtitle": "重力下落·消行挑战",
+        "keywords": "方块,拼图,网格,连击,离线,免费,休闲,低保真,排行榜,撤销,波次,碎片,脑力,禅,方形,8x8",
+        "promo": "彩色方块拼放，重力下落，消除行列。免费益智——百强榜、48首低保真、无广告。",
+        "whats": "Build 21 — 新图标与百强榜\n\n• 重力方块益智\n• 横竖满线连击\n• Top 100 Ascent 全球榜\n• 48首 CC0 低保真\n• 免费，无广告",
+        "description": """Patience Ascent 是一款免费的 iPhone/iPad 重力方块益智游戏。放置彩色方块，重力下落，消除满线，冲击全球 Top 100。不是纸牌接龙。无广告。""",
     },
     "zh-Hant": {
-        "subtitle": "符號連線·腦力益智",
-        "keywords": "方塊,連接,連線,邏輯,麻將,禪,連擊,離線,免費,休閒,低保真,每日,挑戰,放鬆,直向",
-        "promo": "四種原創模式中連接相同符號。無限提示、低保真音樂、每日挑戰——免費，無廣告。",
-        "whats": "Build 14 — 原創益智遊戲\n\n• 弧光編織、通量湧浪、新星閃擊、薄霧漂流\n• 符號連線益智——不是接龍\n• 32種語言，Game Center 排行榜",
-        "description": """Patience Ascent 是一款免費的符號連線益智遊戲，適用於 iPhone 和 iPad。連接方塊、鍛鍊大腦、用低保真音樂放鬆。不是接龍。無廣告。四種原創模式、無限提示、每日挑戰、Game Center 排行榜。""",
+        "subtitle": "重力下落·消行挑戰",
+        "keywords": "方塊,拼圖,網格,連擊,離線,免費,休閒,低保真,排行榜,撤銷,波次,碎片,腦力,禪,方形,8x8",
+        "promo": "彩色方塊拼放，重力下落，消除行列。免費益智——百強榜、48首低保真、無廣告。",
+        "whats": "Build 21 — 新圖示與百強榜\n\n• 重力方塊益智\n• 橫豎滿線連擊\n• Top 100 Ascent 全球榜\n• 48首 CC0 低保真\n• 免費，無廣告",
+        "description": """Patience Ascent 是一款免費的 iPhone/iPad 重力方塊益智遊戲。放置彩色方塊，重力下落，消除滿線，衝擊全球 Top 100。不是接龍。無廣告。""",
     },
     "ru": {
-        "subtitle": "Символы · Головоломка",
-        "keywords": "плитка,связь,логика,маджонг,дзен,комбо,офлайн,бесплатно,казуал,lofi,ежедневно,челлендж,релакс,портрет",
-        "promo": "Соединяйте символы в 4 оригинальных режимах. Безлимитные подсказки, lofi-музыка, ежедневный вызов — бесплатно.",
-        "whats": "Build 14 — Оригинальная головоломка\n\n• Ткань Дуги, Поток Всплеск, Нова Блиц, Туманный Дрейф\n• Не пасьянс\n• 32 языка, Game Center",
-        "description": """Patience Ascent — бесплатная головоломка со символами для iPhone и iPad. Соединяйте плитки, тренируйте мозг, расслабляйтесь под lofi. Не пасьянс. Без рекламы. Четыре оригинальных режима, безлимитные подсказки, ежедневный вызов.""",
+        "subtitle": "Падение · Линии",
+        "keywords": "головоломка,сетка,столбец,комбо,офлайн,бесплатно,казуал,lofi,рейтинг,отмена,волна,фигура,мозг,дзен,квадрат",
+        "promo": "Цветные блоки, гравитация, очистка линий. Бесплатная головоломка — Топ 100, 48 lofi-треков, без рекламы.",
+        "whats": "Build 21 — Новая иконка и Топ 100\n\n• Блоки с гравитацией\n• Ряды и столбцы = комбо\n• Рейтинг Top 100 Ascent\n• 48 треков CC0 lofi\n• Бесплатно, без рекламы",
+        "description": """Patience Ascent — бесплатная головоломка с блоками и гравитацией для iPhone и iPad. Ставьте фигуры, линии исчезают, гонитесь за Топ 100. Не пасьянс. Без рекламы.""",
     },
 }
 
-# Locales → pack key
 LOCALE_PACK = {
     "en-US": "en", "en-GB": "en", "en-AU": "en", "en-CA": "en",
     "es-ES": "es", "es-MX": "es",
@@ -152,17 +127,6 @@ LOCALE_PACK = {
     "pl": "en", "tr": "en", "th": "en", "vi": "en", "id": "en", "ms": "en",
     "ca": "es", "cs": "en", "el": "en", "hu": "en", "ro": "en", "sk": "en",
     "uk": "ru", "hi": "en", "ar-SA": "en", "he": "en",
-}
-
-OLD_LEADERBOARDS = {
-    "patience_best_klondike", "patience_best_freeCell", "patience_best_spider",
-    "patience_best_pyramid", "patience_best_triPeaks", "patience_best_golf",
-    "patience_best_yukon", "patience_best_fortyThieves",
-}
-
-KEEP_LEADERBOARDS = {
-    "patience_total_time", "patience_best_glyphLink", "patience_best_glyphChain",
-    "patience_best_glyphRush", "patience_best_glyphZen",
 }
 
 
@@ -184,7 +148,7 @@ def main() -> None:
             data["whatsNew"][locale] = pack["whats"]
 
     PATH.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"Updated {PATH} — {len(data['locales'])} locales, category GAMES_PUZZLE")
+    print(f"Updated {PATH} — {len(data['locales'])} locales")
 
 
 if __name__ == "__main__":

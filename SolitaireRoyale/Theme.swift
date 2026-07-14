@@ -14,72 +14,35 @@ struct ModeTheme {
     let tableFrame: Color
     let particleSymbol: String
 
-    static func forMode(_ mode: SolitaireMode) -> ModeTheme {
-        switch mode {
-        case .glyphLink:
-            return ModeTheme(
-                feltTop: Color(red: 0.14, green: 0.08, blue: 0.38),
-                feltMid: Color(red: 0.10, green: 0.06, blue: 0.28),
-                feltBottom: Color(red: 0.05, green: 0.03, blue: 0.16),
-                feltGlow: Color(red: 0.55, green: 0.35, blue: 0.95),
-                accent: Color(red: 0.62, green: 0.42, blue: 0.98),
-                accentLight: Color(red: 0.78, green: 0.62, blue: 1.0),
-                gold: Color(red: 0.95, green: 0.82, blue: 0.45),
-                tableSurface: Color(red: 0.97, green: 0.95, blue: 1.0),
-                tableSurface2: Color(red: 0.92, green: 0.88, blue: 0.98),
-                tableBorder: Color(red: 0.68, green: 0.55, blue: 0.88),
-                tableFrame: Color(red: 0.82, green: 0.62, blue: 0.98),
-                particleSymbol: "sparkles"
-            )
-        case .glyphChain:
-            return ModeTheme(
-                feltTop: Color(red: 0.02, green: 0.28, blue: 0.36),
-                feltMid: Color(red: 0.02, green: 0.20, blue: 0.28),
-                feltBottom: Color(red: 0.01, green: 0.10, blue: 0.14),
-                feltGlow: Color(red: 0.15, green: 0.85, blue: 0.92),
-                accent: Color(red: 0.10, green: 0.72, blue: 0.88),
-                accentLight: Color(red: 0.35, green: 0.92, blue: 0.98),
-                gold: Color(red: 0.45, green: 0.95, blue: 0.98),
-                tableSurface: Color(red: 0.94, green: 0.99, blue: 1.0),
-                tableSurface2: Color(red: 0.86, green: 0.96, blue: 0.98),
-                tableBorder: Color(red: 0.45, green: 0.78, blue: 0.88),
-                tableFrame: Color(red: 0.25, green: 0.88, blue: 0.95),
-                particleSymbol: "bolt.fill"
-            )
-        case .glyphRush:
-            return ModeTheme(
-                feltTop: Color(red: 0.38, green: 0.10, blue: 0.06),
-                feltMid: Color(red: 0.28, green: 0.06, blue: 0.04),
-                feltBottom: Color(red: 0.14, green: 0.02, blue: 0.02),
-                feltGlow: Color(red: 0.98, green: 0.45, blue: 0.18),
-                accent: Color(red: 0.98, green: 0.38, blue: 0.12),
-                accentLight: Color(red: 1.0, green: 0.58, blue: 0.28),
-                gold: Color(red: 1.0, green: 0.75, blue: 0.22),
-                tableSurface: Color(red: 1.0, green: 0.97, blue: 0.94),
-                tableSurface2: Color(red: 0.98, green: 0.90, blue: 0.84),
-                tableBorder: Color(red: 0.92, green: 0.62, blue: 0.42),
-                tableFrame: Color(red: 0.98, green: 0.55, blue: 0.22),
-                particleSymbol: "flame.fill"
-            )
-        case .glyphZen:
-            return ModeTheme(
-                feltTop: Color(red: 0.18, green: 0.26, blue: 0.22),
-                feltMid: Color(red: 0.12, green: 0.20, blue: 0.18),
-                feltBottom: Color(red: 0.06, green: 0.10, blue: 0.09),
-                feltGlow: Color(red: 0.55, green: 0.78, blue: 0.62),
-                accent: Color(red: 0.42, green: 0.68, blue: 0.52),
-                accentLight: Color(red: 0.62, green: 0.85, blue: 0.68),
-                gold: Color(red: 0.82, green: 0.92, blue: 0.72),
-                tableSurface: Color(red: 0.97, green: 0.99, blue: 0.96),
-                tableSurface2: Color(red: 0.92, green: 0.96, blue: 0.92),
-                tableBorder: Color(red: 0.68, green: 0.82, blue: 0.72),
-                tableFrame: Color(red: 0.72, green: 0.88, blue: 0.75),
-                particleSymbol: "leaf.fill"
-            )
-        }
-    }
+    static let game = ModeTheme(
+        feltTop: Color(red: 0.10, green: 0.14, blue: 0.32),
+        feltMid: Color(red: 0.06, green: 0.10, blue: 0.24),
+        feltBottom: Color(red: 0.03, green: 0.05, blue: 0.14),
+        feltGlow: Color(red: 0.42, green: 0.55, blue: 0.98),
+        accent: Color(red: 0.38, green: 0.52, blue: 0.98),
+        accentLight: Color(red: 0.58, green: 0.70, blue: 1.0),
+        gold: Color(red: 0.98, green: 0.82, blue: 0.38),
+        tableSurface: Color(red: 0.14, green: 0.16, blue: 0.22),
+        tableSurface2: Color(red: 0.10, green: 0.12, blue: 0.18),
+        tableBorder: Color(red: 0.32, green: 0.38, blue: 0.52),
+        tableFrame: Color(red: 0.55, green: 0.62, blue: 0.88),
+        particleSymbol: "square.fill"
+    )
+}
 
-    static func palette(for mode: SolitaireMode) -> ModeTheme { forMode(mode) }
+enum BlockPalette {
+    static let colors: [Color] = [
+        Color(red: 0.96, green: 0.38, blue: 0.42),
+        Color(red: 0.32, green: 0.72, blue: 0.98),
+        Color(red: 0.48, green: 0.88, blue: 0.52),
+        Color(red: 0.98, green: 0.72, blue: 0.28),
+        Color(red: 0.78, green: 0.48, blue: 0.98),
+        Color(red: 0.98, green: 0.52, blue: 0.72)
+    ]
+
+    static func color(for index: Int) -> Color {
+        colors[max(0, index) % colors.count]
+    }
 }
 
 enum AppTheme {
@@ -100,8 +63,8 @@ enum AppTheme {
     static let textOnGreen = Color.white
     static let textMutedOnGreen = Color.white.opacity(0.86)
 
-    static let textOnTable = Color(red: 0.10, green: 0.14, blue: 0.18)
-    static let textMutedOnTable = Color(red: 0.38, green: 0.44, blue: 0.50)
+    static let textOnTable = Color(red: 0.92, green: 0.94, blue: 0.98)
+    static let textMutedOnTable = Color(red: 0.68, green: 0.72, blue: 0.82)
 
     static let gold = Color(red: 1.0, green: 0.88, blue: 0.42)
     static let goldLight = Color(red: 1.0, green: 0.95, blue: 0.72)
@@ -115,7 +78,6 @@ enum AppTheme {
     static let cornerRadius: CGFloat = 18
     static let buttonHeight: CGFloat = 56
     static let minTap: CGFloat = 44
-    static let cardCornerRatio: CGFloat = 0.10
 
     static func titleFont(_ size: CGFloat = 32) -> Font {
         .system(size: size, weight: .black, design: .rounded)

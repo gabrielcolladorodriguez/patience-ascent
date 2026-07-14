@@ -58,30 +58,9 @@ enum L10n {
 
     static var tagline: String { s("tagline") }
 
-    static func modeTitle(_ mode: SolitaireMode) -> String {
-        switch mode {
-        case .glyphLink: return s("mode_glyph_link")
-        case .glyphChain: return s("mode_glyph_chain")
-        case .glyphRush: return s("mode_glyph_rush")
-        case .glyphZen: return s("mode_glyph_zen")
-        }
-    }
-
-    static func modeSubtitle(_ mode: SolitaireMode) -> String {
-        switch mode {
-        case .glyphLink: return s("mode_glyph_sub")
-        case .glyphChain: return s("mode_chain_sub")
-        case .glyphRush: return s("mode_rush_sub")
-        case .glyphZen: return s("mode_zen_sub")
-        }
-    }
-
-    static func controlsHint(_ mode: SolitaireMode) -> String {
-        switch mode {
-        case .glyphLink, .glyphChain, .glyphRush: return s("controls_glyph")
-        case .glyphZen: return s("controls_zen")
-        }
-    }
+    static func modeTitle(_ mode: SolitaireMode) -> String { mode.title }
+    static func modeSubtitle(_ mode: SolitaireMode) -> String { mode.subtitle }
+    static func controlsHint(_ mode: SolitaireMode) -> String { mode.controlsHint }
 
     private static func loadTable() -> [String: [String: String]] {
         guard let url = Bundle.main.url(forResource: "strings", withExtension: "json"),

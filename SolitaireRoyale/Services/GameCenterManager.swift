@@ -1,10 +1,19 @@
 import GameKit
 import SwiftUI
 
-/// Leaderboards (crear en App Store Connect → Game Center con estos IDs).
 enum LeaderboardID {
     static let totalPlayTime = "patience_total_time"
-    static func bestTime(_ mode: SolitaireMode) -> String { "patience_best_\(mode.rawValue)" }
+    /// Global high score — Top 100 Ascent (configure in App Store Connect).
+    static let top100 = "patience_ascent_top100"
+    static let displayName = "Top 100 Ascent"
+}
+
+struct LeaderboardRow: Identifiable, Equatable {
+    let id: String
+    let rank: Int
+    let playerName: String
+    let score: Int
+    let isLocalPlayer: Bool
 }
 
 @MainActor
@@ -13,6 +22,11 @@ final class GameCenterManager: NSObject, ObservableObject {
 
     @Published private(set) var isAuthenticated = false
     @Published private(set) var playerName = ""
+    @Published private(set) var top100: [LeaderboardRow] = []
+    @Published private(set) var localRank: Int?
+    @Published private(set) var localScore: Int = 0
+    @Published private(set) var isLoadingLeaderboard = false
+    @Published private(set) var leaderboardError: String?
 
     private override init() {
         super.init()
@@ -46,33 +60,75 @@ final class GameCenterManager: NSObject, ObservableObject {
         ) { _ in }
     }
 
-    func submitHighScore(_ score: Int, mode: SolitaireMode) {
+    func submitHighScore(_ score: Int) {
         guard isAuthenticated, score > 0 else { return }
+        localScore = max(localScore, score)
         GKLeaderboard.submitScore(
             score,
             context: 0,
             player: GKLocalPlayer.local,
-            leaderboardIDs: [LeaderboardID.bestTime(mode)]
-        ) { _ in }
+            leaderboardIDs: [LeaderboardID.top100]
+        ) { [weak self] error in
+            Task { @MainActor in
+                if error == nil {
+                    await self?.refreshTop100()
+                }
+            }
+        }
     }
 
-    func submitBestTime(_ seconds: TimeInterval, mode: SolitaireMode) {
-        guard isAuthenticated, seconds > 0 else { return }
-        let score = max(1, Int(seconds.rounded()))
-        GKLeaderboard.submitScore(
-            score,
-            context: 0,
-            player: GKLocalPlayer.local,
-            leaderboardIDs: [LeaderboardID.bestTime(mode)]
-        ) { _ in }
+    func refreshTop100() async {
+        guard isAuthenticated else {
+            leaderboardError = L10n.s("gc_sign_in_required")
+            top100 = []
+            localRank = nil
+            return
+        }
+
+        isLoadingLeaderboard = true
+        leaderboardError = nil
+        defer { isLoadingLeaderboard = false }
+
+        do {
+            let boards = try await GKLeaderboard.loadLeaderboards(IDs: [LeaderboardID.top100])
+            guard let board = boards.first else {
+                leaderboardError = L10n.s("gc_leaderboard_missing")
+                return
+            }
+
+            let (localEntry, entries, _) = try await board.loadEntries(
+                for: .global,
+                timeScope: .allTime,
+                range: NSRange(location: 1, length: 100)
+            )
+
+            top100 = entries.enumerated().map { index, entry in
+                LeaderboardRow(
+                    id: entry.player.gamePlayerID,
+                    rank: index + 1,
+                    playerName: entry.player.displayName,
+                    score: entry.score,
+                    isLocalPlayer: entry.player.gamePlayerID == GKLocalPlayer.local.gamePlayerID
+                )
+            }
+
+            if let local = localEntry {
+                localRank = local.rank
+                localScore = local.score
+            } else {
+                localRank = nil
+            }
+        } catch {
+            leaderboardError = error.localizedDescription
+        }
     }
 
-    func showLeaderboards() {
+    func showNativeLeaderboards() {
         guard isAuthenticated else {
             authenticate()
             return
         }
-        let vc = GKGameCenterViewController(state: .leaderboards)
+        let vc = GKGameCenterViewController(leaderboardID: LeaderboardID.top100, playerScope: .global)
         vc.gameCenterDelegate = self
         Self.present(vc)
     }

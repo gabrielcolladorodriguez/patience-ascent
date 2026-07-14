@@ -8,12 +8,12 @@ enum DeviceLayout {
         isPad(width) ? min(440, width * 0.58) : width
     }
 
-    static func fittedGlyphTileSize(boardSize: CGSize) -> CGFloat {
+    static func fittedCellSize(boardSize: CGSize, grid: Int = GravityBlockEngine.size) -> CGFloat {
         let w = max(boardSize.width, 240)
         let h = max(boardSize.height, 280)
         let gap: CGFloat = 4
-        let widthBased = (w - gap * CGFloat(GlyphLinkEngine.cols - 1)) / CGFloat(GlyphLinkEngine.cols)
-        let heightBased = (h - gap * CGFloat(GlyphLinkEngine.rows - 1)) / CGFloat(GlyphLinkEngine.rows)
+        let widthBased = (w - gap * CGFloat(grid - 1)) / CGFloat(grid)
+        let heightBased = (h - gap * CGFloat(grid - 1)) / CGFloat(grid)
         let raw = min(widthBased, heightBased)
         let cap: CGFloat = isPad(w) ? 64 : 56
         let floor: CGFloat = isPad(w) ? 30 : 26
