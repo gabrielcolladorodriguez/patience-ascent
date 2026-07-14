@@ -52,6 +52,10 @@ workflows:
             for log in /tmp/xcodebuild_logs/*.log; do
               [ -f "$log" ] && tail -200 "$log"
             done
+            echo "========== Swift compile errors =========="
+            for log in /tmp/xcodebuild_logs/*.log; do
+              [ -f "$log" ] && grep -E " error: |fatal error:" "$log" | tail -80
+            done
             exit 1
           fi
 

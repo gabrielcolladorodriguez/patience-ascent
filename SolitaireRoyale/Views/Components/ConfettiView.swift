@@ -18,7 +18,7 @@ struct ConfettiView: View {
 
     var body: some View {
         GeometryReader { geo in
-            TimelineView(.animation(minimumInterval: 1.0 / 30.0)) { timeline in
+            TimelineView(.periodic(from: .now, by: 1.0 / 30.0)) { timeline in
                 Canvas { context, _ in
                     for piece in pieces {
                         var transform = CGAffineTransform.identity

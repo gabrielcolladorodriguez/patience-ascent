@@ -21,8 +21,15 @@ final class GravityBlockSessionViewModel: ObservableObject {
     private let theme = SolitaireMode.gravityBlocks.theme
 
     init(seed: UInt64? = nil) {
-        engine = GravityBlockEngine(seed: seed)
-        syncFromEngine()
+        let created = GravityBlockEngine(seed: seed)
+        engine = created
+        grid = created.grid
+        tray = created.tray
+        score = created.score
+        combo = created.combo
+        wave = created.wave
+        isGameOver = created.isGameOver
+        lastClear = created.lastClear
     }
 
     var themeMode: ModeTheme { theme }
@@ -106,9 +113,10 @@ final class GravityBlockSessionViewModel: ObservableObject {
 
     private func triggerShake() {
         withAnimation(.default) { boardShake = 8 }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
+        Task { @MainActor in
+            try? await Task.sleep(nanoseconds: 80_000_000)
             withAnimation(.spring(response: 0.2, dampingFraction: 0.4)) {
-                self.boardShake = 0
+                boardShake = 0
             }
         }
     }

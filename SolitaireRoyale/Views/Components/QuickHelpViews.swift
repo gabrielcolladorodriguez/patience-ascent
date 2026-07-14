@@ -39,7 +39,8 @@ struct OnboardingView: View {
                         .onChange(of: page) { _ in
                             iconPulse = 0.9
                             withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) { iconPulse = 1.05 }
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                            Task { @MainActor in
+                                try? await Task.sleep(nanoseconds: 150_000_000)
                                 withAnimation(.spring(response: 0.25, dampingFraction: 0.75)) { iconPulse = 1 }
                             }
                         }

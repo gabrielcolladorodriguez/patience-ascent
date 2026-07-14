@@ -48,9 +48,15 @@ struct GravityBlockGameView: View {
             comboPulse = true
             if cleared >= 2 || session.combo >= 2 {
                 showConfetti = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.4) { showConfetti = false }
+                Task { @MainActor in
+                    try? await Task.sleep(nanoseconds: 1_400_000_000)
+                    showConfetti = false
+                }
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { comboPulse = false }
+            Task { @MainActor in
+                try? await Task.sleep(nanoseconds: 800_000_000)
+                comboPulse = false
+            }
         }
     }
 
@@ -73,7 +79,6 @@ struct GravityBlockGameView: View {
                 Text(L10n.s("score_fmt", session.score))
                     .font(.title2.weight(.black).monospacedDigit())
                     .foregroundStyle(AppTheme.gold)
-                    .contentTransition(.numericText())
             }
 
             Spacer()
