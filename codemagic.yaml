@@ -24,18 +24,26 @@ workflows:
           keychain initialize
 
           if [ -z "${CERTIFICATE_PRIVATE_KEY:-}" ]; then
-            echo "ERROR: Falta CERTIFICATE_PRIVATE_KEY en Environment variables (grupo: code-signing)"
+            echo "ERROR: Falta CERTIFICATE_PRIVATE_KEY (grupo: code-signing)"
             exit 1
           fi
 
           CERT_KEY_PATH="$CM_BUILD_DIR/cert_key.pem"
           printf '%s\n' "$CERTIFICATE_PRIVATE_KEY" > "$CERT_KEY_PATH"
+          openssl rsa -in "$CERT_KEY_PATH" -check -noout
 
           if ! app-store-connect fetch-signing-files "$BUNDLE_ID" \
             --type IOS_APP_STORE \
             --platform IOS \
             --certificate-key=@file:"$CERT_KEY_PATH"; then
-            echo "No hay certificado para esta clave. Creando uno nuevo..."
+            echo ""
+            echo "=========================================="
+            echo "ACCIÓN REQUERIDA EN APPLE DEVELOPER:"
+            echo "1. developer.apple.com → Certificates"
+            echo "2. Revoca TODOS los Apple Distribution viejos"
+            echo "3. Vuelve a lanzar la build"
+            echo "=========================================="
+            echo ""
             app-store-connect fetch-signing-files "$BUNDLE_ID" \
               --type IOS_APP_STORE \
               --platform IOS \
