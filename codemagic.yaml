@@ -33,11 +33,14 @@ workflows:
           openssl rsa -in "$CERT_KEY_PATH" -check -noout
 
           # App ID must include Game Center or archive fails on entitlements.
-          BUNDLE_RESOURCE_ID="$(app-store-connect bundle-ids list --json --filter "identifier=$BUNDLE_ID" | python3 -c 'import sys,json; d=json.load(sys.stdin); print((d.get("data") or [{}])[0].get("id",""))')"
+          BUNDLE_RESOURCE_ID=""
+          if BUNDLE_JSON="$(app-store-connect bundle-ids list --json --bundle-id-identifier "$BUNDLE_ID" --strict-match-identifier)"; then
+            BUNDLE_RESOURCE_ID="$(printf '%s' "$BUNDLE_JSON" | python3 -c 'import sys,json; d=json.load(sys.stdin); print((d.get("data") or [{}])[0].get("id",""))')"
+          fi
           if [ -n "$BUNDLE_RESOURCE_ID" ]; then
             app-store-connect bundle-ids enable-capabilities "$BUNDLE_RESOURCE_ID" --capability "Game Center" || true
           else
-            echo "WARNING: Could not resolve bundle ID resource for $BUNDLE_ID"
+            echo "WARNING: Could not resolve bundle ID resource for $BUNDLE_ID (Game Center may already be enabled)"
           fi
 
           app-store-connect fetch-signing-files "$BUNDLE_ID" \
