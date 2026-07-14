@@ -4,12 +4,19 @@ struct GameBoardView: View {
     @StateObject var session: GameSessionViewModel
     @Binding var route: AppRoute
     @ObservedObject var progress = ProgressStore.shared
+    @State private var showHelp = false
+    @State private var showTip = true
 
     var body: some View {
         ZStack {
             GameBackground()
             VStack(spacing: 6) {
                 gameHUD
+                if showTip {
+                    GameTipBanner(text: session.mode.quickRules.first ?? session.mode.controlsHint) {
+                        withAnimation { showTip = false }
+                    }
+                }
                 GameTableSurface {
                     GeometryReader { geo in
                         ScrollView([.horizontal, .vertical], showsIndicators: false) {
@@ -43,6 +50,9 @@ struct GameBoardView: View {
                 AudioManager.shared.playMusic("menu_music.wav")
             }
         }
+        .sheet(isPresented: $showHelp) {
+            QuickHelpSheet(mode: session.mode)
+        }
     }
 
     private var gameHUD: some View {
@@ -65,6 +75,17 @@ struct GameBoardView: View {
                 .foregroundStyle(AppTheme.textMutedOnGreen)
             }
             Spacer()
+            Button {
+                AudioManager.shared.click()
+                showHelp = true
+            } label: {
+                Image(systemName: "questionmark.circle.fill")
+                    .font(.title3)
+                    .foregroundStyle(AppTheme.gold)
+                    .frame(width: AppTheme.minTap, height: AppTheme.minTap)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Ayuda")
             CoinBar()
         }
         .padding(.horizontal, 12)

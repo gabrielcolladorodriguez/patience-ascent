@@ -65,4 +65,62 @@ enum SolitaireMode: String, CaseIterable, Identifiable, Codable {
     }
 
     var isFree: Bool { unlockCost == 0 }
+
+    /// Reglas rápidas (3 líneas máx.) para el jugador casual
+    var quickRules: [String] {
+        switch self {
+        case .klondike:
+            return [
+                "Coloca cartas alternando color y bajando de valor (K→Q→J…).",
+                "Toca el mazo para sacar cartas; arrastra a las 4 pilas superiores.",
+                "Objetivo: subir todas las cartas del As al Rey por palo."
+            ]
+        case .freeCell:
+            return [
+                "Mueve una carta a una celda libre (máx. 4) como apoyo temporal.",
+                "En columnas: color alterno y valor descendente.",
+                "Vacía todas las columnas llevando cartas a las 4 bases."
+            ]
+        case .spider:
+            return [
+                "Ordena secuencias del mismo palo de Rey a As en columnas.",
+                "Una secuencia completa se retira sola.",
+                "Objetivo: limpiar las 8 secuencias del tablero."
+            ]
+        case .pyramid:
+            return [
+                "Toca dos cartas visibles que sumen 13 (ej. Q + As).",
+                "El Rey vale 13 y se elimina solo.",
+                "Limpia toda la pirámide para ganar."
+            ]
+        case .triPeaks:
+            return [
+                "Toca cartas ±1 en valor respecto a la carta de descarte.",
+                "Las cartas sin bloqueo quedan disponibles.",
+                "Elimina los 3 picos del tablero."
+            ]
+        case .golf:
+            return [
+                "Coloca en descarte cartas ±1 en valor (As junto a 2 o K).",
+                "Solo cartas libres en las 7 columnas.",
+                "Vacía todas las columnas para ganar."
+            ]
+        case .yukon:
+            return [
+                "Como Klondike pero puedes mover grupos sin orden previo.",
+                "Colores alternos y valores descendentes al apilar.",
+                "Sube los 4 palos completos a las bases."
+            ]
+        case .fortyThieves:
+            return [
+                "Dos barajas: apila mismo palo y valor descendente.",
+                "Solo la carta superior de cada columna se mueve.",
+                "Llena las 8 bases del As al Rey."
+            ]
+        }
+    }
+
+    var controlsHint: String {
+        "Toca una carta · Arrastra para mover · Pista si te atascas"
+    }
 }

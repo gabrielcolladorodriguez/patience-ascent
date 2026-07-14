@@ -36,15 +36,20 @@ struct GameBackground: View {
         ZStack {
             LinearGradient(
                 colors: [AppTheme.feltTop, AppTheme.feltBottom],
-                startPoint: .top,
-                endPoint: .bottom
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
             )
             RadialGradient(
-                colors: [Color.white.opacity(0.08), .clear],
+                colors: [AppTheme.feltGlow.opacity(0.35), .clear],
                 center: .top,
-                startRadius: 10,
-                endRadius: 500
+                startRadius: 20,
+                endRadius: 520
             )
+            // Marco fino decorativo (como el icono)
+            RoundedRectangle(cornerRadius: 0)
+                .stroke(AppTheme.tableGoldFrame.opacity(0.22), lineWidth: 2)
+                .padding(10)
+                .allowsHitTesting(false)
         }
         .ignoresSafeArea()
     }
@@ -57,16 +62,19 @@ struct GameTableSurface<Content: View>: View {
         content
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(AppTheme.tableSurface)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 20)
-                            .stroke(AppTheme.tableBorder, lineWidth: 1)
-                    )
-                    .shadow(color: .black.opacity(0.12), radius: 8, y: 4)
+                ZStack {
+                    RoundedRectangle(cornerRadius: 22)
+                        .fill(AppTheme.tableSurface)
+                    RoundedRectangle(cornerRadius: 22)
+                        .stroke(AppTheme.tableBorder, lineWidth: 1.5)
+                    RoundedRectangle(cornerRadius: 22)
+                        .stroke(AppTheme.tableGoldFrame.opacity(0.45), lineWidth: 2)
+                        .padding(3)
+                }
+                .shadow(color: .black.opacity(0.14), radius: 10, y: 5)
             )
-            .padding(.horizontal, 8)
-            .padding(.vertical, 4)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
     }
 }
 
@@ -123,11 +131,11 @@ struct AppButton: View {
         case .primary:
             LinearGradient(
                 colors: [AppTheme.accent, AppTheme.accentPressed],
-                startPoint: .top,
-                endPoint: .bottom
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
             )
         case .secondary:
-            AppTheme.panelFill
+            AppTheme.panelFillStrong
         case .compact:
             Color.white
         }

@@ -113,6 +113,10 @@ struct SettingsView: View {
                             route = .achievements
                         }
 
+                        AppButton(title: "Ver tutorial otra vez", systemImage: "arrow.counterclockwise", style: .secondary) {
+                            UserDefaults.standard.set(false, forKey: "hasSeenOnboarding")
+                        }
+
                         AppPanel {
                             VStack(alignment: .leading, spacing: 6) {
                                 Text(AppIdentity.name)

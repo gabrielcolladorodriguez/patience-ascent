@@ -43,12 +43,16 @@ struct MainMenuView: View {
                     }
 
                     HStack(spacing: 10) {
-                        AppButton(title: "Stats", systemImage: "chart.bar.fill", style: .secondary) {
-                            route = .stats
+                        AppButton(title: "Cómo jugar", systemImage: "questionmark.circle.fill", style: .secondary) {
+                            route = .howToPlay
                         }
                         AppButton(title: "Ajustes", systemImage: "gearshape.fill", style: .secondary) {
                             route = .settings
                         }
+                    }
+
+                    AppButton(title: "Estadísticas", systemImage: "chart.bar.fill", style: .secondary) {
+                        route = .stats
                     }
 
                     if progress.canClaimDaily {
@@ -181,6 +185,10 @@ struct ModeSelectView: View {
                     Text(mode.subtitle)
                         .font(.caption)
                         .foregroundStyle(AppTheme.textMutedOnGreen)
+                    Text(mode.quickRules.first ?? "")
+                        .font(.caption2)
+                        .foregroundStyle(AppTheme.gold.opacity(0.9))
+                        .lineLimit(2)
                 }
                 Spacer()
                 if !unlocked {
