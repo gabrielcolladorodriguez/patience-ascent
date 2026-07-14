@@ -47,25 +47,44 @@ Ese error significa que Codemagic **no puede crear ni encontrar** el perfil de A
 
 ---
 
-## Paso 5 — Genera certificado en Codemagic
+## Paso 5 — Vuelve a compilar (tras el fix del yaml)
 
-1. Codemagic → **Teams** → **codemagic.yaml settings** (activado)
-2. **Code signing identities** → pestaña **iOS certificates**
-3. Pulsa **Generate certificate** o **Add certificate**
-4. Bundle ID: `com.patienceascent.app`
-5. Tipo: **Apple Distribution** (App Store)
-
-Luego en **iOS provisioning profiles**:
-- Debería aparecer un perfil **App Store** para `com.patienceascent.app`
-- Si no aparece, pulsa **Fetch from Developer Portal**
-
----
-
-## Paso 6 — Vuelve a compilar
+El error aparece si `ios_signing` está en el yaml pero **no hay perfiles subidos** en Codemagic.
+El proyecto ya usa **firma automática por API** (sin `ios_signing`).
 
 1. Repo → **patience-ascent** → **Start new build**
 2. Workflow: **Patience Ascent iOS**
 3. **Start build**
+
+---
+
+## Alternativa: subir perfiles en la UI de Codemagic
+
+Si prefieres usar `ios_signing` en el yaml:
+
+1. Codemagic → **Teams** → **Code signing identities**
+2. **iOS certificates** → **Generate certificate** → tipo **Apple Distribution**
+3. **iOS provisioning profiles** → **Fetch profiles**
+4. Elige perfil **App Store** para `com.patienceascent.app`
+5. Reference name: `patience_ascent_appstore`
+6. **Download selected**
+
+Sin el paso 3–4, Codemagic muestra exactamente el error que viste.
+
+---
+
+## Verifica el nombre de la integración
+
+En Codemagic → **Team integrations** → mira el **nombre** de tu API key.
+
+Debe coincidir con `codemagic.yaml`:
+
+```yaml
+integrations:
+  app_store_connect: app_store_connect
+```
+
+Si lo nombraste distinto (ej. `Codemagic`), cambia la segunda línea al nombre real.
 
 ---
 
