@@ -13,7 +13,9 @@ enum AppRoute: Equatable {
 
 struct RootView: View {
     @State private var route: AppRoute = .menu
+    @State private var previousRouteKey = "menu"
     @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
         ZStack {
@@ -53,6 +55,31 @@ struct RootView: View {
                 .zIndex(10)
             }
         }
+        .onAppear {
+            updateAdContext(for: routeKey)
+        }
+        .onChange(of: routeKey) { newKey in
+            let wasInGame = previousRouteKey.hasPrefix("game-")
+            previousRouteKey = newKey
+            updateAdContext(for: newKey)
+            if newKey == "menu", wasInGame, hasSeenOnboarding {
+                AdManager.shared.notifyReturnedToMenu()
+            }
+        }
+        .onChange(of: scenePhase) { phase in
+            switch phase {
+            case .active:
+                AdManager.shared.resumeChecks()
+            case .background, .inactive:
+                AdManager.shared.pauseChecks()
+            @unknown default:
+                break
+            }
+        }
+    }
+
+    private func updateAdContext(for key: String) {
+        AdManager.shared.setUserOnMenu(key == "menu")
     }
 
     private var routeKey: String {
